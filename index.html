@@ -1,0 +1,44 @@
+---
+layout: default
+title: 首頁
+---
+
+<section class="hero">
+  <h1 id="hero-title">Hi, 我是YoFat</h1>
+  <p class="subtitle">網路安全 × 人工智能 × 系統工程</p>
+  <div class="hero-cta">
+    <a class="btn" href="{{ '/categories.html' | relative_url }}">看分類</a>
+    <a class="btn outline" href="{{ '/search.html' | relative_url }}">搜尋文章</a>
+  </div>
+  <canvas id="hero-particles" width="1200" height="220" aria-hidden="true"></canvas>
+</section>
+
+<section>
+  <h2>最新文章</h2>
+  <ul class="post-list">
+    {% assign latest = site.posts | slice: 0, 6 %}
+    {% for post in latest %}
+      <li>
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        <small> — {{ post.date | date: "%Y-%m-%d" }}</small>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>快速導航</h2>
+  <div class="pill-group">
+    {% for big in site.data.categories %}
+      <a class="pill" href="{{ '/categories.html#' | append: big[0] | relative_url }}">{{ big[0] }}</a>
+      {% for small in big[1] %}
+        <a class="pill ghost" href="{{ '/categories.html#' | append: small | relative_url }}">{{ small }}</a>
+      {% endfor %}
+    {% endfor %}
+  </div>
+</section>
+<section>
+  <h2>關於我</h2>
+  <p>你好，我是YoFat，一個熱愛網路安全、人工智能和 CTF 技術的愛好者。在這個部落格中，我分享我的學習經歷、技術文章和專案心得，希望能與更多志同道合的朋友交流。</p>
+  <p>如果你對我的文章有任何建議或想法，歡迎透過<a href=></a>聯絡我！</p>
+</section>
