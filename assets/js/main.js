@@ -146,3 +146,12 @@ document.addEventListener("DOMContentLoaded", () => {
     headings.forEach(h => observer.observe(h));
   }
 });
+document.addEventListener("DOMContentLoaded", () => {
+  // 主題切換
+  const toggleBtn = document.getElementById("theme-toggle");
+  if(toggleBtn){
+    toggleBtn.addEventListener("click", () => {
+      document.documentElement.classList.toggle("light");
+      toggleBtn.textContent = document.documentElement.classList.contains("light") ? "☀️" : "🌙";
+    });
+  }

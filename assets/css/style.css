@@ -1,6 +1,6 @@
 /* =========================
    基本配色 & 全站基礎
-   ========================= */
+========================= */
 :root{
   --bg:#0b0b0c;
   --fg:#e9e9ee;
@@ -28,14 +28,11 @@ a:hover{ text-decoration:underline; }
 .container{ max-width:980px; margin:0 auto; padding:20px; }
 
 /* =========================
-   Header / Footer
-   ========================= */
+   Header / Nav / Footer
+========================= */
 .site-header,.site-footer{ background:var(--card); border-bottom:1px solid #222; }
-.site-footer{ border-top:1px solid #222; border-bottom:none; }
-.brand{ font-weight:700; margin-right:24px; }
-.nav a{ margin-right:14px; }
+.site-footer{ border-top:1px solid #222; border-bottom:none; text-align:center; }
 
-/* 透明模糊 Navbar（全站） */
 .site-header{
   position:sticky; top:0; z-index:1000;
   background:rgba(15,15,20,0.85);
@@ -43,17 +40,24 @@ a:hover{ text-decoration:underline; }
   border-bottom:1px solid rgba(255,255,255,0.1);
 }
 .site-header .container{
-  max-width:100% !important;  /* 讓 Navbar 滿版 */
+  max-width:100% !important;
   width:100%;
   padding-left:24px; padding-right:24px;
   display:flex; justify-content:space-between; align-items:center;
 }
-.nav a{ margin:0 12px; font-weight:500; transition:color .3s; }
-.nav a:hover{ color:var(--pri); }
+.brand{ font-weight:700; margin-right:24px; }
+.nav a, .nav img{
+  margin:0 10px;
+  display:inline-block;
+  vertical-align:middle;
+  height:24px;
+  transition:opacity .3s;
+}
+.nav a:hover img{ opacity:.7; }
 
 /* =========================
-   Hero（共用）
-   ========================= */
+   Hero
+========================= */
 .hero{ display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:40px; min-height:64vh; padding:30px 0; }
 .hero h1{ font-size:42px; line-height:1.2; margin:0; }
 .subtitle{ color:var(--muted); margin-top:6px; }
@@ -67,105 +71,86 @@ a:hover{ text-decoration:underline; }
 .hero-image img:hover{ transform:scale(1.05) rotate(-2deg); }
 
 /* =========================
-   元件：按鈕、膠囊
-   ========================= */
-.btn{ display:inline-block; background:var(--pri); color:#000; padding:8px 14px; border-radius:999px; font-weight:700; }
+   元件
+========================= */
+.btn{ display:inline-block; background:var(--pri); color:#000; padding:8px 14px; border-radius:999px; font-weight:700; border:0; }
 .btn.outline{ background:transparent; border:1px solid var(--pri); color:var(--pri); margin-left:8px; }
 .pill-group{ display:flex; flex-wrap:wrap; gap:8px; }
 .pill{ background:var(--pri); color:#000; padding:6px 10px; border-radius:999px; }
 .pill.ghost{ background:transparent; border:1px solid var(--pri); color:var(--pri); }
 
-/* =========================
-   文章/表格/其他
-   ========================= */
 .post-list{ list-style:none; padding:0; }
 .post .meta{ color:var(--muted); margin:8px 0 16px; }
-.post-views{ margin-top:28px; }
 .table{ width:100%; border-collapse:collapse; }
 .table th,.table td{ border-bottom:1px solid #222; padding:6px 8px; }
 .muted{ color:var(--muted); }
-.search-item{ padding:8px 0; border-bottom:1px dashed #222; }
-.github-star{ margin-left:8px; }
-#hero-particles{ position:absolute; left:0; right:0; bottom:-10px; width:100%; }
 
 /* =========================
-   首頁：全寬三欄（左右貼邊，中間集中）
-   - 在 index.html front-matter 加 classes: home
-   ========================= */
-.home .container{
-  max-width:100% !important;
-  padding-left:0; padding-right:0;
-}
+   三欄佈局
+========================= */
+.home .container{ max-width:100% !important; padding:0; }
 .home .content-root{ width:100%; }
 
-/* 三欄網格：左 TOC / 中 Main / 右 Siderail */
+/* 桌機：固定三欄 左-中-右 */
 .home .grid-3col{
   display:grid;
-  /* 左欄貼左、右欄貼右；中間固定閱讀寬度 */
-  grid-template-columns: 280px minmax(680px, 820px) 320px;
+  grid-template-areas:"toc main rail";
+  grid-template-columns:280px minmax(680px,820px) 320px;
   gap:48px;
-  justify-content:center;   /* 讓整個網格在視窗置中 */
+  justify-content:center;
   width:100%;
-  padding:0 16px;           /* 內邊距避免緊貼視窗 */
+  padding:0 16px;
 }
-.home .maincol{ max-width:820px; margin:0 auto; }
+.home .toc{ grid-area:toc; position:sticky; top:84px; max-height:calc(100vh - 100px); overflow:auto; }
+.home .maincol{ grid-area:main; max-width:820px; margin:0 auto; }
+.home .siderail{ grid-area:rail; position:sticky; top:84px; }
 
-/* 左欄 TOC */
-.toc{ position:sticky; top:84px; max-height:calc(100vh - 100px); overflow:auto; }
+/* TOC link */
 .toc h3{ margin:0 0 8px 0; font-size:14px; color:var(--muted); }
 #toc a{ display:block; padding:6px 8px; border-radius:10px; color:var(--muted); text-decoration:none; }
 #toc a:hover{ color:var(--pri); }
 #toc a.is-active{ background:rgba(110,231,183,0.12); color:var(--pri); }
 
-/* 右欄 Siderail 卡片 */
-.siderail{ position:sticky; top:84px; }
+/* Siderail 卡片 */
 .card{ background:var(--card); border:1px solid #222; border-radius:16px; padding:14px 16px; margin-bottom:14px; }
 .card-title{ font-weight:700; margin-bottom:8px; }
 
 /* =========================
-   捲動條（全站）
-   ========================= */
+   捲動條
+========================= */
 ::-webkit-scrollbar{ width:10px; height:10px; }
 ::-webkit-scrollbar-track{ background:#111; }
-::-webkit-scrollbar-thumb{ background:linear-gradient(var(--pri), var(--pri-2)); border-radius:8px; }
+::-webkit-scrollbar-thumb{ background:linear-gradient(var(--pri),var(--pri-2)); border-radius:8px; }
 ::-webkit-scrollbar-thumb:hover{ background:var(--pri-2); }
-/* Firefox */
 *{ scrollbar-width:thin; scrollbar-color:var(--pri) #111; }
 
-/* ==== 固定三欄位置：左 toc / 中 main / 右 rail ==== */
-.home .grid-3col {
-  display: grid;
-  grid-template-areas: "toc main rail";
-  grid-template-columns: 280px minmax(680px, 820px) 320px;
-  gap: 48px;
-  justify-content: center;
-  width: 100%;
-  padding: 0 16px;
+/* =========================
+   RWD
+========================= */
+@media (max-width:1100px){
+  .hero{ grid-template-columns:1fr; }
+  .hero-image{ order:-1; justify-self:center; }
 }
-.home .toc      { grid-area: toc;     position: sticky; top: 84px; }
-.home .maincol  { grid-area: main;    max-width: 820px; margin: 0 auto; }
-.home .siderail { grid-area: rail;    position: sticky; top: 84px; }
-
-/* ---- 桌機/大平板都維持三欄（直到 1024px 才縮一點） ---- */
-@media (max-width: 1024px) {
-  .home .grid-3col {
-    grid-template-columns: 240px minmax(0,1fr) 260px;
-    gap: 32px;
-  }
-  .home .siderail { display: block; } /* 確保沒被其他地方關掉 */
-}
-
-/* ---- 手機才改單欄，順序 Main → TOC → Rail ---- */
-@media (max-width: 768px) {
-  .home .grid-3col {
+@media (max-width:768px){
+  .home .grid-3col{
     grid-template-areas:
       "main"
       "toc"
       "rail";
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 0 12px;
+    grid-template-columns:1fr;
+    gap:20px;
+    padding:0 12px;
   }
   .home .toc,
-  .home .siderail { position: static; top: auto; }
+  .home .siderail{ position:static; top:auto; }
 }
+
+:root {
+  --bg:#0b0b0c; --fg:#e9e9ee;
+  --card:#151518;
+}
+:root.light {
+  --bg:#ffffff; --fg:#0b0b0c;
+  --card:#f3f3f3;
+}
+.btn.small{ padding:4px 10px; font-size:14px; }
