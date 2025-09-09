@@ -135,13 +135,13 @@ a:hover{ text-decoration:underline; }
   min-height:calc(100vh - 120px);
 }
 
-/* 桌機版：固定三欄佈局 */
+/* 桌機 & 平板：固定三欄佈局 */
 .home .grid-3col{
   display:grid;
   grid-template-areas:"toc maincol siderail";
-  grid-template-columns:280px 1fr 320px;
+  grid-template-columns:280px minmax(720px, 1000px) 320px;
   gap:32px;
-  max-width:1400px;
+  max-width:1600px;
   margin:0 auto;
   padding:24px 16px;
   min-height:calc(100vh - 120px);
@@ -160,7 +160,8 @@ a:hover{ text-decoration:underline; }
 /* 中間主內容欄 */
 .home .maincol{ 
   grid-area:maincol; 
-  max-width:none;
+  max-width:1000px;
+  margin:0 auto;
   width:100%;
   padding:0;
 }
@@ -178,15 +179,8 @@ a:hover{ text-decoration:underline; }
 /* =========================
    主內容區域樣式
 ========================= */
-.section{ 
-  margin-bottom:48px; 
-}
-
-.section h2{
-  margin-bottom:24px;
-  font-size:28px;
-  font-weight:700;
-}
+.section{ margin-bottom:48px; }
+.section h2{ margin-bottom:24px; font-size:28px; font-weight:700; }
 
 .post-list li{
   padding:12px 0;
@@ -195,31 +189,13 @@ a:hover{ text-decoration:underline; }
   justify-content:space-between;
   align-items:center;
 }
-
-.post-list li:last-child{
-  border-bottom:none;
-}
-
-.post-list a{
-  color:var(--fg);
-  font-weight:500;
-  transition:color .3s ease;
-}
-
-.post-list a:hover{
-  color:var(--pri);
-}
-
-.post-list small{
-  color:var(--muted);
-  font-size:14px;
-}
+.post-list li:last-child{ border-bottom:none; }
+.post-list a{ color:var(--fg); font-weight:500; transition:color .3s ease; }
+.post-list a:hover{ color:var(--pri); }
+.post-list small{ color:var(--muted); font-size:14px; }
 
 /* GitHub Button 容器 */
-.card .github-button{
-  display:inline-block;
-  margin-top:8px;
-}
+.card .github-button{ display:inline-block; margin-top:8px; }
 
 /* =========================
    左邊欄樣式 (TOC)
@@ -231,7 +207,6 @@ a:hover{ text-decoration:underline; }
   text-transform:uppercase;
   letter-spacing:0.5px;
 }
-
 #toc a{ 
   display:block; 
   padding:8px 12px; 
@@ -269,11 +244,7 @@ a:hover{ text-decoration:underline; }
   transform:translateY(-2px);
   box-shadow:0 8px 25px rgba(0,0,0,0.15);
 }
-.card-title{ 
-  font-weight:700; 
-  margin-bottom:12px; 
-  color:var(--fg);
-}
+.card-title{ font-weight:700; margin-bottom:12px; color:var(--fg); }
 
 /* =========================
    捲動條美化
@@ -292,33 +263,7 @@ a:hover{ text-decoration:underline; }
    響應式設計
 ========================= */
 
-/* 平板尺寸 */
-@media (max-width:1200px){
-  .home .grid-3col{
-    grid-template-columns:240px 1fr 280px;
-    gap:24px;
-  }
-}
-
-/* 小平板 */
-@media (max-width:1024px){
-  .home .grid-3col{
-    grid-template-areas:
-      "maincol maincol"
-      "toc siderail";
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-  }
-  
-  .home .toc,
-  .home .siderail{ 
-    position:static; 
-    top:auto; 
-    max-height:none;
-  }
-}
-
-/* 手機尺寸 */
+/* 手機尺寸以下才直式堆疊 */
 @media (max-width:768px){
   .home .grid-3col{
     grid-template-areas:
