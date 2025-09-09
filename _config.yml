@@ -2,7 +2,7 @@ title: YoFat的個人網站
 description: 網路安全 × 人工智能 × 技術筆記
 # 你的 GitHub Pages 網域（務必改成你的）
 url: "https://github.com/yofat"
-baseurl: "/yofat.github.io"   # 放根目錄就空白
+baseurl: ""   # 放根目錄就空白
 
 # 你的 GitHub repo（用於星星按鈕與 API）
 github_owner: "yofat"           # ← 改成你的 GitHub 使用者名稱
