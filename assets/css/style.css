@@ -299,3 +299,77 @@ a:hover{ text-decoration:underline; }
   .hero h1{ font-size:28px; }
   .card{ padding:12px 14px; }
 }
+/* =========================
+   Home 三欄覆蓋（無 .home 時）
+   說明：部分佈局依賴 body 上的 .home 類別；
+        若版型未把 page.classes 套到 body，以下規則
+        讓首頁的三欄在沒有 .home 的情況下仍能生效。
+========================= */
+/* 讓包住首頁內容的 .container 在有三欄時全寬展示 */
+.container:has(> .grid-3col){
+  max-width:100% !important;
+  padding:0;
+}
+
+/* 三欄核心佈局（不依賴 .home） */
+.grid-3col{
+  display:grid;
+  grid-template-areas: "toc maincol siderail";
+  grid-template-columns:280px minmax(720px, 1fr) 320px;
+  gap:32px;
+  max-width:1600px;
+  margin:0 auto;
+  padding:24px 16px;
+  min-height:calc(100vh - 120px);
+}
+.grid-3col > .toc{
+  grid-area:toc;
+  position:sticky;
+  top:90px;
+  max-height:calc(100vh - 120px);
+  overflow-y:auto;
+  padding:16px 0;
+}
+.grid-3col > .maincol{
+  grid-area:maincol;
+  max-width:1000px;
+  margin:0 auto;
+  width:100%;
+  padding:0;
+}
+.grid-3col > .siderail{
+  grid-area:siderail;
+  position:sticky;
+  top:90px;
+  max-height:calc(100vh - 120px);
+  overflow-y:auto;
+  padding:16px 0;
+}
+
+/* 響應式：平板隱藏右欄，手機單欄 */
+@media (max-width:1024px){
+  .grid-3col{
+    grid-template-areas: "toc maincol";
+    grid-template-columns:240px minmax(0, 1fr);
+  }
+  .grid-3col > .siderail{ display:none; }
+}
+@media (max-width:768px){
+  .grid-3col{
+    grid-template-areas:
+      "maincol"
+      "toc";
+    grid-template-columns:1fr;
+    gap:16px;
+    padding:16px 12px;
+  }
+  .grid-3col > .toc,
+  .grid-3col > .siderail{
+    position:static;
+    top:auto;
+    max-height:none;
+  }
+}
+@media (max-width:480px){
+  .grid-3col{ padding:12px 8px; }
+}
