@@ -63,3 +63,86 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 3000);
 })();
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Hero title animation: 每個 span 逐一淡入
+  const spans = document.querySelectorAll("#hero-title span");
+  if (spans.length > 0) {
+    anime({
+      targets: spans,
+      opacity: [0, 1],
+      translateY: [30, 0],
+      delay: anime.stagger(200),
+      duration: 1000,
+      easing: "easeOutExpo"
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // === Hero title：逐字淡入 ===
+  const spans = document.querySelectorAll("#hero-title span");
+  if (spans.length) {
+    anime({
+      targets: spans,
+      opacity: [0, 1],
+      translateY: [30, 0],
+      delay: anime.stagger(200),
+      duration: 1000,
+      easing: "easeOutExpo"
+    });
+  }
+
+  // === 自動產生 TOC（掃描中欄 .maincol 內的 h2/h3） ===
+  const tocRoot = document.getElementById("toc");
+  const scope = document.querySelector(".maincol");
+  if (tocRoot && scope) {
+    const headings = scope.querySelectorAll("h2, h3");
+    const ids = new Set();
+    function slugify(t) {
+      return t.toLowerCase().trim()
+        .replace(/[^\u4e00-\u9fa5\w\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+    }
+    headings.forEach(h => {
+      if (!h.id) {
+        let base = slugify(h.textContent) || "section";
+        let id = base, i = 2;
+        while (ids.has(id)) { id = `${base}-${i++}`; }
+        ids.add(id);
+        h.id = id;
+      }
+      const a = document.createElement("a");
+      a.href = `#${h.id}`;
+      a.textContent = h.textContent;
+      if (h.tagName === "H3") a.style.marginLeft = "12px";
+      tocRoot.appendChild(a);
+    });
+
+    // Smooth scroll
+    tocRoot.addEventListener("click", (e) => {
+      if (e.target.tagName === "A") {
+        e.preventDefault();
+        const target = document.querySelector(e.target.getAttribute("href"));
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        history.replaceState(null, "", e.target.getAttribute("href"));
+      }
+    });
+
+    // Scrollspy：高亮目前章節
+    const links = Array.from(tocRoot.querySelectorAll("a"));
+    const map = new Map(links.map(a => [a.getAttribute("href").slice(1), a]));
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          const id = en.target.id;
+          links.forEach(l => l.classList.remove("is-active"));
+          const active = map.get(id);
+          if (active) active.classList.add("is-active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px", threshold: 0.1 });
+    headings.forEach(h => observer.observe(h));
+  }
+});
