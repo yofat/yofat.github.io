@@ -1,0 +1,22 @@
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="{{ '/' | relative_url }}">YoFat</a>
+    <nav class="nav">
+      <a href="{{ '/' | relative_url }}">首頁</a>
+      <a href="{{ '/categories.html' | relative_url }}">分類</a>
+      <a href="{{ '/search.html' | relative_url }}">搜尋</a>
+      <!-- 儀表板不顯示在導航（你可自行打開） -->
+      <!-- <a href="{{ '/dashboard.html' | relative_url }}">儀表板</a> -->
+      <span class="github-star">
+        <a class="github-button"
+           href="https://github.com/{{ site.github_owner }}/{{ site.github_repo }}"
+           data-icon="octicon-star"
+           data-size="large"
+           data-show-count="true"
+           aria-label="Star {{ site.github_owner }}/{{ site.github_repo }} on GitHub">
+           Star
+        </a>
+      </span>
+    </nav>
+  </div>
+</header>

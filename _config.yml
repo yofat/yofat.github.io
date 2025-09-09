@@ -1,0 +1,15 @@
+title: YoFat的個人網站
+description: 網路安全 × 人工智能 × 技術筆記
+# 你的 GitHub Pages 網域（務必改成你的）
+url: "https://github.com/yofat"
+baseurl: "/yofat.github.io"   # 放根目錄就空白
+
+# 你的 GitHub repo（用於星星按鈕與 API）
+github_owner: "yofat"           # ← 改成你的 GitHub 使用者名稱
+github_repo: "yofat.github.io"  # ← 改成你的 repo 名稱
+
+markdown: kramdown
+permalink: /:categories/:title/
+
+# 時區/語系
+timezone: Asia/Taipei

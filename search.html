@@ -1,0 +1,59 @@
+---
+layout: default
+title: 搜尋
+---
+
+<h1>搜尋</h1>
+<input id="search-input" type="search" placeholder="輸入關鍵字..." aria-label="Search" />
+<div id="search-results" role="list"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const input = document.getElementById('search-input');
+  const results = document.getElementById('search-results');
+
+  const res = await fetch('{{ "/search.json" | relative_url }}', { cache: 'force-cache' });
+  const data = await res.json();
+
+  const idx = lunr(function () {
+    this.ref('url');
+    this.field('title');
+    this.field('content');
+    this.field('categories');
+    this.field('tags');
+    data.forEach(doc => this.add(doc));
+  });
+
+  function render(items) {
+    results.innerHTML = '';
+    items.forEach(item => {
+      const doc = data.find(d => d.url === item.ref);
+      const a = document.createElement('a');
+      a.href = doc.url;
+      a.textContent = doc.title;
+      const small = document.createElement('small');
+      small.textContent = `  (${doc.date})`;
+      const div = document.createElement('div');
+      div.className = 'search-item';
+      div.appendChild(a);
+      div.appendChild(small);
+      results.appendChild(div);
+    });
+    if (items.length === 0) {
+      const div = document.createElement('div'); div.className = 'muted'; div.textContent = '沒有結果';
+      results.appendChild(div);
+    }
+  }
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim();
+    if (!q) return render([]);
+    try {
+      const items = idx.search(lunr.utils.asString(q));
+      render(items);
+    } catch (e) {
+      render([]); // 無效語法保護
+    }
+  });
+});
+</script>

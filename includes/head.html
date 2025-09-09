@@ -1,0 +1,22 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{ page.title | default: site.title }}</title>
+<meta name="description" content="{{ site.description }}" />
+
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+<link rel="icon" href="data:,">
+
+<!-- anime.js for cool effects -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Lunr.js for client-side safe search -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Chart.js for dashboard charts -->
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- GitHub Buttons (Star) -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<!-- Main JS -->
+<script defer src="{{ '/assets/js/main.js' | relative_url }}"></script>
