@@ -155,3 +155,4 @@ document.addEventListener("DOMContentLoaded", () => {
       toggleBtn.textContent = document.documentElement.classList.contains("light") ? "☀️" : "🌙";
     });
   }
+});
