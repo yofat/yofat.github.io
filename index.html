@@ -4,12 +4,16 @@ title: 首頁
 classes: home
 ---
 
-
 <div class="grid-3col content-root">
-  <!-- 左欄：TOC -->
+  <!-- 左欄：TOC 大綱 -->
   <aside class="toc">
     <h3>大綱</h3>
-    <nav id="toc"></nav>
+    <nav id="toc">
+      <a href="#hero-title">首頁介紹</a>
+      <a href="#latest-posts">最新文章</a>
+      <a href="#quick-nav">快速導航</a>
+      <a href="#about-me">關於我</a>
+    </nav>
   </aside>
 
   <!-- 中欄：主要內容 -->
@@ -28,20 +32,20 @@ classes: home
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="latest-posts">
       <h2>最新文章</h2>
       <ul class="post-list">
         {% assign latest = site.posts | slice: 0, 6 %}
         {% for post in latest %}
           <li>
             <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-            <small> — {{ post.date | date: "%Y-%m-%d" }}</small>
+            <small>{{ post.date | date: "%Y-%m-%d" }}</small>
           </li>
         {% endfor %}
       </ul>
     </section>
 
-    <section class="section">
+    <section class="section" id="quick-nav">
       <h2>快速導航</h2>
       <div class="pill-group">
         {% for big in site.data.categories %}
@@ -52,6 +56,13 @@ classes: home
         {% endfor %}
       </div>
     </section>
+
+    <section class="section" id="about-me">
+      <h2>關於我</h2>
+      <p>你好，我是YoFat，一個熱愛網路安全、人工智能和 CTF 技術的愛好者。在這個部落格中，我分享我的學習經歷、技術文章和專案心得，希望能與更多志同道合的朋友交流。</p>
+      <p>我專精於將 AI 技術應用到資安領域，開發各種實用的安全工具和自動化系統。同時也積極參與 CTF 競賽和開源專案貢獻。</p>
+      <p>如果你對我的文章有任何建議或想法，歡迎透過<a href="#">聯絡我</a>！</p>
+    </section>
   </div>
 
   <!-- 右欄：側邊工具 -->
@@ -60,6 +71,7 @@ classes: home
       <div class="card-title">關於我</div>
       <p class="muted">喜歡把資安 × AI 的技術做成好用的小工具。</p>
     </div>
+    
     <div class="card">
       <div class="card-title">GitHub</div>
       <a class="github-button"
@@ -71,11 +83,69 @@ classes: home
          Star
       </a>
     </div>
+    
+    <div class="card">
+      <div class="card-title">最新動態</div>
+      <p class="muted">🔥 新增 AI 輔助滲透測試工具</p>
+      <p class="muted">📝 更新深度學習教學系列</p>
+      <p class="muted">🏆 CTF 台灣區域賽第3名</p>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">技能標籤</div>
+      <div class="pill-group">
+        <span class="pill">Python</span>
+        <span class="pill">JavaScript</span>
+        <span class="pill">Go</span>
+        <span class="pill">Docker</span>
+        <span class="pill">TensorFlow</span>
+        <span class="pill">Burp Suite</span>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">聯絡方式</div>
+      <p class="muted">📧 yofat@example.com</p>
+      <p class="muted">🐦 @YoFat_Security</p>
+      <p class="muted">💼 LinkedIn</p>
+    </div>
   </aside>
 </div>
 
-<section>
-  <h2>關於我</h2>
-  <p>你好，我是YoFat，一個熱愛網路安全、人工智能和 CTF 技術的愛好者。在這個部落格中，我分享我的學習經歷、技術文章和專案心得，希望能與更多志同道合的朋友交流。</p>
-  <p>如果你對我的文章有任何建議或想法，歡迎透過<a href=></a>聯絡我！</p>
-</section>
+<!-- 可選：TOC 滾動互動 JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tocLinks = document.querySelectorAll('#toc a');
+  
+  // 平滑滾動
+  tocLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // 更新活躍狀態
+        tocLinks.forEach(l => l.classList.remove('is-active'));
+        this.classList.add('is-active');
+      }
+    });
+  });
+  
+  // 滾動時自動更新 TOC 活躍狀態
+  const sections = document.querySelectorAll('.section[id]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const activeLink = document.querySelector(`#toc a[href="#${entry.target.id}"]`);
+        if (activeLink) {
+          tocLinks.forEach(l => l.classList.remove('is-active'));
+          activeLink.classList.add('is-active');
+        }
+      }
+    });
+  }, { threshold: 0.3 });
+  
+  sections.forEach(section => observer.observe(section));
+});
+</script>
