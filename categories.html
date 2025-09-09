@@ -16,15 +16,20 @@ title: 分類
   {% for small in big[1] %}
     <h3 id="{{ small }}">{{ small }}</h3>
     <ul>
-      {% assign posts_in_small = site.posts | where_exp: "p", "p.categories contains bigcat and p.categories contains small" %}
+      {% assign posts_in_big = site.posts | where_exp: "p", "p.categories contains bigcat" %}
+      {% assign posts_in_small = posts_in_big | where_exp: "p", "p.categories contains small" %}
       {% if posts_in_small.size == 0 %}
         <li><em>尚無文章</em></li>
       {% else %}
         {% for p in posts_in_small %}
-          <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a> <small>— {{ p.date | date: "%Y-%m-%d" }}</small></li>
+          <li>
+            <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
+            <small>— {{ p.date | date: "%Y-%m-%d" }}</small>
+          </li>
         {% endfor %}
       {% endif %}
     </ul>
   {% endfor %}
 {% endfor %}
+
 <p><a href="{{ '/' | relative_url }}">← 返回首頁</a></p>
