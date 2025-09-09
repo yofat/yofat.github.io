@@ -132,25 +132,40 @@ a:hover{ text-decoration:underline; }
 /* Firefox */
 *{ scrollbar-width:thin; scrollbar-color:var(--pri) #111; }
 
-/* =========================
-   RWD
-   ========================= */
-@media (max-width:1200px){
-  .home .grid-3col{
-    grid-template-columns:260px minmax(0,1fr);
-    gap:32px;
-  }
-  .home .siderail{ display:none; }
+/* ==== 固定三欄位置：左 toc / 中 main / 右 rail ==== */
+.home .grid-3col {
+  display: grid;
+  grid-template-areas: "toc main rail";
+  grid-template-columns: 280px minmax(680px, 820px) 320px;
+  gap: 48px;
+  justify-content: center;
+  width: 100%;
+  padding: 0 16px;
 }
-@media (max-width:1100px){
-  .hero{ grid-template-columns:1fr; }
-  .hero-image{ order:-1; justify-self:center; }
-}
-@media (max-width:760px){
-  .home .grid-3col{
-    grid-template-columns:1fr;
-    gap:20px;
-    padding:0 12px;
+.home .toc      { grid-area: toc;     position: sticky; top: 84px; }
+.home .maincol  { grid-area: main;    max-width: 820px; margin: 0 auto; }
+.home .siderail { grid-area: rail;    position: sticky; top: 84px; }
+
+/* ---- 桌機/大平板都維持三欄（直到 1024px 才縮一點） ---- */
+@media (max-width: 1024px) {
+  .home .grid-3col {
+    grid-template-columns: 240px minmax(0,1fr) 260px;
+    gap: 32px;
   }
-  .toc{ position:relative; top:0; max-height:none; order:-1; }
+  .home .siderail { display: block; } /* 確保沒被其他地方關掉 */
+}
+
+/* ---- 手機才改單欄，順序 Main → TOC → Rail ---- */
+@media (max-width: 768px) {
+  .home .grid-3col {
+    grid-template-areas:
+      "main"
+      "toc"
+      "rail";
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 12px;
+  }
+  .home .toc,
+  .home .siderail { position: static; top: auto; }
 }
