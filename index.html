@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 title: 首頁
 classes: home
@@ -8,23 +8,18 @@ classes: home
   <!-- 左欄：TOC 大綱 -->
   <aside class="toc">
     <h3>大綱</h3>
-    <nav id="toc">
-      <a href="#hero-title">首頁介紹</a>
-      <a href="#latest-posts">最新文章</a>
-      <a href="#quick-nav">快速導航</a>
-      <a href="#about-me">關於我</a>
-    </nav>
+    <nav id="toc"></nav>
   </aside>
 
   <!-- 中欄：主要內容 -->
   <div class="maincol">
     <section class="hero section">
       <div class="hero-text">
-        <h1 id="hero-title"><span>Hi,</span> <span>我是YoFat</span></h1>
+       <h1 id="hero-title"><span>Hi,</span> <span>我是YoFat</span></h1>
         <p class="subtitle">網路安全 × 人工智能 × 系統工程</p>
         <div class="hero-cta">
-          <a class="btn" href="{{ '/categories.html' | relative_url }}">看分類</a>
-          <a class="btn outline" href="{{ '/search.html' | relative_url }}">搜尋文章</a>
+          <a class="btn" href="{{ '/categories/' | relative_url }}">看分類</a>
+          <a class="btn outline" href="{{ '/search/' | relative_url }}">搜尋文章</a>
         </div>
       </div>
       <div class="hero-image">
@@ -46,12 +41,12 @@ classes: home
     </section>
 
     <section class="section" id="quick-nav">
-      <h2>快速導航</h2>
+      <h2>敹恍???/h2>
       <div class="pill-group">
         {% for big in site.data.categories %}
-          <a class="pill" href="{{ '/categories.html#' | append: big[0] | relative_url }}">{{ big[0] }}</a>
+          <a class="pill" href="{{ '/categories/#' | append: big[0] | relative_url }}">{{ big[0] }}</a>
           {% for small in big[1] %}
-            <a class="pill ghost" href="{{ '/categories.html#' | append: small | relative_url }}">{{ small }}</a>
+            <a class="pill ghost" href="{{ '/categories/#' | append: small | relative_url }}">{{ small }}</a>
           {% endfor %}
         {% endfor %}
       </div>
@@ -61,11 +56,10 @@ classes: home
       <h2>關於我</h2>
       <p>你好，我是YoFat，一個熱愛網路安全、人工智能和 CTF 技術的愛好者。在這個部落格中，我分享我的學習經歷、技術文章和專案心得，希望能與更多志同道合的朋友交流。</p>
       <p>我專精於將 AI 技術應用到資安領域，開發各種實用的安全工具和自動化系統。同時也積極參與 CTF 競賽和開源專案貢獻。</p>
-      <p>如果你對我的文章有任何建議或想法，歡迎透過<a href="#">聯絡我</a>！</p>
+      <p>如果你對我的文章有任何建議或想法，歡迎透過<a href="#">聯絡我</a>!</p>
     </section>
   </div>
-
-  <!-- 右欄：側邊工具 -->
+<!-- 右欄：側邊工具 -->
   <aside class="siderail">
     <div class="card">
       <div class="card-title">關於我</div>
@@ -92,7 +86,7 @@ classes: home
     </div>
     
     <div class="card">
-      <div class="card-title">技能標籤</div>
+      <div class="card-title">??賣?蝐?/div>
       <div class="pill-group">
         <span class="pill">Python</span>
         <span class="pill">JavaScript</span>
@@ -149,3 +143,5 @@ document.addEventListener('DOMContentLoaded', function() {
   sections.forEach(section => observer.observe(section));
 });
 </script>
+
+

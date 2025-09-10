@@ -1,13 +1,14 @@
----
+﻿---
 layout: default
-title: 分類
+permalink: /categories/
+title: ??
 ---
 
-<h1>分類</h1>
+<h1>??</h1>
 
 {% comment %}
-根據 _data/categories.yml 的結構，列出每個大類與小類
-文章 frontmatter 用 categories: [大類, 小類]
+?寞? _data/categories.yml ??瑽??瘥之憿?撠?
+?? frontmatter ??categories: [憭折?, 撠?]
 {% endcomment %}
 
 {% for big in site.data.categories %}
@@ -19,12 +20,12 @@ title: 分類
       {% assign posts_in_big = site.posts | where_exp: "p", "p.categories contains bigcat" %}
       {% assign posts_in_small = posts_in_big | where_exp: "p", "p.categories contains small" %}
       {% if posts_in_small.size == 0 %}
-        <li><em>尚無文章</em></li>
+        <li><em>撠??</em></li>
       {% else %}
         {% for p in posts_in_small %}
           <li>
             <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
-            <small>— {{ p.date | date: "%Y-%m-%d" }}</small>
+            <small>??{{ p.date | date: "%Y-%m-%d" }}</small>
           </li>
         {% endfor %}
       {% endif %}
@@ -32,4 +33,4 @@ title: 分類
   {% endfor %}
 {% endfor %}
 
-<p><a href="{{ '/' | relative_url }}">← 返回首頁</a></p>
+<p><a href="{{ '/' | relative_url }}">??餈?擐?</a></p>

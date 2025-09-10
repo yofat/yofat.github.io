@@ -97,7 +97,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const tocRoot = document.getElementById("toc");
   const scope = document.querySelector(".maincol");
   if (tocRoot && scope) {
-    const headings = scope.querySelectorAll("h2, h3");
+    // Clear any pre-seeded links to avoid duplicates
+    tocRoot.innerHTML = "";
+    // Include h1 for hero, plus h2/h3 for sections
+    const headings = scope.querySelectorAll("h1, h2, h3");
     const ids = new Set();
     function slugify(t) {
       return t.toLowerCase().trim()
