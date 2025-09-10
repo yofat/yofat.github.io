@@ -7,9 +7,8 @@ permalink: /tags.html
 <h1>標籤</h1>
 
 {%- comment -%}
-和 categories.html 一樣的結構：
-- 每個項目用 <h2 id="..."> 作為錨點標題
-- 底下接 <ul> 文章清單（標題＋日期）
+這個頁面改用 Jekyll 內建的 site.tags（從各文章 front matter 的 tags 收集而來）。
+呈現風格與 categories.html 一樣：每個標題 + 底下文章清單（標題＋日期）。
 {%- endcomment -%}
 
 {%- assign tag_names = site.tags | map: 'first' | sort_natural -%}
@@ -36,3 +35,4 @@ permalink: /tags.html
 {%- endif -%}
 
 <p><a href="{{ '/' | relative_url }}">← 返回首頁</a></p>
+
