@@ -15,8 +15,11 @@ layout: default
    {% if page.tags %}
   <span>標籤：
     {% for t in page.tags %}
-      <a href="{{ '/tags.html#' | append: t | slugify | relative_url }}">{{ t }}</a>{% unless forloop.last %}，{% endunless %}
+      <a href="{{ '/tags.html#' | append: t | slugify | relative_url }}">{{ t }}</a>{% unless forloop.last %} / {% endunless %}
     {% endfor %}
+  </span>
+{% endif %}
+
   </span>
 {% endif %}
     <span>閱讀時間：約 {{ page.content | number_of_words | divided_by:200 | ceil }} 分鐘</span>
