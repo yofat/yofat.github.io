@@ -1,11 +1,10 @@
-﻿---
+---
 layout: default
-permalink: /search/
-title: ??
+title: 搜尋
 ---
 
-<h1>??</h1>
-<input id="search-input" type="search" placeholder="頛詨?摮?.." aria-label="Search" />
+<h1>搜尋</h1>
+<input id="search-input" type="search" placeholder="輸入關鍵字..." aria-label="Search" />
 <div id="search-results" role="list"></div>
 
 <script>
@@ -41,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       results.appendChild(div);
     });
     if (items.length === 0) {
-      const div = document.createElement('div'); div.className = 'muted'; div.textContent = '瘝?蝯?';
+      const div = document.createElement('div'); div.className = 'muted'; div.textContent = '沒有結果';
       results.appendChild(div);
     }
   }
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const items = idx.search(lunr.utils.asString(q));
       render(items);
     } catch (e) {
-      render([]); // ?⊥?隤?靽風
+      render([]); // 無效語法保護
     }
   });
 });
