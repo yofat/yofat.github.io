@@ -1,0 +1,54 @@
+---
+layout: default
+title: 標籤
+permalink: /tags.html
+---
+
+<h1>標籤</h1>
+
+<!-- Tag Cloud（依每個標籤文章數調整大小） -->
+<section class="section">
+  <h2>標籤雲</h2>
+  <div class="pill-group">
+    {% assign max = 1 %}
+    {% for t in site.tags %}
+      {% assign count = t[1].size %}
+      {% if count > max %}{% assign max = count %}{% endif %}
+    {% endfor %}
+
+    {% for t in site.tags %}
+      {% assign tag = t[0] %}
+      {% assign count = t[1].size %}
+      {% assign weight = 0.9 | plus: count | divided_by: max %}
+      <a class="pill ghost" href="#{{ tag | slugify }}"
+         style="font-size: calc(12px + {{ weight | times: 10 }}px);">
+        {{ tag }} ({{ count }})
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- 每個標籤底下列出文章 -->
+<section class="section">
+  <h2>全部標籤</h2>
+  {% if site.tags == empty %}
+    <p class="muted">尚無標籤</p>
+  {% else %}
+    {% assign sorted = site.tags | sort_natural %}
+    {% for t in sorted %}
+      {% assign tag = t[0] %}
+      {% assign posts = t[1] | sort: "date" | reverse %}
+      <h3 id="{{ tag | slugify }}">{{ tag }} <small class="muted">({{ posts.size }})</small></h3>
+      <ul>
+        {% for p in posts %}
+          <li>
+            <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
+            <small>— {{ p.date | date: "%Y-%m-%d" }}</small>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  {% endif %}
+</section>
+
+<p><a href="{{ '/' | relative_url }}">← 返回首頁</a></p>
