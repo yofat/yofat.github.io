@@ -13,3 +13,6 @@ permalink: /:categories/:title/
 
 # 時區/語系
 timezone: Asia/Taipei
+
+theme: null
+plugins: []
