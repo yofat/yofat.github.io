@@ -6,48 +6,33 @@ permalink: /tags.html
 
 <h1>標籤</h1>
 
-<!-- 先抽出所有 tag 名稱（字串），避免 for 迴圈拿到 [name, posts] 的陣列 -->
-{% assign tag_names = site.tags | map: 'first' | sort_natural %}
+{%- comment -%}
+和 categories.html 一樣的結構：
+- 每個項目用 <h2 id="..."> 作為錨點標題
+- 底下接 <ul> 文章清單（標題＋日期）
+{%- endcomment -%}
 
-<section class="section">
-  <h2>標籤雲</h2>
-  <div class="pill-group">
-    {%- assign max = 1 -%}
-    {%- for name in tag_names -%}
-      {%- assign count = site.tags[name].size -%}
-      {%- if count > max -%}{%- assign max = count -%}{%- endif -%}
-    {%- endfor -%}
+{%- assign tag_names = site.tags | map: 'first' | sort_natural -%}
 
-    {%- for name in tag_names -%}
-      {%- assign count = site.tags[name].size -%}
-      {%- assign weight = 0.9 | plus: count | divided_by: max -%}
-      <a class="pill ghost"
-         href="#{{ name | slugify }}"
-         style="font-size: calc(12px + {{ weight | times: 10 }}px);">
-        {{ name }} ({{ count }})
-      </a>
-    {%- endfor -%}
-  </div>
-</section>
-
-<section class="section">
-  <h2>全部標籤</h2>
-  {% if tag_names == empty %}
-    <p class="muted">尚無標籤</p>
-  {% else %}
-    {%- for name in tag_names -%}
-      {%- assign posts = site.tags[name] | sort: "date" | reverse -%}
-      <h3 id="{{ name | slugify }}">{{ name }} <small class="muted">({{ posts.size }})</small></h3>
-      <ul>
+{%- if tag_names == empty -%}
+  <p class="muted">尚無標籤</p>
+{%- else -%}
+  {%- for name in tag_names -%}
+    {%- assign posts = site.tags[name] | sort: "date" | reverse -%}
+    <h2 id="{{ name | slugify }}">{{ name }}</h2>
+    <ul>
+      {%- if posts.size == 0 -%}
+        <li><em>尚無文章</em></li>
+      {%- else -%}
         {%- for p in posts -%}
           <li>
             <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
             <small>— {{ p.date | date: "%Y-%m-%d" }}</small>
           </li>
         {%- endfor -%}
-      </ul>
-    {%- endfor -%}
-  {% endif %}
-</section>
+      {%- endif -%}
+    </ul>
+  {%- endfor -%}
+{%- endif -%}
 
 <p><a href="{{ '/' | relative_url }}">← 返回首頁</a></p>
