@@ -2,7 +2,7 @@
 layout: post
 title: 建站筆記：Hello, World!
 categories: [人工智能, GNN]   # 大類, 小類（可多個）
-tags: [入門, 筆記]
+tags: [學習, 筆記]           # 大類, 小類（可多個）
 ---
 
 這是第一篇測試文章。內容可以是你的技術分享、經歷或研究心得。

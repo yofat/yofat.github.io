@@ -6,33 +6,32 @@ permalink: /tags.html
 
 <h1>標籤</h1>
 
-{%- comment -%}
-這個頁面改用 Jekyll 內建的 site.tags（從各文章 front matter 的 tags 收集而來）。
-呈現風格與 categories.html 一樣：每個標題 + 底下文章清單（標題＋日期）。
-{%- endcomment -%}
+{% comment %}
+根據 _data/tags.yml 的結構，列出每個大類與小類
+文章 frontmatter 用 tags: [大類, 小類]
+{% endcomment %}
 
-{%- assign tag_names = site.tags | map: 'first' | sort_natural -%}
-
-{%- if tag_names == empty -%}
-  <p class="muted">尚無標籤</p>
-{%- else -%}
-  {%- for name in tag_names -%}
-    {%- assign posts = site.tags[name] | sort: "date" | reverse -%}
-    <h2 id="{{ name | slugify }}">{{ name }}</h2>
+{% for big in site.data.tags %}
+  {% assign bigtag = big[0] %}
+  <h2 id="{{ bigtag }}">{{ bigtag }}</h2>
+  {% for small in big[1] %}
+    <h3 id="{{ small }}">{{ small }}</h3>
     <ul>
-      {%- if posts.size == 0 -%}
+      {% assign posts_in_big = site.posts | where_exp: "p", "p.tags contains bigtag" %}
+      {% assign posts_in_small = posts_in_big | where_exp: "p", "p.tags contains small" %}
+      {% if posts_in_small.size == 0 %}
         <li><em>尚無文章</em></li>
-      {%- else -%}
-        {%- for p in posts -%}
+      {% else %}
+        {% for p in posts_in_small %}
           <li>
             <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
             <small>— {{ p.date | date: "%Y-%m-%d" }}</small>
           </li>
-        {%- endfor -%}
-      {%- endif -%}
+        {% endfor %}
+      {% endif %}
     </ul>
-  {%- endfor -%}
-{%- endif -%}
+  {% endfor %}
+{% endfor %}
 
 <p><a href="{{ '/' | relative_url }}">← 返回首頁</a></p>
 
