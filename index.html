@@ -111,8 +111,10 @@ classes: home
 
 <!-- TOC 滾動互動 JavaScript -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+// 等待所有腳本執行完畢後再強制覆蓋
+function forceTOCOverride() {
   const tocContainer = document.getElementById('toc');
+  if (!tocContainer) return;
   
   // 只生成指定的 TOC 項目
   const tocItems = [
@@ -121,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
     { href: '#about-me', text: '關於我' }
   ];
   
-  // 清空並重新生成 TOC
+  // 強制清空並重新生成 TOC
   tocContainer.innerHTML = '';
   tocItems.forEach(item => {
     const link = document.createElement('a');
@@ -132,8 +134,16 @@ document.addEventListener('DOMContentLoaded', function() {
   
   const tocLinks = document.querySelectorAll('#toc a');
   
-  // 平滑滾動
+  // 移除舊的事件監聽器
   tocLinks.forEach(link => {
+    link.replaceWith(link.cloneNode(true));
+  });
+  
+  // 重新獲取並添加事件
+  const freshTocLinks = document.querySelectorAll('#toc a');
+  
+  // 平滑滾動
+  freshTocLinks.forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const targetId = this.getAttribute('href').substring(1);
@@ -143,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         
         // 更新活躍狀態
-        tocLinks.forEach(l => l.classList.remove('is-active'));
+        freshTocLinks.forEach(l => l.classList.remove('is-active'));
         this.classList.add('is-active');
       }
     });
@@ -159,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (entry.isIntersecting) {
         const activeLink = document.querySelector(`#toc a[href="#${entry.target.id}"]`);
         if (activeLink) {
-          tocLinks.forEach(l => l.classList.remove('is-active'));
+          freshTocLinks.forEach(l => l.classList.remove('is-active'));
           activeLink.classList.add('is-active');
         }
       }
@@ -177,5 +187,34 @@ document.addEventListener('DOMContentLoaded', function() {
       window.tocObserver.observe(section);
     }
   });
+}
+
+// 多個時機執行，確保覆蓋其他腳本
+document.addEventListener('DOMContentLoaded', function() {
+  // 立即執行一次
+  forceTOCOverride();
+  
+  // 延遲執行，確保覆蓋 main.js 的效果
+  setTimeout(forceTOCOverride, 100);
+  setTimeout(forceTOCOverride, 500);
+  setTimeout(forceTOCOverride, 1000);
 });
+
+window.addEventListener('load', forceTOCOverride);
+
+// 持續監控，如果發現被其他腳本修改就強制覆蓋
+setInterval(function() {
+  const tocContainer = document.getElementById('toc');
+  if (tocContainer) {
+    const links = tocContainer.querySelectorAll('a');
+    // 如果不是我們要的3個連結，就重新生成
+    if (links.length !== 3 || 
+        !Array.from(links).every((link, i) => {
+          const expectedTexts = ['最新文章', '快速導航', '關於我'];
+          return link.textContent === expectedTexts[i];
+        })) {
+      forceTOCOverride();
+    }
+  }
+}, 2000);
 </script>
