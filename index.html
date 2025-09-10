@@ -9,9 +9,7 @@ classes: home
   <aside class="toc">
     <h3>大綱</h3>
     <nav id="toc">
-      <a href="#latest-posts">最新文章</a>
-      <a href="#quick-nav">快速導航</a>
-      <a href="#about-me">關於我</a>
+      <!-- 移除手動的連結，讓 JavaScript 來處理 -->
     </nav>
   </aside>
 
@@ -133,7 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   const tocLinks = document.querySelectorAll('#toc a');
-  const sections = document.querySelectorAll('.section[id]');
   
   // 平滑滾動
   tocLinks.forEach(link => {
