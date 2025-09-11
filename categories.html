@@ -2,41 +2,29 @@
 layout: default
 title: 分類
 permalink: /categories.html
-body_class: full-width
+classes: home
 ---
 
-<div class="post-layout">
-  <!-- 左側目錄 -->
-  <nav class="post-toc" id="post-toc">
-    <div class="toc-toggle" onclick="toggleTOC()">
-      <i id="toc-icon">☰</i>
-    </div>
-    <div class="toc-header">
-      <h3>分類導航</h3>
-    </div>
-    <div class="toc-content">
-      <div id="categories-toc">
-        {% for big in site.data.categories %}
-          {% assign bigcat = big[0] %}
-          <a href="#{{ bigcat }}" class="toc-link" data-level="1">{{ bigcat }}</a>
-          {% for small in big[1] %}
-            <a href="#{{ small }}" class="toc-link" data-level="2">{{ small }}</a>
-          {% endfor %}
+<div class="grid-3col content-root">
+  <!-- 左欄：TOC 導航 -->
+  <aside class="toc">
+    <h3>分類導航</h3>
+    <nav id="toc">
+      {% for big in site.data.categories %}
+        {% assign bigcat = big[0] %}
+        <a href="#{{ bigcat }}" class="toc-link" data-level="1">{{ bigcat }}</a>
+        {% for smallcat in big[1] %}
+          <a href="#{{ smallcat }}" class="toc-link" data-level="2">{{ smallcat }}</a>
         {% endfor %}
-      </div>
-    </div>
-  </nav>
+      {% endfor %}
+    </nav>
+  </aside>
 
-  <!-- 主要內容 -->
-  <main class="post-main">
-    <div class="post-header">
+  <!-- 中欄：主要內容 -->
+  <div class="maincol">
+    <section class="section">
       <h1>分類</h1>
-      <div class="post-meta">
-        <span>📁 探索所有文章分類</span>
-      </div>
-    </div>
-
-    <div class="post-content">
+      <p class="muted">📁 探索所有文章分類</p>
       {% comment %}
       根據 _data/categories.yml 的結構，列出每個大類與小類
       文章 frontmatter 用 categories: [大類, 小類]
@@ -80,17 +68,40 @@ body_class: full-width
       <div class="back-nav">
         <a href="{{ '/' | relative_url }}" class="back-link">← 返回首頁</a>
       </div>
-    </div>
-  </main>
+    </section>
+  </div>
 
-  <!-- 右側邊欄 -->
-  <aside class="post-sidebar">
-    <div class="sidebar-section">
-      <h4>統計資訊</h4>
+  <!-- 右欄：側邊資訊 -->
+  <aside class="siderail">
+    <div class="card">
+      <div class="card-title">分類統計</div>
       <div class="categories-stats">
-        <p>📊 總分類數：{{ site.data.categories.size }}</p>
-        <p>📝 總文章數：{{ site.posts.size }}</p>
+        {% assign total_categories = 0 %}
+        {% for big in site.data.categories %}
+          {% assign total_categories = total_categories | plus: big[1].size %}
+        {% endfor %}
+        <p>📊 總共 {{ site.data.categories.size }} 個大分類</p>
+        <p>📁 包含 {{ total_categories }} 個子分類</p>
+        <p>📝 共 {{ site.posts.size }} 篇文章</p>
       </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">熱門分類</div>
+      <div class="pill-group">
+        {% for big in site.data.categories limit: 6 %}
+          <a class="pill" href="#{{ big[0] }}">{{ big[0] }}</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">最新文章</div>
+      {% assign latest = site.posts | slice: 0, 3 %}
+      {% for post in latest %}
+        <p><a href="{{ post.url | relative_url }}">{{ post.title }}</a></p>
+        <small class="muted">{{ post.date | date: "%m-%d" }}</small>
+      {% endfor %}
     </div>
   </aside>
 </div>

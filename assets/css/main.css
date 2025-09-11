@@ -220,18 +220,18 @@ a:hover {
 /* =========================
    三欄佈局 - 核心配置
 ========================= */
-.home .container {
+body.home .container {
   max-width: 100% !important;
   padding: 0;
 }
 
-.home .content-root {
+.content-root {
   width: 100%;
   min-height: calc(100vh - 120px);
 }
 
 /* 桌機 & 平板：固定三欄佈局 */
-.home .grid-3col {
+.grid-3col {
   display: grid;
   grid-template-areas: "toc maincol siderail";
   grid-template-columns: 280px minmax(720px, 1000px) 320px;
@@ -243,7 +243,7 @@ a:hover {
 }
 
 /* 左邊欄 - TOC */
-.home .toc {
+.toc {
   grid-area: toc;
   position: sticky;
   top: 90px;
@@ -253,7 +253,7 @@ a:hover {
 }
 
 /* 中間主內容欄 */
-.home .maincol {
+.maincol {
   grid-area: maincol;
   max-width: 1000px;
   margin: 0 auto;
@@ -262,7 +262,7 @@ a:hover {
 }
 
 /* 右邊欄 - Siderail */
-.home .siderail {
+.siderail {
   grid-area: siderail;
   position: sticky;
   top: 90px;
@@ -328,7 +328,7 @@ a:hover {
   letter-spacing: 0.5px;
 }
 
-#toc a {
+#toc a, .toc-link {
   display: block;
   padding: 8px 12px;
   border-radius: 8px;
@@ -338,17 +338,29 @@ a:hover {
   margin-bottom: 2px;
 }
 
-#toc a:hover {
+#toc a:hover, .toc-link:hover {
   color: var(--pri);
   background: rgba(110, 231, 183, 0.08);
   transform: translateX(4px);
 }
 
-#toc a.is-active {
+#toc a.is-active, .toc-link.active {
   background: rgba(110, 231, 183, 0.15);
   color: var(--pri);
   border-left: 3px solid var(--pri);
   padding-left: 9px;
+}
+
+.toc-link[data-level="1"] {
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.toc-link[data-level="2"] {
+  padding-left: 20px;
+  font-size: 13px;
 }
 
 /* =========================
@@ -916,7 +928,7 @@ body .container .post-layout {
 ========================= */
 /* 手機尺寸以下才直式堆疊 */
 @media (max-width: 768px) {
-  .home .grid-3col {
+  .grid-3col {
     grid-template-areas:
       "maincol"
       "toc"
@@ -926,8 +938,8 @@ body .container .post-layout {
     padding: 16px 12px;
   }
   
-  .home .toc,
-  .home .siderail {
+  .toc,
+  .siderail {
     position: static;
     top: auto;
     max-height: none;
@@ -955,7 +967,7 @@ body .container .post-layout {
 
 /* 極小手機 */
 @media (max-width: 480px) {
-  .home .grid-3col {
+  .grid-3col {
     padding: 12px 8px;
   }
   
