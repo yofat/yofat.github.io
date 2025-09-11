@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 獲取所有 TOC 連結
     const tocLinks = Array.from(tocContainer.querySelectorAll('.toc-link'));
+    let isScrolling = false;
     
     // 為每個連結添加點擊事件
     tocItems.forEach((item, index) => {
@@ -142,6 +143,9 @@ document.addEventListener("DOMContentLoaded", () => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
           
+          // 暫停自動滾動檢測
+          isScrolling = true;
+          
           // 移除所有 active 狀態
           tocLinks.forEach(l => l.classList.remove('active'));
           // 設置當前點擊的連結為 active
@@ -149,73 +153,65 @@ document.addEventListener("DOMContentLoaded", () => {
           
           const target = document.querySelector(item.href);
           if (target) {
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 80;
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
             window.scrollTo({
               top: targetPosition,
               behavior: "smooth"
             });
             history.replaceState(null, "", item.href);
+            
+            // 滾動完成後恢復自動檢測
+            setTimeout(() => {
+              isScrolling = false;
+            }, 1500);
           }
         });
       }
     });
+
     function updateActiveTOC() {
-      // 先移除所有 active 狀態
-      tocLinks.forEach(link => link.classList.remove('active'));
+      if (isScrolling) return; // 如果正在手動滾動，跳過
       
-      let activeSection = null;
-      let minDistance = Infinity;
+      let currentActive = null;
+      const scrollTop = window.pageYOffset + 120; // 考慮偏移量
       
-      // 找到最接近視窗頂部的區域
-      tocItems.forEach((item, index) => {
-        const sectionId = item.href.substring(1);
+      // 從後往前檢查，找到當前應該高亮的區域
+      for (let i = tocItems.length - 1; i >= 0; i--) {
+        const sectionId = tocItems[i].href.substring(1);
         const section = document.getElementById(sectionId);
-        const link = tocLinks[index];
         
-        if (!section || !link) return;
-        
-        const rect = section.getBoundingClientRect();
-        const sectionTop = rect.top;
-        
-        // 如果區域在視窗頂部200px範圍內
-        if (sectionTop <= 200 && rect.bottom >= 0) {
-          const distance = Math.abs(sectionTop);
-          if (distance < minDistance) {
-            minDistance = distance;
-            activeSection = link;
-          }
-        }
-      });
-      
-      // 如果沒有找到合適的區域，根據滾動位置決定
-      if (!activeSection) {
-        const scrollTop = window.pageYOffset;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        
-        // 如果接近頁面底部，高亮最後一個
-        if (scrollTop + windowHeight >= documentHeight - 100) {
-          activeSection = tocLinks[tocLinks.length - 1];
-        } else {
-          // 否則高亮第一個
-          activeSection = tocLinks[0];
+        if (section && section.offsetTop <= scrollTop) {
+          currentActive = tocLinks[i];
+          break;
         }
       }
       
-      if (activeSection) {
-        activeSection.classList.add('active');
+      // 如果沒找到，默認第一個
+      if (!currentActive && tocLinks.length > 0) {
+        currentActive = tocLinks[0];
+      }
+      
+      // 更新高亮
+      tocLinks.forEach(link => link.classList.remove('active'));
+      if (currentActive) {
+        currentActive.classList.add('active');
       }
     }
     
-    // 使用節流函數避免滾動事件過於頻繁
-    let scrollTimeout;
-    function throttledUpdateTOC() {
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(updateActiveTOC, 100);
+    // 滾動事件監聽
+    let ticking = false;
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveTOC();
+          ticking = false;
+        });
+        ticking = true;
+      }
     }
     
-    window.addEventListener('scroll', throttledUpdateTOC);
-    updateActiveTOC();
+    window.addEventListener('scroll', requestTick);
+    updateActiveTOC(); // 初始執行
   }
 });
 </script>
