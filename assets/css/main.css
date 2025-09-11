@@ -863,13 +863,15 @@ line-clamp: 2;
 
 .skill-tag.python { 
   background: linear-gradient(135deg, rgba(52, 168, 83, 0.2), rgba(52, 168, 83, 0.1)); 
-  color: #2d5a3d; 
+  color: #00ff7f; /* 螢光綠 */
   border-color: rgba(52, 168, 83, 0.3);
+  text-shadow: 0 0 8px rgba(0, 255, 127, 0.6);
 }
 
 .skill-tag.python:hover {
   background: linear-gradient(135deg, rgba(52, 168, 83, 0.3), rgba(52, 168, 83, 0.2));
   border-color: rgba(52, 168, 83, 0.5);
+  text-shadow: 0 0 12px rgba(0, 255, 127, 0.8);
 }
 
 .skill-tag.js { 
