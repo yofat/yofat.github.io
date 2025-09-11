@@ -162,6 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let currentActive = null;
       const scrollTop = window.pageYOffset + 120;
       
+      // 從後往前檢查，找到當前應該高亮的區域
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i];
         if (section.offsetTop <= scrollTop) {
@@ -170,13 +171,39 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       
-      if (!currentActive && tocLinks.length > 0) {
-        currentActive = tocLinks[0];
+      // 如果沒有找到，根據滾動位置決定
+      if (!currentActive) {
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // 如果接近頁面底部，高亮最後一個
+        if (scrollTop + windowHeight >= documentHeight - 200) {
+          currentActive = tocLinks[tocLinks.length - 1];
+        } else {
+          // 否則高亮第一個
+          currentActive = tocLinks[0];
+        }
       }
       
+      // 更新高亮
       tocLinks.forEach(link => link.classList.remove('active'));
       if (currentActive) {
         currentActive.classList.add('active');
+        
+        // 確保活動項目在TOC中可見
+        const tocContainer = document.getElementById('toc');
+        if (tocContainer && currentActive) {
+          const containerRect = tocContainer.getBoundingClientRect();
+          const activeRect = currentActive.getBoundingClientRect();
+          
+          if (activeRect.bottom > containerRect.bottom || activeRect.top < containerRect.top) {
+            currentActive.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center',
+              inline: 'nearest' 
+            });
+          }
+        }
       }
     }
     

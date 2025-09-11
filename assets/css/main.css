@@ -74,39 +74,56 @@ body {
 /* ===== 左側邊欄 (TOC) ===== */
 .toc {
   position: sticky;
-  top: 2rem;
+  top: 1rem;
   height: fit-content;
-  max-height: calc(100vh - 4rem);
+  max-height: calc(100vh - 2rem);
   overflow-y: auto;
+  overflow-x: hidden;
   background: var(--bg-2);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
+  /* 增強 sticky 效果 */
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* 確保在所有瀏覽器中都能正常sticky */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+  /* 改善滾動效能 */
+  contain: layout style paint;
+}
+
+/* 改善TOC滾動條樣式 */
+.toc::-webkit-scrollbar {
+  width: 6px;
+}
+
+.toc::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.toc::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.toc::-webkit-scrollbar-thumb:hover {
+  background: var(--text-3);
 }
 
 .toc h3 {
   color: var(--pri);
   font-size: 1.1rem;
   margin-bottom: 1rem;
-  font-weight: 600;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
 }
 
-.toc-toggle {
-  color: var(--text-2);
-  cursor: pointer;
-  font-size: 0.8rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  background: var(--border);
-}
-
-.toc-toggle:hover {
-  background: var(--pri);
-  color: white;
+.toc h3::before {
+  content: "📋";
 }
 
 .toc nav {
@@ -1186,7 +1203,15 @@ body.grid-page .container {
     padding: 1rem;
   }
   
-  .toc,
+  .toc {
+    /* 移動端也保持sticky，但調整參數 */
+    position: sticky;
+    top: 0.5rem;
+    max-height: 40vh;
+    margin-bottom: 1rem;
+    order: -1; /* 移到最上面 */
+  }
+  
   .sidebar,
   .siderail {
     position: static;
