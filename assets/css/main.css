@@ -66,13 +66,28 @@ body {
   margin: 0 auto !important;
   display: grid;
   grid-template-columns: 260px 1fr 300px;
+  grid-template-areas: "toc main sidebar";
   gap: 1.5rem;
   min-height: 100vh;
   padding: 1.5rem;
 }
 
+/* 確保元素位置正確 */
+.toc {
+  grid-area: toc;
+}
+
+.maincol {
+  grid-area: main;
+}
+
+.sidebar, .siderail {
+  grid-area: sidebar;
+}
+
 /* ===== 左側邊欄 (TOC) ===== */
 .toc {
+  grid-area: toc;
   position: sticky;
   top: 1rem;
   height: fit-content;
@@ -235,6 +250,7 @@ body {
 
 /* ===== 主內容區域 ===== */
 .maincol {
+  grid-area: main;
   background: var(--bg-2);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -245,6 +261,7 @@ body {
 /* ===== 右側邊欄 ===== */
 .sidebar, 
 .siderail {
+  grid-area: sidebar;
   position: sticky;
   top: 2rem;
   height: fit-content;
@@ -2003,6 +2020,252 @@ hr {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-3);
+}
+
+/* ===== 所有文章頁面樣式 ===== */
+.stats-container {
+  display: flex;
+  gap: 2rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--bg-3);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--pri);
+  line-height: 1;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-2);
+  margin-top: 0.5rem;
+}
+
+.year-section {
+  margin: 3rem 0;
+}
+
+.year-section h2 {
+  color: var(--pri);
+  border-bottom: 2px solid var(--pri);
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.posts-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.timeline-post {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.timeline-post:hover {
+  border-color: var(--pri);
+  background: rgba(110, 231, 183, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+  text-align: center;
+  color: var(--text-2);
+}
+
+.timeline-date .month {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--pri);
+  margin-bottom: 0.25rem;
+}
+
+.timeline-date .day {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.timeline-content {
+  flex: 1;
+}
+
+.timeline-content h3 {
+  margin: 0 0 0.5rem 0;
+}
+
+.timeline-content h3 a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.timeline-content h3 a:hover {
+  color: var(--pri);
+}
+
+.post-excerpt {
+  color: var(--text-2);
+  margin: 0.5rem 0 1rem 0;
+  line-height: 1.5;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.categories, .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.category {
+  background: rgba(110, 231, 183, 0.15);
+  color: var(--pri);
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.year-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.year-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.year-stat .year {
+  min-width: 40px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--pri), var(--pri-2));
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.year-stat .count {
+  min-width: 24px;
+  text-align: center;
+  color: var(--text-2);
+  font-size: 0.8rem;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag-link {
+  background: var(--bg-2);
+  color: var(--text-2);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border);
+}
+
+.tag-link:hover {
+  background: var(--pri);
+  color: white;
+  border-color: var(--pri);
+}
+
+/* 響應式設計 - 三欄佈局 */
+@media (max-width: 1024px) {
+  .post-layout,
+  .grid-3col {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "main";
+    padding: 1rem;
+  }
+  
+  .toc,
+  .sidebar,
+  .siderail {
+    display: none;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .post-layout,
+  .grid-3col {
+    grid-template-columns: 200px 1fr 250px;
+  }
+}
+
+/* 響應式設計 - 所有文章頁面 */
+@media (max-width: 768px) {
+  .stats-container {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .timeline-post {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .timeline-date {
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  
+  .post-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
 }
 
 /* ===== 搜尋頁面樣式 ===== */

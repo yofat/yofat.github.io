@@ -24,6 +24,27 @@ kramdown:
     block:
       line_numbers: true
 
+# Collections 設定 - 支援 articles 資料夾
+collections:
+  articles:
+    output: true
+    permalink: /:collection/:categories/:title/
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "articles"
+    values:
+      layout: "post"
+
+# 確保 collections 在建置時被處理
+collections_dir: ""
+
 theme: null
 plugins:
   - jekyll-feed

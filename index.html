@@ -36,7 +36,7 @@ classes: home
     <section id="latest-posts" class="section">
       <h2>🔥 熱門文章</h2>
       <div class="posts-horizontal">
-        {% for post in site.posts limit:3 %}
+        {% for post in site.articles limit:3 %}
           <article class="post-card-horizontal">
             <div class="post-content-horizontal">
               <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
