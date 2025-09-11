@@ -9,14 +9,7 @@ classes: home
   <aside class="toc">
     <h3>大綱</h3>
     <nav id="toc">
-      <a href="#top" class="toc-link" data-level="1">回到頂部</a>
-      {% for big in site.data.tags %}
-        {% assign bigtag = big[0] %}
-        <a href="#{{ bigtag }}" class="toc-link" data-level="1">{{ bigtag }}</a>
-        {% for smalltag in big[1] %}
-          <a href="#{{ smalltag }}" class="toc-link" data-level="2">{{ smalltag }}</a>
-        {% endfor %}
-      {% endfor %}
+      <!-- JavaScript 會根據頁面內容自動生成 TOC -->
     </nav>
   </aside>
 

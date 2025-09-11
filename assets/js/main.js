@@ -93,12 +93,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === 自動產生 TOC（掃描中欄 .maincol 內的 h2/h3） ===
+  // === 自動產生 TOC（掃描中欄 .maincol 內的 h1/h2/h3） ===
   const tocRoot = document.getElementById("toc");
   const scope = document.querySelector(".maincol");
-  // 只在沒有手動 TOC 連結的情況下自動生成
-  if (tocRoot && scope && !tocRoot.querySelector("a")) {
-    const headings = scope.querySelectorAll("h2, h3");
+  if (tocRoot && scope) {
+    const headings = scope.querySelectorAll("h1, h2, h3");
     const ids = new Set();
     function slugify(t) {
       return t.toLowerCase().trim()
@@ -117,7 +116,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const a = document.createElement("a");
       a.href = `#${h.id}`;
       a.textContent = h.textContent;
-      if (h.tagName === "H3") a.style.marginLeft = "12px";
+      a.className = "toc-link";
+      
+      // 根據標題等級設置樣式
+      if (h.tagName === "H1") {
+        a.setAttribute("data-level", "1");
+      } else if (h.tagName === "H2") {
+        a.setAttribute("data-level", "2");
+      } else if (h.tagName === "H3") {
+        a.setAttribute("data-level", "3");
+      }
+      
       tocRoot.appendChild(a);
     });
 

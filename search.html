@@ -10,21 +10,14 @@ classes: grid-page
   <aside class="toc">
     <h3>大綱</h3>
     <nav id="toc">
-      <a href="#top" class="toc-link" data-level="1">回到頂部</a>
-      {% for big in site.data.tags %}
-        {% assign bigtag = big[0] %}
-        <a href="#{{ bigtag }}" class="toc-link" data-level="1">{{ bigtag }}</a>
-        {% for smalltag in big[1] %}
-          <a href="#{{ smalltag }}" class="toc-link" data-level="2">{{ smalltag }}</a>
-        {% endfor %}
-      {% endfor %}
+      <!-- JavaScript 會根據頁面內容自動生成 TOC -->
     </nav>
   </aside>
 
   <!-- 中欄：主要內容 -->
   <div class="maincol">
     <section class="section">
-      <h1>🔍 搜尋文章</h1>
+      <h1 id="search-title">🔍 搜尋文章</h1>
       <p class="muted">在所有文章中搜尋關鍵字、標籤或分類</p>
       
       <div class="search-container">
@@ -48,7 +41,7 @@ classes: grid-page
   <div id="search-results" class="search-results" role="list"></div>
 
   <div class="search-tips">
-    <h3>💡 搜尋小技巧</h3>
+    <h2 id="search-tips">💡 搜尋小技巧</h2>
     <ul>
       <li>支援模糊搜尋和關鍵字匹配</li>
       <li>搜尋範圍包含標題、內容、標籤和分類</li>

@@ -927,6 +927,339 @@ hr {
   margin-left: 1rem;
 }
 
+/* ===== 文章頁面樣式 (投影片母片設計) ===== */
+.post-article {
+  background: var(--bg-2);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 文章標題區域 */
+.article-header {
+  background: linear-gradient(135deg, var(--bg-3) 0%, var(--bg-2) 100%);
+  padding: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.article-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.article-meta {
+  margin-bottom: 1rem;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-2);
+  font-size: 0.9rem;
+}
+
+.meta-item i {
+  font-style: normal;
+}
+
+.meta-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.meta-label {
+  color: var(--text-2);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.meta-tag {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.category-tag {
+  background: rgba(99, 102, 241, 0.15);
+  color: #6366f1;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.category-tag:hover {
+  background: rgba(99, 102, 241, 0.25);
+  transform: translateY(-1px);
+}
+
+.tag-tag {
+  background: rgba(110, 231, 183, 0.15);
+  color: var(--pri);
+  border: 1px solid rgba(110, 231, 183, 0.3);
+}
+
+.tag-tag:hover {
+  background: rgba(110, 231, 183, 0.25);
+  transform: translateY(-1px);
+}
+
+.article-description {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(110, 231, 183, 0.05);
+  border-left: 4px solid var(--pri);
+  border-radius: 0 8px 8px 0;
+  color: var(--text-2);
+  font-style: italic;
+}
+
+/* 文章內容區域 */
+.article-content {
+  padding: 2rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.article-content h1 { font-size: 2rem; }
+.article-content h2 { font-size: 1.7rem; }
+.article-content h3 { font-size: 1.4rem; }
+.article-content h4 { font-size: 1.2rem; }
+
+.article-content p {
+  margin-bottom: 1.2rem;
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.article-content li {
+  margin-bottom: 0.5rem;
+}
+
+.article-content blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  background: var(--bg-3);
+  border-left: 4px solid var(--pri);
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+}
+
+.article-content code {
+  background: var(--bg-3);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Fira Code', Consolas, monospace;
+  font-size: 0.9em;
+}
+
+.article-content pre {
+  background: var(--bg-3);
+  padding: 1.5rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.article-content pre code {
+  background: none;
+  padding: 0;
+}
+
+/* 文章結尾 */
+.article-footer {
+  padding: 2rem;
+  background: var(--bg-3);
+  border-top: 1px solid var(--border);
+}
+
+.article-end-line {
+  height: 2px;
+  background: linear-gradient(90deg, var(--pri), transparent);
+  margin-bottom: 1.5rem;
+}
+
+.updated-info {
+  margin-bottom: 1rem;
+}
+
+.article-share {
+  text-align: center;
+}
+
+.article-share span {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--text-2);
+}
+
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.share-btn {
+  padding: 0.5rem 1rem;
+  background: var(--pri);
+  color: var(--bg);
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.share-btn:hover {
+  background: var(--pri-2);
+  transform: translateY(-2px);
+}
+
+/* 右欄互動元件 */
+.progress-container {
+  position: relative;
+  background: var(--bg-3);
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--pri), var(--pri-2));
+  width: 0%;
+  transition: width 0.1s ease;
+}
+
+.progress-text {
+  font-size: 0.8rem;
+  color: var(--text-2);
+  text-align: center;
+  display: block;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  padding: 0.5rem;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-2);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: var(--pri);
+  color: var(--bg);
+  border-color: var(--pri);
+}
+
+.related-post {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.related-post:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.related-post a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.related-post a:hover {
+  color: var(--pri);
+}
+
+.related-post .post-date {
+  display: block;
+  color: var(--text-3);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  padding: 0.5rem;
+  color: var(--text-2);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.nav-link:hover {
+  background: var(--bg-3);
+  color: var(--text);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .article-title {
+    font-size: 2rem;
+  }
+  
+  .article-header,
+  .article-content,
+  .article-footer {
+    padding: 1.5rem;
+  }
+  
+  .meta-row {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .share-buttons {
+    flex-direction: column;
+  }
+}
+
 /* ===== 動畫效果 ===== */
 @keyframes fadeInUp {
   from {
