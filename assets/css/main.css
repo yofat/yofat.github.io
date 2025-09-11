@@ -81,11 +81,11 @@ body {
   overflow-x: hidden;
   background: var(--bg-2);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.5rem;
+  border-radius: 8px;
+  padding: 1rem;
   /* 增強 sticky 效果 */
   z-index: 10;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   /* 確保在所有瀏覽器中都能正常sticky */
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
@@ -115,52 +115,55 @@ body {
 
 .toc h3 {
   color: var(--pri);
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  font-weight: 600;
 }
 
 .toc h3::before {
   content: "📋";
+  font-size: 0.8rem;
 }
 
 .toc nav {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.1rem;
 }
 
-/* H1 標題項目 */
+/* H1 標題項目 - 簡化樣式 */
 .toc-h1-item {
   position: relative;
+  margin-bottom: 0.2rem;
 }
 
 .toc-h1-toggle {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
   cursor: pointer;
-  padding: 0.5rem 0.8rem;
-  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
   transition: all 0.2s ease;
-  background: var(--bg-1);
-  border-left: 3px solid var(--pri);
-  margin-bottom: 0.2rem;
+  background: transparent;
+  border-left: 2px solid var(--pri);
+  margin-bottom: 0.05rem;
+  font-size: 0.8rem;
 }
 
 .toc-h1-toggle:hover {
-  background: rgba(110, 231, 183, 0.1);
-  transform: translateX(2px);
+  background: rgba(110, 231, 183, 0.05);
 }
 
 .toc-h1-icon {
-  width: 14px;
-  height: 14px;
-  transition: transform 0.3s ease;
-  color: var(--pri);
-  font-size: 0.8rem;
+  width: 10px;
+  height: 10px;
+  transition: transform 0.2s ease;
+  color: var(--text-3);
+  font-size: 0.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,39 +174,41 @@ body {
 }
 
 .toc-h1-text {
-  color: var(--text-1);
-  font-size: 0.9rem;
+  color: var(--text);
   font-weight: 500;
+  font-size: 0.8rem;
   flex: 1;
 }
 
-/* 子項目容器 */
+/* 子項目容器 - 簡化 */
 .toc-children {
-  margin-left: 1rem;
-  border-left: 2px solid var(--border);
-  padding-left: 0.8rem;
+  margin-left: 0.5rem;
+  border-left: 1px solid var(--border);
+  padding-left: 0.5rem;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: max-height 0.3s ease;
   opacity: 0;
 }
 
 .toc-children.expanded {
-  max-height: 500px;
+  max-height: 200px;
   opacity: 1;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease 0.1s;
+  transition: max-height 0.3s ease, opacity 0.2s ease 0.1s;
 }
 
 .toc-link {
   color: var(--text-2);
   text-decoration: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
   transition: all 0.2s ease;
-  border-left: 3px solid transparent;
+  border-left: 2px solid transparent;
   display: block;
-  margin: 0.1rem 0;
+  margin: 0.05rem 0;
+  line-height: 1.3;
+  font-weight: 400;
 }
 
 .toc-link:hover,
@@ -211,18 +216,21 @@ body {
   background: rgba(110, 231, 183, 0.1);
   color: var(--pri);
   border-left-color: var(--pri);
+  font-weight: 500;
 }
 
 .toc-link[data-level="2"] {
-  margin-left: 0.5rem;
-  font-size: 0.8rem;
-  color: #9ca3af;
+  margin-left: 0.75rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.4rem;
+  opacity: 0.9;
 }
 
 .toc-link[data-level="3"] {
-  margin-left: 1rem;
-  font-size: 0.75rem;
-  color: #9ca3af;
+  margin-left: 1.5rem;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  opacity: 0.8;
 }
 
 /* ===== 主內容區域 ===== */
@@ -1207,9 +1215,11 @@ body.grid-page .container {
     /* 移動端也保持sticky，但調整參數 */
     position: sticky;
     top: 0.5rem;
-    max-height: 40vh;
+    max-height: 30vh;
     margin-bottom: 1rem;
     order: -1; /* 移到最上面 */
+    padding: 0.75rem;
+    border-radius: 6px;
   }
   
   .sidebar,
