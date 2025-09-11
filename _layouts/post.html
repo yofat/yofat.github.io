@@ -9,7 +9,10 @@ layout: default
 
 <div class="post-layout">
   <!-- 左側目錄 -->
-  <nav class="post-toc">
+  <nav class="post-toc" id="post-toc">
+    <div class="toc-toggle" onclick="toggleTOC()">
+      <i id="toc-icon">☰</i>
+    </div>
     <div class="toc-header">
       <h3>目錄</h3>
     </div>
@@ -142,5 +145,38 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+  
+  // 檢查螢幕寬度，小螢幕預設收起 TOC
+  function checkScreenWidth() {
+    const toc = document.getElementById('post-toc');
+    if (window.innerWidth < 1200 && toc) {
+      toc.classList.add('collapsed');
+      const icon = document.getElementById('toc-icon');
+      if (icon) icon.textContent = '▶';
+    }
+  }
+  
+  // 初始化響應式
+  checkScreenWidth();
+  window.addEventListener('resize', checkScreenWidth);
 });
+
+// TOC 收起/展開功能 (全域函式)
+function toggleTOC() {
+  const toc = document.getElementById('post-toc');
+  const icon = document.getElementById('toc-icon');
+  
+  if (!toc || !icon) return;
+  
+  if (toc.classList.contains('collapsed')) {
+    toc.classList.remove('collapsed');
+    icon.textContent = '☰';
+  } else {
+    toc.classList.add('collapsed');
+    icon.textContent = '▶';
+  }
+}
 </script>
+
+<!-- 代碼塊增強功能 -->
+<script src="{{ '/assets/js/code-blocks.js' | relative_url }}"></script>
