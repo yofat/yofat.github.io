@@ -129,37 +129,70 @@ document.addEventListener("DOMContentLoaded", () => {
       link.href = item.href;
       link.textContent = item.text;
       link.className = 'toc-link';
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const target = document.querySelector(item.href);
-        if (target) {
-          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 80;
-          window.scrollTo({
-            top: targetPosition,
-            behavior: "smooth"
-          });
-          history.replaceState(null, "", item.href);
-        }
-      });
       tocContainer.appendChild(link);
     });
 
-    // 滾動高亮功能
+    // 獲取所有 TOC 連結
     const tocLinks = Array.from(tocContainer.querySelectorAll('.toc-link'));
+    
+    // 為每個連結添加點擊事件
+    tocItems.forEach((item, index) => {
+      const link = tocLinks[index];
+      if (link) {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          // 移除所有 active 狀態
+          tocLinks.forEach(l => l.classList.remove('active'));
+          // 設置當前點擊的連結為 active
+          link.classList.add('active');
+          
+          const target = document.querySelector(item.href);
+          if (target) {
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 80;
+            window.scrollTo({
+              top: targetPosition,
+              behavior: "smooth"
+            });
+            history.replaceState(null, "", item.href);
+          }
+        });
+      }
+    });
     function updateActiveTOC() {
+      // 先移除所有 active 狀態
+      tocLinks.forEach(link => link.classList.remove('active'));
+      
+      let activeSection = null;
+      let closestDistance = Infinity;
+      
+      // 找到最接近頂部的可見區域
       tocItems.forEach((item, index) => {
         const sectionId = item.href.substring(1);
         const section = document.getElementById(sectionId);
         const link = tocLinks[index];
+        
         if (!section || !link) return;
         
         const rect = section.getBoundingClientRect();
-        if (rect.top <= 200 && rect.bottom >= 0) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
+        const distanceFromTop = Math.abs(rect.top);
+        
+        // 如果區域在視窗內或即將進入視窗
+        if (rect.top <= 150 && rect.bottom >= 0) {
+          if (distanceFromTop < closestDistance) {
+            closestDistance = distanceFromTop;
+            activeSection = link;
+          }
         }
       });
+      
+      // 設置最接近的區域為 active
+      if (activeSection) {
+        activeSection.classList.add('active');
+      } else if (tocLinks.length > 0) {
+        // 如果沒有找到合適的區域，默認高亮第一個
+        tocLinks[0].classList.add('active');
+      }
     }
     
     window.addEventListener('scroll', updateActiveTOC);
