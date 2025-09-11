@@ -116,11 +116,23 @@ body {
 .toc-link[data-level="2"] {
   margin-left: 1rem;
   font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.toc-link[data-level="2"]:hover {
+  color: var(--text-2);
+  background: rgba(110, 231, 183, 0.05);
 }
 
 .toc-link[data-level="3"] {
   margin-left: 2rem;
   font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.toc-link[data-level="3"]:hover {
+  color: var(--text-2);
+  background: rgba(110, 231, 183, 0.05);
 }
 
 /* ===== 主內容區域 ===== */
@@ -143,6 +155,12 @@ body {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
+  width: 100%;
+  max-width: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  box-sizing: border-box;
 }
 
 .sidebar-section {
@@ -168,6 +186,9 @@ body {
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .card:last-child {
@@ -179,6 +200,7 @@ body {
   font-weight: 600;
   margin-bottom: 0.75rem;
   font-size: 0.9rem;
+  word-wrap: break-word;
 }
 
 /* ===== 藥丸樣式導航 ===== */
@@ -186,10 +208,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .pill {
-  display: inline-block;
+  display: block;
   background: rgba(110, 231, 183, 0.1);
   color: var(--pri);
   padding: 0.4rem 0.8rem;
@@ -198,12 +221,18 @@ body {
   font-size: 0.85rem;
   transition: all 0.2s ease;
   border: 1px solid transparent;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pill:hover {
   background: rgba(110, 231, 183, 0.2);
   border-color: var(--pri);
-  transform: translateX(2px);
   text-decoration: none;
 }
 
@@ -756,8 +785,8 @@ hr {
 }
 
 .hero-text h1 span:first-child {
-  color: var(--text-2);
-  font-weight: normal;
+  color: var(--pri-2);
+  font-weight: 600;
 }
 
 .hero-text h1 span:last-child {
@@ -778,9 +807,9 @@ hr {
 
 .hero-image {
   flex-shrink: 0;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  width: 240px;
+  height: 180px;
+  border-radius: 12px;
   overflow: hidden;
   border: 3px solid var(--pri);
   box-shadow: 0 8px 25px rgba(110, 231, 183, 0.3);
@@ -919,24 +948,24 @@ hr {
 /* 大螢幕 (1200px+) */
 @media (min-width: 1200px) {
   .hero-image {
-    width: 240px;
-    height: 240px;
+    width: 280px;
+    height: 210px;
   }
 }
 
 /* 中等螢幕 (992px - 1199px) */
 @media (max-width: 1199px) and (min-width: 992px) {
   .hero-image {
-    width: 220px;
-    height: 220px;
+    width: 260px;
+    height: 195px;
   }
 }
 
 /* 小螢幕 (768px - 991px) */
 @media (max-width: 991px) and (min-width: 769px) {
   .hero-image {
-    width: 180px;
-    height: 180px;
+    width: 220px;
+    height: 165px;
   }
   
   .hero-text h1 {
