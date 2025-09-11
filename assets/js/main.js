@@ -93,11 +93,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === 自動產生 HackMD 風格的可折疊 TOC ===
+  // === 自動產生 HackMD 風格的可折疊 TOC（只在文章頁面） ===
   const tocRoot = document.getElementById("toc");
   const scope = document.querySelector(".maincol");
-  if (tocRoot && scope) {
-    const headings = scope.querySelectorAll("h1, h2, h3");
+  const isPostPage = document.body.classList.contains('grid-page') || document.querySelector('article.post-article');
+  
+  if (tocRoot && scope && isPostPage) {
+    const headings = scope.querySelectorAll("article h1, article h2, article h3, .post-content h1, .post-content h2, .post-content h3");
     const ids = new Set();
     
     // 創建全部展開/收縮按鈕

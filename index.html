@@ -4,8 +4,14 @@ title: 首頁
 classes: home
 ---
 
-<div class="grid-3col content-root">
-  <!-- 左欄：目錄 -->
+<div class="grid-3col content-root">    <div class="card">
+      <div class="card-title">📊 統計</div>
+      <div class="stats-compact">
+        <p>📝 {{ site.posts.size }} 篇文章</p>
+        <p>📂 {{ site.categories.size }} 個分類</p>
+        <p>🏷️ {{ site.tags.size }} 個標籤</p>
+      </div>
+    </div>左欄：目錄 -->
   <aside class="toc">
     <h3>大綱</h3>
     <nav id="toc">
