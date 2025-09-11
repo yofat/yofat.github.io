@@ -38,6 +38,11 @@ permalink: /search.html
       <li>使用空格分隔多個關鍵字進行組合搜尋</li>
       <li>不區分大小寫，支援中英文搜尋</li>
     </ul>
+    
+    <div style="margin-top: 15px; padding: 10px; background: #333; border-radius: 8px;">
+      <button onclick="testSearch()" style="background: var(--pri); color: #000; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 10px;">測試數據載入</button>
+      <button onclick="testPythonSearch()" style="background: var(--link); color: #fff; border: none; padding: 8px 16px; border-radius: 6px;">測試 Python 搜尋</button>
+    </div>
   </div>
 </div>
 
@@ -46,17 +51,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   const input = document.getElementById('search-input');
   const results = document.getElementById('search-results');
 
-  const res = await fetch('{{ "/search.json" | relative_url }}', { cache: 'force-cache' });
-  const data = await res.json();
+  let data = [];
+  let idx = null;
+  
+  try {
+    const res = await fetch('{{ "/search.json" | relative_url }}');
+    data = await res.json();
+    
+    console.log('搜尋數據載入成功:', data.length, '篇文章');
+    console.log('文章列表:', data.map(d => d.title));
 
-  const idx = lunr(function () {
-    this.ref('url');
-    this.field('title', { boost: 10 });      // 標題權重最高
-    this.field('categories', { boost: 5 });  // 分類權重較高
-    this.field('tags', { boost: 5 });        // 標籤權重較高
-    this.field('content');                    // 內容權重正常
-    data.forEach(doc => this.add(doc));
-  });
+    idx = lunr(function () {
+      this.ref('url');
+      this.field('title', { boost: 10 });
+      this.field('categories', { boost: 5 });
+      this.field('tags', { boost: 5 });
+      this.field('content');
+      
+      data.forEach((doc, index) => {
+        console.log(`正在索引文章 ${index + 1}:`, doc.title);
+        this.add(doc);
+      });
+    });
+    
+    console.log('Lunr 索引建立完成');
+  } catch (error) {
+    console.error('載入搜尋數據時發生錯誤:', error);
+    return;
+  }
 
   function highlightText(text, query) {
     if (!query) return text;
@@ -68,6 +90,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const searchCount = document.getElementById('search-count');
     results.innerHTML = '';
     results.classList.remove('search-loading');
+    
+    console.log('渲染搜尋結果:', items.length, '個結果');
     
     if (query && items.length > 0) {
       searchCount.textContent = `找到 ${items.length} 篇相關文章`;
@@ -202,90 +226,86 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 使用 setTimeout 讓 UI 有時間更新
     setTimeout(() => {
       try {
-        let items = [];
+        console.log('開始搜尋:', q);
+        console.log('可用數據:', data.length, '篇文章');
         
-        // 嘗試多種搜尋策略
-        const queries = buildSearchQueries(q);
-        
-        for (const query of queries) {
-          try {
-            const searchResults = idx.search(query);
-            if (searchResults.length > 0) {
-              items = searchResults;
-              break;
-            }
-          } catch (e) {
-            continue;
-          }
-        }
-        
-        // 如果沒有找到結果，嘗試簡單的關鍵字搜尋
-        if (items.length === 0) {
-          items = simpleSearch(q);
-        }
+        // 直接使用簡單搜尋確保功能正常
+        const items = simpleSearch(q);
+        console.log('搜尋結果:', items.length);
         
         render(items, q);
       } catch (e) {
-        render([], q); // 無效語法保護
+        console.error('搜尋過程發生錯誤:', e);
+        render([], q);
       }
     }, 100);
   }
   
-  // 建立多種搜尋查詢策略
-  function buildSearchQueries(query) {
-    const queries = [];
-    const cleanQuery = query.replace(/[^\w\s\u4e00-\u9fa5]/g, ' ').trim();
-    
-    if (!cleanQuery) return queries;
-    
-    // 1. 完整匹配
-    queries.push(`"${cleanQuery}"`);
-    
-    // 2. 所有詞都必須包含
-    const words = cleanQuery.split(/\s+/);
-    if (words.length > 1) {
-      queries.push(words.map(w => `+${w}`).join(' '));
-    }
-    
-    // 3. 任一詞匹配
-    queries.push(words.join(' '));
-    
-    // 4. 模糊搜尋
-    queries.push(words.map(w => `${w}~1`).join(' '));
-    
-    // 5. 萬用字符搜尋
-    queries.push(words.map(w => `${w}*`).join(' '));
-    
-    return queries;
-  }
-  
   // 簡單的備用搜尋算法
   function simpleSearch(query) {
+    console.log('執行簡單搜尋:', query);
     const results = [];
-    const queryLower = query.toLowerCase();
+    const queryLower = query.toLowerCase().trim();
     
-    data.forEach(doc => {
+    if (!queryLower) {
+      console.log('查詢為空');
+      return [];
+    }
+    
+    console.log('搜尋關鍵字:', queryLower);
+    console.log('總文章數:', data.length);
+    
+    data.forEach((doc, index) => {
       let score = 0;
-      const titleLower = doc.title.toLowerCase();
-      const contentLower = doc.content.toLowerCase();
+      const titleLower = doc.title ? doc.title.toLowerCase() : '';
+      const contentLower = doc.content ? doc.content.toLowerCase() : '';
       
-      // 標題匹配得分最高
-      if (titleLower.includes(queryLower)) score += 10;
+      console.log(`\n檢查文章 ${index + 1}: "${doc.title}"`);
+      console.log('  URL:', doc.url);
+      console.log('  分類:', doc.categories);
+      console.log('  標籤:', doc.tags);
       
-      // 分類和標籤匹配
-      if (doc.categories && doc.categories.some(cat => 
-          cat.toLowerCase().includes(queryLower))) score += 5;
-      if (doc.tags && doc.tags.some(tag => 
-          tag.toLowerCase().includes(queryLower))) score += 5;
+      // 標題匹配 (最高權重)
+      if (titleLower.indexOf(queryLower) !== -1) {
+        score += 100;
+        console.log('  ✓ 標題匹配 (+100)');
+      }
       
-      // 內容匹配
-      if (contentLower.includes(queryLower)) score += 1;
+      // 分類匹配
+      if (doc.categories && Array.isArray(doc.categories)) {
+        for (const cat of doc.categories) {
+          if (cat && cat.toLowerCase().indexOf(queryLower) !== -1) {
+            score += 50;
+            console.log('  ✓ 分類匹配:', cat, '(+50)');
+          }
+        }
+      }
+      
+      // 標籤匹配
+      if (doc.tags && Array.isArray(doc.tags)) {
+        for (const tag of doc.tags) {
+          if (tag && tag.toLowerCase().indexOf(queryLower) !== -1) {
+            score += 50;
+            console.log('  ✓ 標籤匹配:', tag, '(+50)');
+          }
+        }
+      }
+      
+      // 內容匹配 (較低權重)
+      if (contentLower.indexOf(queryLower) !== -1) {
+        score += 10;
+        console.log('  ✓ 內容匹配 (+10)');
+      }
       
       if (score > 0) {
+        console.log(`  → 總分: ${score}`);
         results.push({ ref: doc.url, score });
+      } else {
+        console.log('  → 無匹配');
       }
     });
     
+    console.log('\n搜尋完成，找到', results.length, '個結果');
     return results.sort((a, b) => b.score - a.score);
   }
   
@@ -344,5 +364,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // 頁面載入完成後自動聚焦搜尋框
   input.focus();
+  
+  // 全域測試函數
+  window.testSearch = function() {
+    console.log('=== 數據載入測試 ===');
+    console.log('文章總數:', data.length);
+    data.forEach((doc, i) => {
+      console.log(`${i + 1}. ${doc.title}`);
+      console.log(`   分類: ${JSON.stringify(doc.categories)}`);
+      console.log(`   標籤: ${JSON.stringify(doc.tags)}`);
+      console.log(`   內容長度: ${doc.content.length} 字元`);
+      console.log('   ---');
+    });
+  };
+  
+  window.testPythonSearch = function() {
+    console.log('=== Python 搜尋測試 ===');
+    const testResults = simpleSearch('python');
+    console.log('搜尋結果數量:', testResults.length);
+    testResults.forEach((result, i) => {
+      const doc = data.find(d => d.url === result.ref);
+      console.log(`${i + 1}. ${doc.title} (分數: ${result.score})`);
+    });
+    
+    // 顯示在頁面上
+    input.value = 'python';
+    performSearch();
+  };
 });
 </script>
