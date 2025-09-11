@@ -953,28 +953,31 @@ pre[class*="language-"]:before {
 }
 
 /* =========================
-   全屏布局系統 - 左中右 1:3:1
+   全屏布局系統 - 左中右佈局，中間欄為主
 ========================= */
 .post-layout {
   display: grid;
-  grid-template-columns: 280px 1fr 280px;
+  grid-template-columns: 260px 1fr 200px;
   min-height: 100vh;
   background: var(--bg);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 /* 無左邊欄時的布局 */
 .post-layout.no-toc {
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 200px;
 }
 
 /* 無右邊欄時的布局 */
 .post-layout.no-sidebar {
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 260px 1fr;
 }
 
 /* 只有主內容時的布局 */
 .post-layout.content-only {
   grid-template-columns: 1fr;
+  max-width: 900px;
 }
 
 /* 左側目錄 - 全屏固定 */
@@ -982,17 +985,18 @@ pre[class*="language-"]:before {
   position: fixed;
   left: 0;
   top: 0;
-  width: 280px;
+  width: 260px;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.25);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   overflow-y: auto;
   z-index: 100;
   transition: transform 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
 .post-toc.collapsed {
-  transform: translateX(-240px);
+  transform: translateX(-220px);
 }
 
 /* TOC 切換按鈕 */
@@ -1040,21 +1044,23 @@ pre[class*="language-"]:before {
 }
 
 .toc-header {
-  padding: 12px 16px;
+  padding: 16px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  background: rgba(110, 231, 183, 0.05);
 }
 
 .toc-header h3 {
   margin: 0;
-  color: var(--fg);
+  color: var(--pri);
   font-size: 14px;
-  font-weight: 600;
-  opacity: 0.8;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .toc-content {
-  padding: 0 8px;
+  padding: 0 16px;
 }
 
 .toc-content ul {
@@ -1071,25 +1077,26 @@ pre[class*="language-"]:before {
   color: var(--muted);
   text-decoration: none;
   font-size: 13px;
-  line-height: 1.3;
+  line-height: 1.4;
   display: block;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: all 0.15s ease;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
   position: relative;
-  border-left: 2px solid transparent;
   margin: 2px 0;
 }
 
 .toc-link:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--fg);
+  background: rgba(110, 231, 183, 0.08);
+  color: var(--pri);
+  transform: translateX(4px);
 }
 
 .toc-link.active {
-  background: rgba(110, 231, 183, 0.1);
+  background: rgba(110, 231, 183, 0.15);
   color: var(--pri);
-  border-left-color: var(--pri);
+  border-left: 3px solid var(--pri);
+  padding-left: 9px;
   font-weight: 500;
 }
 
@@ -1120,10 +1127,12 @@ pre[class*="language-"]:before {
 /* 主要內容區 */
 .post-main {
   background: var(--bg);
-  padding: 40px 60px;
+  padding: 40px 80px;
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   min-height: 100vh;
+  max-width: none;
+  overflow-x: hidden;
 }
 
 .post-header {
@@ -1250,31 +1259,33 @@ pre[class*="language-"]:before {
   top: 80px;
   max-height: calc(100vh - 100px);
   overflow-y: auto;
-  padding: 20px 16px;
+  padding: 20px 12px;
+  width: 200px;
+  background: rgba(0, 0, 0, 0.1);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* =========================
    響應式設計
 ========================= */
-@media (max-width: 1399px) {
+@media (max-width: 1200px) {
   .post-layout {
     grid-template-columns: 260px 1fr !important;
-    grid-template-areas: "toc main" !important;
+    max-width: none;
   }
   
   .post-sidebar {
     display: none;
   }
   
-  .post-toc {
-    width: 260px;
+  .post-main {
+    padding: 40px 60px;
   }
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1024px) {
   .post-layout {
     grid-template-columns: 40px 1fr !important;
-    grid-template-areas: "toc main" !important;
   }
   
   .post-toc.collapsed {
@@ -1287,12 +1298,17 @@ pre[class*="language-"]:before {
     border: 2px solid rgba(110, 231, 183, 0.3);
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
   }
+  
+  .post-main {
+    padding: 30px 40px;
+  }
 }
 
 @media (max-width: 768px) {
   .post-layout {
     grid-template-columns: 1fr !important;
-    grid-template-areas: "main" !important;
+    margin: 0;
+    max-width: none;
   }
   
   .post-toc {
@@ -1303,35 +1319,50 @@ pre[class*="language-"]:before {
     transform: translateX(-200px);
   }
   
+  .post-main {
+    padding: 20px 24px;
+    border: none;
+  }
+  
   .code-block {
-    margin: 16px -10px;
+    margin: 16px -12px;
     border-radius: 8px;
   }
   
   .code-content pre {
     font-size: 13px;
+    padding: 16px 12px;
   }
   
   .line-numbers {
-    min-width: 45px;
-    padding: 12px 8px;
+    min-width: 40px;
+    padding: 16px 8px;
     font-size: 12px;
   }
 }
 
 .sidebar-section {
-  background: transparent;
-  padding: 16px 0;
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px;
   margin-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.sidebar-section:hover {
+  border-color: rgba(110, 231, 183, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-section h4 {
-  margin: 0 0 12px 0;
+  margin: 0 0 10px 0;
   color: var(--fg);
-  font-size: 14px;
-  font-weight: 600;
-  opacity: 0.8;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .reading-progress {
