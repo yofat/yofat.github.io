@@ -311,6 +311,51 @@ a:hover{ text-decoration:underline; }
   padding:0;
 }
 
+/* 讓包住文章頁面的 .container 在有 .post-layout 時全寬展示 */
+.container:has(> .post-layout),
+.full-width .container {
+  max-width:100% !important;
+  padding:0 !important;
+  margin:0 !important;
+}
+
+/* 為了向後兼容，直接針對 .post-layout 父容器 */
+body .container .post-layout {
+  margin: 0 !important;
+}
+
+/* 強制 .post-layout 佔滿全寬 */
+.container {
+  position: relative;
+  overflow: visible;
+}
+
+.container > .post-layout {
+  width: 100vw !important;
+  left: 50% !important;
+  right: 50% !important;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  position: relative !important;
+  max-width: none !important;
+}
+
+/* 確保在full-width body上容器不限制寬度 */
+.full-width .container {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.full-width .post-layout {
+  width: 100% !important;
+  left: auto !important;
+  right: auto !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
 /* 三欄核心佈局（不依賴 .home） */
 .grid-3col{
   display:grid;
@@ -960,8 +1005,12 @@ pre[class*="language-"]:before {
   grid-template-columns: 260px 1fr 200px;
   min-height: 100vh;
   background: var(--bg);
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
 /* 無左邊欄時的布局 */
@@ -1399,28 +1448,57 @@ pre[class*="language-"]:before {
 /* =========================
    響應式設計
 ========================= */
+/* 大螢幕優化 */
+@media (min-width: 1600px) {
+  .post-layout {
+    grid-template-columns: 280px 1fr 220px;
+  }
+  
+  .post-main {
+    padding: 40px 100px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .post-layout {
+    grid-template-columns: 240px 1fr 180px;
+  }
+  
+  .post-toc {
+    width: 240px;
+  }
+  
+  .post-sidebar {
+    width: 180px;
+  }
+}
+
 @media (max-width: 1200px) {
   .post-layout {
-    grid-template-columns: 260px 1fr !important;
-    max-width: none;
+    grid-template-columns: 220px 1fr !important;
   }
   
   .post-sidebar {
     display: none;
   }
   
+  .post-toc {
+    width: 220px;
+  }
+  
   .post-main {
-    padding: 40px 60px;
+    padding: 40px 50px;
   }
 }
 
 @media (max-width: 1024px) {
   .post-layout {
     grid-template-columns: 40px 1fr !important;
+    width: 100%;
   }
   
   .post-toc.collapsed {
-    transform: translateX(-220px);
+    transform: translateX(-180px);
   }
   
   .post-toc .toc-toggle {
@@ -1430,29 +1508,35 @@ pre[class*="language-"]:before {
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
   }
   
+  .post-toc {
+    width: 220px;
+  }
+  
   .post-main {
     padding: 30px 40px;
+    overflow-x: hidden;
   }
 }
 
 @media (max-width: 768px) {
   .post-layout {
     grid-template-columns: 1fr !important;
-    margin: 0;
-    max-width: none;
+    width: 100%;
   }
   
   .post-toc {
-    width: 240px;
+    width: 200px;
   }
   
   .post-toc.collapsed {
-    transform: translateX(-200px);
+    transform: translateX(-160px);
   }
   
   .post-main {
-    padding: 20px 24px;
+    padding: 20px 20px;
     border: none;
+    width: 100%;
+    max-width: none;
   }
   
   .code-block {
