@@ -924,6 +924,224 @@ body .container .post-layout {
 }
 
 /* =========================
+   搜尋頁面樣式
+========================= */
+.search-container {
+  margin: 2em 0;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+#search-input {
+  width: 100%;
+  padding: 12px 20px 12px 50px;
+  font-size: 16px;
+  border: 2px solid rgba(110, 231, 183, 0.3);
+  border-radius: 50px;
+  background: var(--card);
+  color: var(--fg);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#search-input:focus {
+  border-color: var(--pri);
+  box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 18px;
+  color: var(--muted);
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.search-clear {
+  position: absolute;
+  right: 15px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: none;
+}
+
+.search-clear:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--pri);
+}
+
+.search-stats {
+  text-align: center;
+  margin: 1em 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.search-results {
+  margin: 2em 0;
+}
+
+.search-result-item {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.search-result-item:hover {
+  border-color: rgba(110, 231, 183, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.search-result-item h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.3em;
+}
+
+.search-result-item h3 a {
+  color: var(--fg);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.search-result-item h3 a:hover {
+  color: var(--pri);
+}
+
+.search-result-excerpt {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 12px 0;
+}
+
+.search-result-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.9em;
+  color: var(--muted);
+}
+
+.search-result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.search-result-tags .tag {
+  background: rgba(110, 231, 183, 0.1);
+  color: var(--pri);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+}
+
+.search-tips {
+  background: rgba(110, 231, 183, 0.05);
+  border-left: 4px solid var(--pri);
+  padding: 1.5em;
+  border-radius: 0 8px 8px 0;
+  margin: 2em 0;
+}
+
+.search-tips h3 {
+  margin-top: 0;
+  color: var(--pri);
+}
+
+.search-tips ul {
+  margin: 1em 0 0 0;
+  padding-left: 1.5em;
+}
+
+.search-tips li {
+  margin: 0.5em 0;
+  color: var(--muted);
+}
+
+.popular-posts {
+  margin: 3em 0;
+}
+
+.popular-posts h3 {
+  color: var(--pri-2);
+  border-left: 3px solid var(--pri-2);
+  padding-left: 12px;
+  margin-bottom: 1.5em;
+}
+
+.popular-post-item {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.popular-post-item:hover {
+  border-color: rgba(110, 231, 183, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.popular-post-item h4 {
+  margin: 0 0 8px 0;
+  font-size: 1.1em;
+}
+
+.popular-post-item h4 a {
+  color: var(--fg);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.popular-post-item h4 a:hover {
+  color: var(--pri);
+}
+
+.popular-post-item .post-excerpt {
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 8px 0;
+  font-size: 0.95em;
+}
+
+.popular-post-item .post-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 0.9em;
+}
+
+.popular-post-item .post-tags {
+  display: flex;
+  gap: 4px;
+}
+
+.popular-post-item .tag {
+  background: rgba(110, 231, 183, 0.1);
+  color: var(--pri);
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 0.8em;
+}
+
+/* =========================
    響應式設計
 ========================= */
 /* 手機尺寸以下才直式堆疊 */

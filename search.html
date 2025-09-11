@@ -2,15 +2,27 @@
 layout: default
 title: 搜尋
 permalink: /search.html
+classes: home
 ---
 
-<div class="search-page">
-  <div class="search-header">
-    <h1>🔍 搜尋文章</h1>
-    <p class="search-subtitle">在所有文章中搜尋關鍵字、標籤或分類</p>
-  </div>
+<div class="grid-3col content-root">
+  <!-- 左欄：TOC -->
+  <aside class="toc">
+    <h3>搜尋幫助</h3>
+    <nav id="toc">
+      <a href="#search-tips" class="toc-link" data-level="1">搜尋技巧</a>
+      <a href="#search-filters" class="toc-link" data-level="1">篩選選項</a>
+      <a href="#search-results" class="toc-link" data-level="1">搜尋結果</a>
+    </nav>
+  </aside>
 
-  <div class="search-container">
+  <!-- 中欄：主要內容 -->
+  <div class="maincol">
+    <section class="section">
+      <h1>🔍 搜尋文章</h1>
+      <p class="muted">在所有文章中搜尋關鍵字、標籤或分類</p>
+      
+      <div class="search-container">
     <div class="search-input-wrapper">
       <input 
         id="search-input" 
@@ -80,6 +92,26 @@ permalink: /search.html
       </article>
     </div>
   </div>
+    </section>
+  </div>
+
+  <!-- 右欄：側邊資訊 -->
+  <aside class="siderail">
+    <div class="card">
+      <div class="card-title">搜尋統計</div>
+      <p class="muted">📊 總共 {{ site.posts.size }} 篇文章</p>
+      <p class="muted">🏷️ {{ site.data.tags.size }} 個標籤</p>
+      <p class="muted">📁 {{ site.data.categories.size }} 個分類</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">快速跳轉</div>
+      <div class="pill-group">
+        <a class="pill" href="{{ '/categories.html' | relative_url }}">所有分類</a>
+        <a class="pill" href="{{ '/tags.html' | relative_url }}">所有標籤</a>
+      </div>
+    </div>
+  </aside>
 </div>
 
 <script>
