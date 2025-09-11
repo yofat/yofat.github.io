@@ -87,7 +87,7 @@ highlighter: rouge
 
 Jekyll 使用 YAML Front Matter 來定義文章的元數據：
 
-```markdown
+```yaml
 ---
 layout: post
 title: 文章標題
@@ -95,9 +95,9 @@ date: 2025-01-01 12:00:00 +0800
 categories: [技術, 教學]
 tags: [Jekyll, 建站]
 ---
+```
 
 文章內容使用 Markdown 格式...
-```
 
 ## 部署到 GitHub Pages
 
@@ -126,7 +126,7 @@ const idx = lunr(function () {
 安裝 `jekyll-seo-tag` 插件自動生成 SEO 標籤：
 
 ```html
-{% seo %}
+{% raw %}{% seo %}{% endraw %}
 ```
 
 ### 評論系統

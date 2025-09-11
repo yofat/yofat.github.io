@@ -15,4 +15,6 @@ permalink: /:categories/:title/
 timezone: Asia/Taipei
 
 theme: null
-plugins: []
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
