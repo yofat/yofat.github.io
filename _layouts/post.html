@@ -5,8 +5,15 @@ classes: grid-page
 
 {%- comment -%}
 文章模板 - 投影片母片風格
-只需在 _posts/ 中提供 Markdown 檔案，自動套用統一設計
-{%- endcomment -%}
+只需在 _posts/ 中提供 Markdown 檔案，自動套      <div class="card-title">📊 閱讀進度</div>   <!-- 快速動作 -->
+    <div class="card">
+      <div class="card-title">⚡ 快速動作</div>
+      <div class="pill-group">
+        <button class="pill" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆️ 回頂部</button>
+        <button class="pill" onclick="copyToClipboard()">🔗 複製連結</button>
+        <button class="pill" onclick="window.print()">🖨️ 列印</button>
+      </div>
+    </div>- endcomment -%}
 
 {% assign words = page.content | strip_html | normalize_whitespace | split: ' ' %}
 {% assign reading_time = words.size | divided_by: 200 | ceil %}
@@ -127,11 +134,11 @@ classes: grid-page
       {% assign related_posts = site.categories[category] | where_exp: "post", "post.url != page.url" | slice: 0, 3 %}
       {% if related_posts.size > 0 %}
       <div class="card">
-        <div class="card-title">📂 {{ category }}</div>
+        <div class="card-title">� {{ category }}相關</div>
         {% for post in related_posts %}
           <div class="related-post">
             <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-            <small class="post-date">{{ post.date | date: "%m月%d日" }}</small>
+            <small class="post-date muted">📅 {{ post.date | date: "%m月%d日" }}</small>
           </div>
         {% endfor %}
       </div>
@@ -141,11 +148,11 @@ classes: grid-page
     <!-- 導航連結 -->
     <div class="card">
       <div class="card-title">🧭 站內導航</div>
-      <div class="nav-links">
-        <a href="{{ '/' | relative_url }}" class="nav-link">🏠 首頁</a>
-        <a href="{{ '/categories.html' | relative_url }}" class="nav-link">📂 分類</a>
-        <a href="{{ '/tags.html' | relative_url }}" class="nav-link">🏷️ 標籤</a>
-        <a href="{{ '/search.html' | relative_url }}" class="nav-link">🔍 搜尋</a>
+      <div class="pill-group">
+        <a class="pill" href="{{ '/' | relative_url }}">🏠 首頁</a>
+        <a class="pill" href="{{ '/categories.html' | relative_url }}">📂 分類</a>
+        <a class="pill" href="{{ '/tags.html' | relative_url }}">🏷️ 標籤</a>
+        <a class="pill" href="{{ '/search.html' | relative_url }}">🔍 搜尋</a>
       </div>
     </div>
   </aside>
