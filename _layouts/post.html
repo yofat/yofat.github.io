@@ -1,41 +1,147 @@
 ---
 layout: default
 ---
-<article class="post" data-count-key="post:{{ page.id | replace: '/', ':' }}">
-  <h1>{{ page.title }}</h1>
 
-  {%- comment -%}
-  先計算字數（無需 plugin）：去 HTML、壓空白、split 空白，再取 size
-  {%- endcomment -%}
-  {% assign words = page.content | strip_html | normalize_whitespace | split: ' ' %}
+{%- comment -%}
+先計算字數（無需 plugin）：去 HTML、壓空白、split 空白，再取 size
+{%- endcomment -%}
+{% assign words = page.content | strip_html | normalize_whitespace | split: ' ' %}
 
-  <div class="meta">
-    <span>{{ page.date | date: "%Y-%m-%d" }}</span>
+<div class="post-layout">
+  <!-- 左側目錄 -->
+  <nav class="post-toc">
+    <div class="toc-header">
+      <h3>📋 文章目錄</h3>
+    </div>
+    <div class="toc-content" id="toc"></div>
+  </nav>
 
-    {% if page.categories %}
-      <span>分類：
-        {% for c in page.categories %}
-          <a href="{{ '/categories.html#' | append: c | relative_url }}">{{ c }}</a>{% unless forloop.last %} / {% endunless %}
-        {% endfor %}
-      </span>
-    {% endif %}
+  <!-- 主要內容 -->
+  <article class="post-main" data-count-key="post:{{ page.id | replace: '/', ':' }}">
+    <header class="post-header">
+      <h1>{{ page.title }}</h1>
+      <div class="post-meta">
+        <span class="post-date">📅 {{ page.date | date: "%Y-%m-%d" }}</span>
 
-    {% if page.tags %}
-      <span>標籤：
-        {% for t in page.tags %}
-          <a href="{{ '/tags.html#' | append: t | slugify | relative_url }}">{{ t }}</a>{% unless forloop.last %} / {% endunless %}
-        {% endfor %}
-      </span>
-    {% endif %}
+        {% if page.categories %}
+          <span class="post-categories">
+            📁 分類：
+            {% for c in page.categories %}
+              <a href="{{ '/categories.html#' | append: c | relative_url }}">{{ c }}</a>{% unless forloop.last %} / {% endunless %}
+            {% endfor %}
+          </span>
+        {% endif %}
 
-    <span>閱讀時間：約 {{ words | size | divided_by:200 | ceil }} 分鐘</span>
-  </div>
+        {% if page.tags %}
+          <span class="post-tags">
+            🏷️ 標籤：
+            {% for t in page.tags %}
+              <a href="{{ '/tags.html#' | append: t | slugify | relative_url }}">{{ t }}</a>{% unless forloop.last %} / {% endunless %}
+            {% endfor %}
+          </span>
+        {% endif %}
 
-  <div class="post-content">
-    {{ content }}
-  </div>
+        <span class="reading-time">⏱️ 閱讀時間：約 {{ words | size | divided_by:200 | ceil }} 分鐘</span>
+      </div>
+    </header>
 
-  <div class="post-views">
-    <strong>瀏覽數：</strong><span id="view-count">…</span>
-  </div>
-</article>
+    <div class="post-content">
+      {{ content }}
+    </div>
+
+    <footer class="post-footer">
+      <div class="post-views">
+        <strong>👁️ 瀏覽數：</strong><span id="view-count">…</span>
+      </div>
+    </footer>
+  </article>
+
+  <!-- 右側邊欄 -->
+  <aside class="post-sidebar">
+    <div class="sidebar-section">
+      <h4>📈 閱讀進度</h4>
+      <div class="reading-progress">
+        <div class="progress-bar" id="reading-progress"></div>
+      </div>
+    </div>
+    
+    <div class="sidebar-section">
+      <h4>🔗 快速導航</h4>
+      <ul class="quick-nav">
+        <li><a href="{{ '/' | relative_url }}">🏠 返回首頁</a></li>
+        <li><a href="{{ '/categories.html' | relative_url }}">📂 瀏覽分類</a></li>
+        <li><a href="{{ '/tags.html' | relative_url }}">🏷️ 查看標籤</a></li>
+        <li><a href="{{ '/search.html' | relative_url }}">🔍 搜尋文章</a></li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<script>
+// 生成目錄
+document.addEventListener('DOMContentLoaded', function() {
+  const toc = document.getElementById('toc');
+  const headings = document.querySelectorAll('.post-content h1, .post-content h2, .post-content h3, .post-content h4');
+  
+  if (headings.length === 0) {
+    document.querySelector('.post-toc').style.display = 'none';
+    return;
+  }
+  
+  let tocHTML = '<ul>';
+  headings.forEach((heading, index) => {
+    const id = `heading-${index}`;
+    heading.id = id;
+    
+    const level = parseInt(heading.tagName.substring(1));
+    const indent = (level - 1) * 20;
+    const icon = level === 1 ? '📌' : level === 2 ? '📍' : '📎';
+    
+    tocHTML += `
+      <li style="margin-left: ${indent}px;">
+        <a href="#${id}" class="toc-link" data-level="${level}">
+          ${icon} ${heading.textContent}
+        </a>
+      </li>
+    `;
+  });
+  tocHTML += '</ul>';
+  
+  toc.innerHTML = tocHTML;
+  
+  // 閱讀進度
+  const progressBar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', function() {
+    const post = document.querySelector('.post-content');
+    const postTop = post.offsetTop;
+    const postHeight = post.offsetHeight;
+    const windowTop = window.scrollY;
+    const windowHeight = window.innerHeight;
+    
+    const progress = Math.min(100, Math.max(0, 
+      ((windowTop + windowHeight - postTop) / postHeight) * 100
+    ));
+    
+    progressBar.style.width = progress + '%';
+  });
+  
+  // TOC 高亮當前章節
+  const tocLinks = document.querySelectorAll('.toc-link');
+  window.addEventListener('scroll', function() {
+    let current = '';
+    headings.forEach(heading => {
+      const rect = heading.getBoundingClientRect();
+      if (rect.top <= 100) {
+        current = heading.id;
+      }
+    });
+    
+    tocLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  });
+});
+</script>
