@@ -876,46 +876,54 @@ line-clamp: 2;
 
 .skill-tag.js { 
   background: linear-gradient(135deg, rgba(251, 188, 5, 0.2), rgba(251, 188, 5, 0.1)); 
-  color: #8a6b02; 
+  color: #ffff00; /* 螢光黃 */
   border-color: rgba(251, 188, 5, 0.3);
+  text-shadow: 0 0 8px rgba(255, 255, 0, 0.6);
 }
 
 .skill-tag.js:hover {
   background: linear-gradient(135deg, rgba(251, 188, 5, 0.3), rgba(251, 188, 5, 0.2));
   border-color: rgba(251, 188, 5, 0.5);
+  text-shadow: 0 0 12px rgba(255, 255, 0, 0.8);
 }
 
 .skill-tag.security { 
   background: linear-gradient(135deg, rgba(234, 67, 53, 0.2), rgba(234, 67, 53, 0.1)); 
-  color: #a33a2a; 
+  color: #ff0080; /* 螢光粉紅 */
   border-color: rgba(234, 67, 53, 0.3);
+  text-shadow: 0 0 8px rgba(255, 0, 128, 0.6);
 }
 
 .skill-tag.security:hover {
   background: linear-gradient(135deg, rgba(234, 67, 53, 0.3), rgba(234, 67, 53, 0.2));
   border-color: rgba(234, 67, 53, 0.5);
+  text-shadow: 0 0 12px rgba(255, 0, 128, 0.8);
 }
 
 .skill-tag.ai { 
   background: linear-gradient(135deg, rgba(66, 133, 244, 0.2), rgba(66, 133, 244, 0.1)); 
-  color: #2c5aa0; 
+  color: #00bfff; /* 螢光藍 */
   border-color: rgba(66, 133, 244, 0.3);
+  text-shadow: 0 0 8px rgba(0, 191, 255, 0.6);
 }
 
 .skill-tag.ai:hover {
   background: linear-gradient(135deg, rgba(66, 133, 244, 0.3), rgba(66, 133, 244, 0.2));
   border-color: rgba(66, 133, 244, 0.5);
+  text-shadow: 0 0 12px rgba(0, 191, 255, 0.8);
 }
 
 .skill-tag.web { 
   background: linear-gradient(135deg, rgba(0, 150, 136, 0.2), rgba(0, 150, 136, 0.1)); 
-  color: #006157; 
+  color: #00ffff; /* 螢光青色 */
   border-color: rgba(0, 150, 136, 0.3);
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
 }
 
 .skill-tag.web:hover {
   background: linear-gradient(135deg, rgba(0, 150, 136, 0.3), rgba(0, 150, 136, 0.2));
   border-color: rgba(0, 150, 136, 0.5);
+  text-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
 }
 
 /* 原有樣式保留作為備用 */
