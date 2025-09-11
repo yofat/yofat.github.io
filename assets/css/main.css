@@ -55,19 +55,20 @@ body {
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
+  min-width: 320px; /* 確保最小寬度 */
 }
 
 /* ===== 三欄網格佈局 ===== */
 .post-layout,
 .grid-3col {
   width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
+  max-width: 1400px !important;
+  margin: 0 auto !important;
   display: grid;
-  grid-template-columns: 280px 1fr 320px;
-  gap: 2rem;
+  grid-template-columns: 260px 1fr 300px;
+  gap: 1.5rem;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 /* ===== 左側邊欄 (TOC) ===== */
@@ -226,13 +227,14 @@ body {
   background: var(--bg-2);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.2rem;
   width: 100%;
-  max-width: 320px;
+  max-width: 300px;
   overflow-y: auto;
   overflow-x: hidden;
   word-wrap: break-word;
   box-sizing: border-box;
+  min-width: 0; /* 防止 flexbox 溢出 */
 }
 
 .sidebar-section {
@@ -1080,10 +1082,19 @@ body.grid-page .container {
 }
 
 /* ===== 響應式設計 ===== */
+@media (max-width: 1200px) {
+  .post-layout,
+  .grid-3col {
+    grid-template-columns: 240px 1fr 280px;
+    padding: 1rem;
+    gap: 1rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .post-layout,
   .grid-3col {
-    grid-template-columns: 250px 1fr 280px;
+    grid-template-columns: 220px 1fr 260px;
     padding: 1rem;
     gap: 1rem;
   }
