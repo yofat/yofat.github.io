@@ -1,0 +1,247 @@
+---
+layout: default
+title: 首頁
+classes: home
+---
+
+<div class="grid-3col content-root">
+  <!-- 左欄：目錄 -->
+  <aside class="toc">
+    <h3>大綱</h3>
+    <nav id="toc">
+      <!-- JavaScript 會動態生成目錄 -->
+    </nav>
+  </aside>
+
+  <!-- 中欄：主要內容 -->
+  <div class="maincol">
+    <!-- Hero 區域 -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 id="hero-title">
+          <span>Hi, 我是</span><span>YoFat</span>
+        </h1>
+        <p class="hero-subtitle">網路安全 × 人工智能 × 系統工程</p>
+        <div class="hero-buttons">
+          <a href="{{ '/categories.html' | relative_url }}" class="btn primary">看分類</a>
+          <a href="{{ '/search.html' | relative_url }}" class="btn outline">搜尋文章</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="{{ '/assets/image/logo.jpg' | relative_url }}" alt="profile">
+      </div>
+      <canvas id="hero-particles" width="400" height="300"></canvas>
+    </section>
+
+    <!-- 熱門文章區域 -->
+    <section id="latest-posts" class="section">
+      <h2>🔥 熱門文章</h2>
+      <div class="posts-horizontal">
+        {% for post in site.posts limit:3 %}
+          <article class="post-card-horizontal">
+            <div class="post-content-horizontal">
+              <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+              <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
+              <div class="post-meta-horizontal">
+                <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+                {% if post.categories.size > 0 %}
+                  <span class="post-category">📂 {{ post.categories | first }}</span>
+                {% endif %}
+                {% if post.tags.size > 0 %}
+                  <div class="post-tags-horizontal">
+                    {% for tag in post.tags limit: 3 %}
+                      <span class="tag-small">{{ tag }}</span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="post-read-more">
+              <a href="{{ post.url | relative_url }}" class="read-more-btn">閱讀全文 →</a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+      <div class="view-all-posts">
+        <a href="{{ '/search.html' | relative_url }}" class="btn outline">查看所有文章</a>
+      </div>
+    </section>
+
+    <!-- 快速導航區域 -->
+    <section id="quick-nav" class="section">
+      <h2>🚀 快速導航</h2>
+      <div class="nav-pills">
+        <a href="{{ '/categories.html#網路安全' | relative_url }}" class="pill security">網路安全</a>
+        <a href="{{ '/categories.html#滲透測試' | relative_url }}" class="pill pentest">滲透測試</a>
+        <a href="{{ '/categories.html#漏洞研究' | relative_url }}" class="pill vuln">漏洞研究</a>
+        <a href="{{ '/categories.html#防禦' | relative_url }}" class="pill defense">防禦</a>
+        <a href="{{ '/categories.html#人工智能' | relative_url }}" class="pill ai">人工智能</a>
+        <a href="{{ '/categories.html#GNN' | relative_url }}" class="pill ml">GNN</a>
+        <a href="{{ '/categories.html#深度學習' | relative_url }}" class="pill dl">深度學習</a>
+        <a href="{{ '/categories.html#技術' | relative_url }}" class="pill tech">技術</a>
+        <a href="{{ '/categories.html#前端' | relative_url }}" class="pill frontend">前端</a>
+        <a href="{{ '/categories.html#工具' | relative_url }}" class="pill tools">工具</a>
+      </div>
+    </section>
+
+    <!-- 關於我區域 -->
+    <section id="about-me" class="section">
+      <div class="about-header">
+        <h2>👨‍💻 關於我</h2>
+        <p class="about-subtitle">網路安全學習者 × AI 技術愛好者 × 部落格作者</p>
+      </div>
+      
+      <div class="about-content">
+        <div class="about-main">
+          <div class="intro-card">
+            <div class="intro-icon">👋</div>
+            <div class="intro-text">
+              <p>你好，我是 <strong>YoFat</strong>，正在學習網路安全和人工智能技術的學生。</p>
+              <p>我喜歡透過實作來學習新技術，並將學習過程和心得記錄在這個部落格中，希望能與同樣在學習路上的朋友們互相交流。</p>
+            </div>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number">10+</div>
+              <div class="stat-label">學習文章</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">3+</div>
+              <div class="stat-label">技術領域</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">1年+</div>
+              <div class="stat-label">學習歷程</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">持續中</div>
+              <div class="stat-label">技能提升</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="about-sidebar">
+          <div class="highlight-card recent-updates">
+            <h3>📈 近期動態</h3>
+            <div class="update-item">
+              <span class="update-icon">🔐</span>
+              <span class="update-text">學習滲透測試基礎</span>
+            </div>
+            <div class="update-item">
+              <span class="update-icon">🤖</span>
+              <span class="update-text">練習機器學習算法</span>
+            </div>
+            <div class="update-item">
+              <span class="update-icon">💻</span>
+              <span class="update-text">建立個人部落格</span>
+            </div>
+          </div>
+          
+          <div class="highlight-card">
+            <h3>🎯 學習領域</h3>
+            <div class="skills-compact">
+              <span class="skill-tag python">Python</span>
+              <span class="skill-tag js">JavaScript</span>
+              <span class="skill-tag security">資安基礎</span>
+              <span class="skill-tag ai">機器學習</span>
+              <span class="skill-tag tools">開發工具</span>
+              <span class="skill-tag web">網頁開發</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 右欄：精簡工具 -->
+  <aside class="siderail">
+    <div class="card">
+      <div class="card-title">⚡ 快速導航</div>
+      <div class="quick-nav">
+        <a href="{{ '/categories.html' | relative_url }}" class="nav-item">📂 分類瀏覽</a>
+        <a href="{{ '/tags.html' | relative_url }}" class="nav-item">🏷️ 標籤搜尋</a>
+        <a href="{{ '/search.html' | relative_url }}" class="nav-item">🔍 全文搜尋</a>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">📞 聯絡方式</div>
+      <div class="contact-info">
+        <p>📧 yofat@example.com</p>
+        <p>🐦 @YoFat_Security</p>
+        <p>💼 LinkedIn</p>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">⭐ GitHub</div>
+      <div class="github-section">
+        <a class="github-button"
+           href="https://github.com/{{ site.github_owner }}/{{ site.github_repo }}"
+           data-icon="octicon-star"
+           data-size="large"
+           data-show-count="true"
+           aria-label="Star {{ site.github_owner }}/{{ site.github_repo }} on GitHub">
+          Star
+        </a>
+        <div class="github-star"></div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // 首頁專用的 TOC 生成
+  const tocContainer = document.getElementById("toc");
+  const tocItems = [
+    { href: '#latest-posts', text: '🔥 熱門文章' },
+    { href: '#quick-nav', text: '🚀 快速導航' },
+    { href: '#about-me', text: '👨‍💻 關於我' }
+  ];
+
+  tocItems.forEach(item => {
+    const link = document.createElement('a');
+    link.href = item.href;
+    link.textContent = item.text;
+    link.className = 'toc-link';
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(item.href);
+      if (target) {
+        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({
+          top: targetPosition,
+          behavior: "smooth"
+        });
+        history.replaceState(null, "", item.href);
+      }
+    });
+    tocContainer.appendChild(link);
+  });
+
+  const tocLinks = Array.from(tocContainer.querySelectorAll('.toc-link'));
+  
+  // 滾動高亮功能
+  function updateActiveTOC() {
+    tocItems.forEach((item, index) => {
+      const sectionId = item.href.substring(1);
+      const section = document.getElementById(sectionId);
+      const link = tocLinks[index];
+      if (!section || !link) return;
+      
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= 200 && rect.bottom >= 0) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+  
+  // 監聽滾動事件
+  window.addEventListener('scroll', updateActiveTOC);
+  updateActiveTOC(); // 初始執行
+});
+</script>
