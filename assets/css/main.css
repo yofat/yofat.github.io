@@ -28,6 +28,12 @@
   --border-2: #e1e4e8;
 }
 
+/* ===== 備用樣式 (防止CSS變數不支援) ===== */
+body {
+  background-color: #0d1117;
+  color: #c9d1d9;
+}
+
 /* ===== 基本樣式重置 ===== */
 * {
   margin: 0;
@@ -48,7 +54,6 @@ body {
 .grid-3col {
   width: 100% !important;
   max-width: none !important;
-  padding: 0 !important;
   margin: 0 !important;
   display: grid;
   grid-template-columns: 280px 1fr 320px;
@@ -433,8 +438,8 @@ li {
 .container .post-layout,
 .container .grid-3col {
   max-width: none !important;
-  width: 100vw !important;
-  margin-left: calc(-50vw + 50%) !important;
+  width: 100% !important;
+  margin: 0 !important;
   padding: 2rem !important;
 }
 
