@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       const icon = document.createElement("span");
       icon.className = "toc-h1-icon";
-      icon.innerHTML = "▶"; // 右箭頭
+      icon.innerHTML = "▶"; // 使用三角形箭頭
       
       const text = document.createElement("span");
       text.className = "toc-h1-text";
@@ -176,14 +176,35 @@ document.addEventListener("DOMContentLoaded", () => {
       // H1 點擊事件
       toggle.addEventListener("click", (e) => {
         e.preventDefault();
-        // 平滑滾動到 H1
-        item.heading.scrollIntoView({ behavior: "smooth", block: "start" });
+        
+        // 平滑滾動到 H1 - 使用更好的滾動效果
+        const targetPosition = item.heading.getBoundingClientRect().top + window.pageYOffset - 80;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: "smooth"
+        });
+        
+        // 更新 URL 但不跳轉
         history.replaceState(null, "", `#${item.heading.id}`);
         
         // 切換折疊狀態
         const children = h1Item.querySelector(".toc-children");
+        const isExpanded = children.classList.contains("expanded");
+        
         children.classList.toggle("expanded");
         icon.classList.toggle("expanded");
+        
+        // 如果是展開動作，先展開再滾動到內容
+        if (!isExpanded) {
+          setTimeout(() => {
+            const newPosition = item.heading.getBoundingClientRect().top + window.pageYOffset - 80;
+            window.scrollTo({
+              top: newPosition,
+              behavior: "smooth"
+            });
+          }, 200);
+        }
       });
       
       h1Item.appendChild(toggle);
@@ -202,7 +223,14 @@ document.addEventListener("DOMContentLoaded", () => {
           
           link.addEventListener("click", (e) => {
             e.preventDefault();
-            child.scrollIntoView({ behavior: "smooth", block: "start" });
+            // 平滑滾動到子標題 - 動態計算位置
+            const targetPosition = child.getBoundingClientRect().top + window.pageYOffset - 80;
+            
+            window.scrollTo({
+              top: targetPosition,
+              behavior: "smooth"
+            });
+            
             history.replaceState(null, "", `#${child.id}`);
           });
           
