@@ -31,25 +31,28 @@ classes: home
 
     <section class="section" id="latest-posts">
       <h2>最新文章</h2>
-      <ul class="post-list">
+      <div class="post-grid">
         {% assign latest = site.posts | slice: 0, 6 %}
         {% for post in latest %}
-          <li>
-            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-            <small>{{ post.date | date: "%Y-%m-%d" }}</small>
-          </li>
-        {% endfor %}
-      </ul>
-    </section>
-
-    <section class="section" id="quick-nav">
-      <h2>快速導航</h2>
-      <div class="pill-group">
-        {% for big in site.data.categories %}
-          <a class="pill" href="{{ '/categories.html#' | append: big[0] | relative_url }}">{{ big[0] }}</a>
-          {% for small in big[1] %}
-            <a class="pill ghost" href="{{ '/categories.html#' | append: small | relative_url }}">{{ small }}</a>
-          {% endfor %}
+          <article class="post-card">
+            <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+            <div class="post-meta">
+              <span class="date">📅 {{ post.date | date: "%Y-%m-%d" }}</span>
+              {% if post.categories.size > 0 %}
+                <span class="category">📂 {{ post.categories | first }}</span>
+              {% endif %}
+            </div>
+            {% if post.excerpt %}
+              <div class="excerpt">{{ post.excerpt | strip_html | truncatewords: 20 }}</div>
+            {% endif %}
+            {% if post.tags.size > 0 %}
+              <div class="post-tags">
+                {% for tag in post.tags limit: 3 %}
+                  <span class="tag">{{ tag }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </article>
         {% endfor %}
       </div>
     </section>
@@ -118,7 +121,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // 首頁 TOC 項目
   const tocItems = [
     { href: '#latest-posts', text: '最新文章' },
-    { href: '#quick-nav', text: '快速導航' },
     { href: '#about-me', text: '關於我' }
   ];
   

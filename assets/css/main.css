@@ -297,12 +297,117 @@ pre {
   overflow-x: auto;
   margin: 1rem 0;
   border: 1px solid var(--border);
+  position: relative;
 }
 
 pre code {
   background: none;
   padding: 0;
   color: var(--text);
+  line-height: 1.5;
+  font-size: 0.85rem;
+}
+
+/* ===== 增強程式碼區塊樣式 ===== */
+.code-block {
+  position: relative;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.code-header {
+  background: var(--bg-2);
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.code-language {
+  color: var(--text-2);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.copy-btn {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  background: var(--pri);
+  color: var(--bg);
+  border-color: var(--pri);
+}
+
+.copy-btn.copied {
+  background: var(--pri-2);
+  color: var(--bg);
+  border-color: var(--pri-2);
+}
+
+.code-content {
+  position: relative;
+  background: var(--bg-3);
+}
+
+.code-content pre {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 1rem;
+  padding-left: 3.5rem;
+}
+
+.line-numbers {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3rem;
+  background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  padding: 1rem 0.5rem;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--text-3);
+  text-align: right;
+  user-select: none;
+  overflow: hidden;
+}
+
+/* 沒有行號的程式碼區塊 */
+.code-content.no-line-numbers pre {
+  padding-left: 1rem;
+}
+
+/* 響應式程式碼區塊 */
+@media (max-width: 768px) {
+  .code-content pre {
+    padding-left: 2.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .line-numbers {
+    width: 2rem;
+    font-size: 0.7rem;
+    padding: 1rem 0.25rem;
+  }
+  
+  .code-header {
+    padding: 0.4rem 0.8rem;
+  }
 }
 
 /* ===== 清單樣式 ===== */
@@ -411,6 +516,16 @@ li {
   font-weight: 700;
 }
 
+.brand-text {
+  font-weight: 700;
+  color: var(--pri);
+  transition: color 0.2s ease;
+}
+
+.brand:hover .brand-text {
+  color: var(--pri-2);
+}
+
 .brand img {
   border-radius: 50%;
   margin-right: 0.5rem;
@@ -443,7 +558,8 @@ li {
 }
 
 /* ===== Grid佈局的頁面不受container限制 ===== */
-body.home .container {
+body.home .container,
+body.grid-page .container {
   max-width: none !important;
   width: 100% !important;
   padding: 0 !important;
@@ -887,6 +1003,21 @@ hr {
     max-width: 200px;
     text-align: center;
   }
+}
+
+/* ===== Footer 樣式 ===== */
+.site-footer {
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  margin-top: 4rem;
+  text-align: center;
+}
+
+.site-footer p {
+  color: var(--text-2);
+  margin: 0;
+  font-size: 0.9rem;
 }
 
 /* ===== 滾動條樣式 ===== */
