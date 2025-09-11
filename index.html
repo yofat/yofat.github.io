@@ -29,11 +29,11 @@ classes: home
       </div>
     </section>
 
-    <section class="section" id="latest-posts">
-      <h2>📝 最新文章</h2>
+    <section class="section" id="featured-posts">
+      <h2>� 熱門文章</h2>
       <div class="post-list-horizontal">
-        {% assign latest = site.posts | slice: 0, 5 %}
-        {% for post in latest %}
+        {% assign featured = site.posts | slice: 0, 4 %}
+        {% for post in featured %}
           <article class="post-item-horizontal">
             <div class="post-main-info">
               <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
@@ -66,35 +66,67 @@ classes: home
     </section>
 
     <section class="section" id="about-me">
-      <h2>👨‍💻 關於我</h2>
+      <div class="about-hero">
+        <h2>👨‍💻 關於我</h2>
+        <p class="about-subtitle">網路安全研究者 × AI 開發者 × CTF 愛好者</p>
+      </div>
+      
       <div class="about-content">
-        <div class="about-text">
-          <p>你好，我是YoFat，一個熱愛網路安全、人工智能和 CTF 技術的愛好者。在這個部落格中，我分享我的學習經歷、技術文章和專案心得，希望能與更多志同道合的朋友交流。</p>
-          <p>我專精於將 AI 技術應用到資安領域，開發各種實用的安全工具和自動化系統。同時也積極參與 CTF 競賽和開源專案貢獻。</p>
-          <p>如果你對我的文章有任何建議或想法，歡迎透過<a href="#" class="contact-link">聯絡我</a>！</p>
+        <div class="about-main">
+          <div class="intro-card">
+            <div class="intro-icon">🚀</div>
+            <div class="intro-text">
+              <p>你好，我是 <strong>YoFat</strong>，一個專注於將 AI 技術應用到網路安全領域的研究者與開發者。</p>
+              <p>我熱衷於開發實用的安全工具、參與 CTF 競賽，並透過這個部落格分享技術心得與學習經驗。</p>
+            </div>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number">50+</div>
+              <div class="stat-label">技術文章</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">10+</div>
+              <div class="stat-label">開源專案</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">3</div>
+              <div class="stat-label">CTF 獎項</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">2年+</div>
+              <div class="stat-label">資安經驗</div>
+            </div>
+          </div>
         </div>
         
-        <div class="about-highlights">
-          <div class="highlight-card">
-            <h3>🏆 最新動態</h3>
-            <ul class="achievements">
-              <li>🔥 新增 AI 輔助滲透測試工具</li>
-              <li>📝 更新深度學習教學系列</li>
-              <li>🏆 CTF 台灣區域賽第3名</li>
-            </ul>
+        <div class="about-sidebar">
+          <div class="highlight-card recent-updates">
+            <h3>� 近期動態</h3>
+            <div class="update-item">
+              <span class="update-icon">🔥</span>
+              <span class="update-text">發布 AI 滲透測試工具</span>
+            </div>
+            <div class="update-item">
+              <span class="update-icon">📚</span>
+              <span class="update-text">深度學習系列教學更新</span>
+            </div>
+            <div class="update-item">
+              <span class="update-icon">🏆</span>
+              <span class="update-text">CTF 台灣區第3名</span>
+            </div>
           </div>
           
           <div class="highlight-card">
-            <h3>💻 技能領域</h3>
-            <div class="skills-grid">
-              <span class="skill-tag">Python</span>
-              <span class="skill-tag">JavaScript</span>
-              <span class="skill-tag">Go</span>
-              <span class="skill-tag">Docker</span>
-              <span class="skill-tag">TensorFlow</span>
-              <span class="skill-tag">Burp Suite</span>
-              <span class="skill-tag">滲透測試</span>
-              <span class="skill-tag">機器學習</span>
+            <h3>💻 專精領域</h3>
+            <div class="skills-compact">
+              <span class="skill-tag python">Python</span>
+              <span class="skill-tag js">JavaScript</span>
+              <span class="skill-tag security">滲透測試</span>
+              <span class="skill-tag ai">機器學習</span>
+              <span class="skill-tag tools">安全工具</span>
+              <span class="skill-tag ctf">CTF 競賽</span>
             </div>
           </div>
         </div>
@@ -146,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // 首頁 TOC 項目
   const tocItems = [
-    { href: '#latest-posts', text: '📝 最新文章' },
+    { href: '#featured-posts', text: '� 熱門文章' },
     { href: '#about-me', text: '👨‍💻 關於我' }
   ];
   
