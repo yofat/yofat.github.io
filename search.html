@@ -116,6 +116,28 @@ classes: grid-page
 document.addEventListener('DOMContentLoaded', async () => {
   const input = document.getElementById('search-input');
   const results = document.getElementById('search-results');
+  const clearBtn = document.getElementById('search-clear');
+  
+  // 搜尋框UI功能
+  input.addEventListener('input', () => {
+    if (input.value.trim()) {
+      clearBtn.classList.add('show');
+    } else {
+      clearBtn.classList.remove('show');
+    }
+  });
+  
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    clearBtn.classList.remove('show');
+    input.focus();
+    // 清空搜尋結果
+    results.innerHTML = '';
+    const searchCount = document.getElementById('search-count');
+    if (searchCount) {
+      searchCount.textContent = '輸入關鍵字開始搜尋';
+    }
+  });
 
   let data = [];
   let idx = null;
@@ -264,18 +286,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       results.appendChild(noResults);
     }
   }
-
-  const clearBtn = document.getElementById('search-clear');
   
   function performSearch() {
     const q = input.value.trim();
     if (!q) {
       render([], '');
-      clearBtn.style.display = 'none';
+      clearBtn.classList.remove('show');
       return;
     }
     
-    clearBtn.style.display = 'block';
+    clearBtn.classList.add('show');
     
     // 顯示載入狀態
     results.classList.add('search-loading');
@@ -342,12 +362,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   input.addEventListener('input', performSearch);
   
-  clearBtn.addEventListener('click', () => {
-    input.value = '';
-    input.focus();
-    performSearch();
-  });
-  
   // 鍵盤快捷鍵
   document.addEventListener('keydown', (e) => {
     // Ctrl/Cmd + K 聚焦搜尋框
@@ -391,7 +405,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   input.addEventListener('blur', updatePlaceholder);
   
   // 初始化時隱藏清除按鈕
-  clearBtn.style.display = 'none';
+  clearBtn.classList.remove('show');
   
   // 熱門文章標籤點擊搜尋
   document.addEventListener('click', (e) => {

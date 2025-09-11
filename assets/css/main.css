@@ -1969,3 +1969,245 @@ hr {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-3);
 }
+
+/* ===== 搜尋頁面樣式 ===== */
+.search-container {
+  max-width: 600px;
+  margin: 2rem 0;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 0;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.search-input-wrapper:focus-within {
+  border-color: var(--pri-2);
+  box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.1);
+  background: var(--bg);
+}
+
+#search-input {
+  flex: 1;
+  padding: 1rem 1rem 1rem 3rem;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+}
+
+#search-input::placeholder {
+  color: var(--text-3);
+  opacity: 1;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-2);
+  font-size: 1.2rem;
+  pointer-events: none;
+}
+
+.search-clear {
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  color: var(--text-3);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: none;
+}
+
+.search-clear:hover {
+  background: var(--bg-3);
+  color: var(--text);
+}
+
+.search-clear.show {
+  display: block;
+}
+
+.search-stats {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--bg-2);
+  border-radius: 8px;
+  color: var(--text-2);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* 搜尋結果樣式 */
+.search-results {
+  margin-top: 2rem;
+}
+
+.search-result-item {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.search-result-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border-color: var(--pri);
+}
+
+.search-result-item h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text);
+}
+
+.search-result-item h3 a {
+  color: var(--pri-2);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.search-result-item h3 a:hover {
+  color: var(--pri);
+  text-decoration: underline;
+}
+
+.search-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-2);
+}
+
+.search-date {
+  color: var(--text-3);
+}
+
+.search-categories {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.category-tag, .tag-tag {
+  background: rgba(110, 231, 183, 0.15);
+  color: var(--pri-2);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.category-tag:hover, .tag-tag:hover {
+  background: rgba(110, 231, 183, 0.25);
+  color: var(--pri);
+}
+
+.search-excerpt {
+  color: var(--text-2);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.search-highlight {
+  background: rgba(255, 193, 7, 0.3);
+  color: #ffc107;
+  padding: 0.1rem 0.2rem;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 搜尋小技巧區域 */
+.search-tips {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.search-tips h2 {
+  color: var(--text);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.search-tips ul {
+  list-style: none;
+  padding: 0;
+}
+
+.search-tips li {
+  padding: 0.5rem 0;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border-2);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.search-tips li:last-child {
+  border-bottom: none;
+}
+
+.search-tips li::before {
+  content: "💡";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .search-container {
+    max-width: 100%;
+    margin: 1rem 0;
+  }
+  
+  .search-input-wrapper {
+    border-radius: 8px;
+  }
+  
+  #search-input {
+    padding: 0.875rem 0.875rem 0.875rem 2.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .search-icon {
+    left: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .search-result-item {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .search-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
