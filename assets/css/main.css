@@ -13,6 +13,21 @@
   --border-2: #21262d;
 }
 
+/* ===== 亮色主題 ===== */
+:root.light {
+  --bg: #ffffff;
+  --bg-2: #f6f8fa;
+  --bg-3: #f1f3f4;
+  --text: #24292f;
+  --text-2: #656d76;
+  --text-3: #8c959f;
+  --pri: #00a86b;
+  --pri-2: #00b377;
+  --pri-3: #008a56;
+  --border: #d0d7de;
+  --border-2: #e1e4e8;
+}
+
 /* ===== 基本樣式重置 ===== */
 * {
   margin: 0;
@@ -358,45 +373,52 @@ li {
   color: var(--pri-2);
 }
 
-/* ===== 導航樣式 ===== */
-.nav {
+/* ===== Header & Navigation 樣式 ===== */
+.site-header {
   background: var(--bg-2);
   border-bottom: 1px solid var(--border);
-  padding: 1rem 2rem;
+  padding: 1rem 0;
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
-.nav-container {
+.site-header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
-.nav-brand {
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--pri);
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--pri);
 }
 
-.nav-links {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
+.brand img {
+  border-radius: 50%;
+  margin-right: 0.5rem;
   margin: 0;
-  padding: 0;
 }
 
-.nav-links a {
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav a {
   color: var(--text-2);
+  text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
+  padding: 0.5rem 0;
 }
 
-.nav-links a:hover {
+.nav a:hover {
   color: var(--pri);
 }
 
@@ -405,6 +427,15 @@ li {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+/* ===== Grid佈局的頁面不受container限制 ===== */
+.container .post-layout,
+.container .grid-3col {
+  max-width: none !important;
+  width: 100vw !important;
+  margin-left: calc(-50vw + 50%) !important;
+  padding: 2rem !important;
 }
 
 /* ===== 響應式設計 ===== */
@@ -574,6 +605,7 @@ hr {
   font-weight: 600;
   transition: all 0.3s ease;
   border: 2px solid var(--pri);
+  cursor: pointer;
 }
 
 .btn:hover {
@@ -594,6 +626,30 @@ hr {
 .btn.outline:hover {
   background: var(--pri);
   color: var(--bg);
+}
+
+.btn.small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+/* ===== 主題切換按鈕 ===== */
+#theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#theme-toggle:hover {
+  background: var(--bg-3);
+  border-color: var(--pri);
+  transform: none;
+  box-shadow: none;
 }
 
 /* ===== 文章列表樣式 ===== */

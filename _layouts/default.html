@@ -4,15 +4,9 @@
 <body{% if page.classes %} class="{{ page.classes }}"{% elsif page.body_class %} class="{{ page.body_class }}"{% endif %}>
   {% include header.html %}
 
-  {% if page.classes == 'home' %}
-  <main class="post-layout">
-    {{ content }}
-  </main>
-  {% else %}
   <main class="container">
     {{ content }}
   </main>
-  {% endif %}
 
   {% include footer.html %}
 </body>
