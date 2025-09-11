@@ -11,7 +11,7 @@ layout: default
   <!-- 左側目錄 -->
   <nav class="post-toc">
     <div class="toc-header">
-      <h3>📋 文章目錄</h3>
+      <h3>目錄</h3>
     </div>
     <div class="toc-content" id="toc"></div>
   </nav>
@@ -78,7 +78,7 @@ layout: default
 </div>
 
 <script>
-// 生成目錄
+// 生成目錄 - HackMD 風格
 document.addEventListener('DOMContentLoaded', function() {
   const toc = document.getElementById('toc');
   const headings = document.querySelectorAll('.post-content h1, .post-content h2, .post-content h3, .post-content h4');
@@ -94,13 +94,12 @@ document.addEventListener('DOMContentLoaded', function() {
     heading.id = id;
     
     const level = parseInt(heading.tagName.substring(1));
-    const indent = (level - 1) * 20;
-    const icon = level === 1 ? '📌' : level === 2 ? '📍' : '📎';
+    const text = heading.textContent.trim();
     
     tocHTML += `
-      <li style="margin-left: ${indent}px;">
+      <li>
         <a href="#${id}" class="toc-link" data-level="${level}">
-          ${icon} ${heading.textContent}
+          ${text}
         </a>
       </li>
     `;
