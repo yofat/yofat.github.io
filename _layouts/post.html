@@ -136,38 +136,44 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // 閱讀進度
   const progressBar = document.getElementById('reading-progress');
-  window.addEventListener('scroll', function() {
-    const post = document.querySelector('.post-content');
-    const postTop = post.offsetTop;
-    const postHeight = post.offsetHeight;
-    const windowTop = window.scrollY;
-    const windowHeight = window.innerHeight;
-    
-    const progress = Math.min(100, Math.max(0, 
-      ((windowTop + windowHeight - postTop) / postHeight) * 100
-    ));
-    
-    progressBar.style.width = progress + '%';
-  });
+  if (progressBar) {
+    window.addEventListener('scroll', function() {
+      const post = document.querySelector('.post-content');
+      if (!post) return;
+      
+      const postTop = post.offsetTop;
+      const postHeight = post.offsetHeight;
+      const windowTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      
+      const progress = Math.min(100, Math.max(0, 
+        ((windowTop + windowHeight - postTop) / postHeight) * 100
+      ));
+      
+      progressBar.style.width = progress + '%';
+    });
+  }
   
   // TOC 高亮當前章節
   const tocLinks = document.querySelectorAll('.toc-link');
-  window.addEventListener('scroll', function() {
-    let current = '';
-    headings.forEach(heading => {
-      const rect = heading.getBoundingClientRect();
-      if (rect.top <= 100) {
-        current = heading.id;
-      }
+  if (tocLinks.length > 0) {
+    window.addEventListener('scroll', function() {
+      let current = '';
+      headings.forEach(heading => {
+        const rect = heading.getBoundingClientRect();
+        if (rect.top <= 100) {
+          current = heading.id;
+        }
+      });
+      
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
     });
-    
-    tocLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === '#' + current) {
-        link.classList.add('active');
-      }
-    });
-  });
+  }
   
 });
   
