@@ -373,3 +373,243 @@ a:hover{ text-decoration:underline; }
 @media (max-width:480px){
   .grid-3col{ padding:12px 8px; }
 }
+
+/* =========================
+   搜尋頁面專用樣式
+========================= */
+.search-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.search-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.search-header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, var(--pri), var(--pri-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.search-subtitle {
+  color: var(--muted);
+  font-size: 1.1em;
+  margin: 0;
+}
+
+.search-container {
+  margin-bottom: 30px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+#search-input {
+  width: 100%;
+  padding: 16px 50px 16px 50px;
+  font-size: 18px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--fg);
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+#search-input:focus {
+  border-color: var(--pri);
+  box-shadow: 0 4px 20px rgba(110, 231, 183, 0.3);
+  transform: translateY(-2px);
+}
+
+.search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.search-clear {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: var(--muted);
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.search-clear:hover {
+  background: var(--muted);
+  color: var(--bg);
+}
+
+.search-stats {
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.search-results {
+  margin-bottom: 40px;
+}
+
+.search-result-item {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  animation: slideIn 0.5s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-result-item:hover {
+  border-color: var(--pri);
+  box-shadow: 0 8px 25px rgba(110, 231, 183, 0.15);
+  transform: translateY(-4px);
+}
+
+.search-result-item h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.3em;
+}
+
+.search-result-item h3 a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.search-result-item h3 a:hover {
+  color: var(--pri);
+}
+
+.search-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.search-date {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.search-categories,
+.search-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.category-tag {
+  background: var(--pri);
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tag-item {
+  background: rgba(139, 180, 248, 0.2);
+  color: var(--link);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.search-excerpt {
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--card);
+  border-radius: 12px;
+}
+
+.no-results-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.no-results p {
+  margin: 10px 0;
+}
+
+.search-tips {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 20px;
+  border-left: 4px solid var(--pri);
+}
+
+.search-tips h3 {
+  margin-top: 0;
+  color: var(--pri);
+}
+
+.search-tips ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.search-tips li {
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .search-header h1 {
+    font-size: 2em;
+  }
+  
+  #search-input {
+    font-size: 16px;
+    padding: 14px 45px 14px 45px;
+  }
+  
+  .search-result-item {
+    padding: 16px;
+  }
+  
+  .search-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

@@ -4,9 +4,41 @@ title: 搜尋
 permalink: /search.html
 ---
 
-<h1>搜尋</h1>
-<input id="search-input" type="search" placeholder="輸入關鍵字..." aria-label="Search" />
-<div id="search-results" role="list"></div>
+<div class="search-page">
+  <div class="search-header">
+    <h1>🔍 搜尋文章</h1>
+    <p class="search-subtitle">在所有文章中搜尋關鍵字、標籤或分類</p>
+  </div>
+
+  <div class="search-container">
+    <div class="search-input-wrapper">
+      <input 
+        id="search-input" 
+        type="search" 
+        placeholder="輸入關鍵字、標題或標籤..." 
+        aria-label="Search"
+        autocomplete="off"
+      />
+      <div class="search-icon">🔍</div>
+      <div id="search-clear" class="search-clear" title="清除搜尋">✕</div>
+    </div>
+    
+    <div class="search-stats">
+      <span id="search-count">輸入關鍵字開始搜尋</span>
+    </div>
+  </div>
+
+  <div id="search-results" class="search-results" role="list"></div>
+
+  <div class="search-tips">
+    <h3>💡 搜尋小技巧</h3>
+    <ul>
+      <li>使用空格分隔多個關鍵字</li>
+      <li>搜尋會包含標題、內容、標籤和分類</li>
+      <li>不區分大小寫</li>
+    </ul>
+  </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
@@ -25,36 +57,110 @@ document.addEventListener('DOMContentLoaded', async () => {
     data.forEach(doc => this.add(doc));
   });
 
-  function render(items) {
+  function render(items, query = '') {
+    const searchCount = document.getElementById('search-count');
     results.innerHTML = '';
-    items.forEach(item => {
+    
+    if (query && items.length > 0) {
+      searchCount.textContent = `找到 ${items.length} 篇相關文章`;
+    } else if (query && items.length === 0) {
+      searchCount.textContent = '沒有找到相關文章';
+    } else {
+      searchCount.textContent = '輸入關鍵字開始搜尋';
+    }
+    
+    items.forEach((item, index) => {
       const doc = data.find(d => d.url === item.ref);
-      const a = document.createElement('a');
-      a.href = doc.url;
-      a.textContent = doc.title;
-      const small = document.createElement('small');
-      small.textContent = `  (${doc.date})`;
-      const div = document.createElement('div');
-      div.className = 'search-item';
-      div.appendChild(a);
-      div.appendChild(small);
-      results.appendChild(div);
+      
+      const article = document.createElement('article');
+      article.className = 'search-result-item';
+      article.style.animationDelay = `${index * 0.1}s`;
+      
+      const title = document.createElement('h3');
+      const titleLink = document.createElement('a');
+      titleLink.href = doc.url;
+      titleLink.textContent = doc.title;
+      title.appendChild(titleLink);
+      
+      const meta = document.createElement('div');
+      meta.className = 'search-meta';
+      
+      const date = document.createElement('span');
+      date.className = 'search-date';
+      date.textContent = doc.date;
+      
+      const categories = document.createElement('span');
+      categories.className = 'search-categories';
+      if (doc.categories && doc.categories.length > 0) {
+        categories.innerHTML = doc.categories.map(cat => 
+          `<span class="category-tag">${cat}</span>`
+        ).join('');
+      }
+      
+      const tags = document.createElement('span');
+      tags.className = 'search-tags';
+      if (doc.tags && doc.tags.length > 0) {
+        tags.innerHTML = doc.tags.map(tag => 
+          `<span class="tag-item">#${tag}</span>`
+        ).join('');
+      }
+      
+      meta.appendChild(date);
+      if (categories.innerHTML) meta.appendChild(categories);
+      if (tags.innerHTML) meta.appendChild(tags);
+      
+      const excerpt = document.createElement('p');
+      excerpt.className = 'search-excerpt';
+      excerpt.textContent = doc.content ? doc.content.substring(0, 150) + '...' : '';
+      
+      article.appendChild(title);
+      article.appendChild(meta);
+      article.appendChild(excerpt);
+      
+      results.appendChild(article);
     });
-    if (items.length === 0) {
-      const div = document.createElement('div'); div.className = 'muted'; div.textContent = '沒有結果';
-      results.appendChild(div);
+    
+    if (query && items.length === 0) {
+      const noResults = document.createElement('div');
+      noResults.className = 'no-results';
+      noResults.innerHTML = `
+        <div class="no-results-icon">📭</div>
+        <p>找不到包含「<strong>${query}</strong>」的文章</p>
+        <p class="muted">試試其他關鍵字或檢查拼寫</p>
+      `;
+      results.appendChild(noResults);
     }
   }
 
-  input.addEventListener('input', () => {
+  const clearBtn = document.getElementById('search-clear');
+  
+  function performSearch() {
     const q = input.value.trim();
-    if (!q) return render([]);
+    if (!q) {
+      render([], '');
+      clearBtn.style.display = 'none';
+      return;
+    }
+    
+    clearBtn.style.display = 'block';
+    
     try {
       const items = idx.search(lunr.utils.asString(q));
-      render(items);
+      render(items, q);
     } catch (e) {
-      render([]); // 無效語法保護
+      render([], q); // 無效語法保護
     }
+  }
+  
+  input.addEventListener('input', performSearch);
+  
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    input.focus();
+    performSearch();
   });
+  
+  // 初始化時隱藏清除按鈕
+  clearBtn.style.display = 'none';
 });
 </script>
