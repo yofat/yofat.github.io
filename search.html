@@ -52,40 +52,40 @@ classes: grid-page
 
   <div class="popular-posts">
     <h3>🔥 熱門文章</h3>
-    <div class="popular-posts-list">
-      <article class="popular-post-item">
+    <div class="horizontal-posts">
+      <article class="post-card">
         <h4><a href="/人工智能/深度學習/python-data-science/">Python 資料科學入門：從 NumPy 到 Pandas</a></h4>
         <p class="post-excerpt">Python 已經成為資料科學領域最受歡迎的程式語言之一。本文將介紹 Python 資料科學的核心套件...</p>
         <div class="post-meta">
-          <span class="post-date">2024-12-01</span>
-          <span class="post-tags">
+          <span class="post-date">📅 2024-12-01</span>
+          <div class="post-tags">
             <span class="tag">程式語言</span>
             <span class="tag">Python</span>
-          </span>
+          </div>
         </div>
       </article>
 
-      <article class="popular-post-item">
+      <article class="post-card">
         <h4><a href="/技術/前端/jekyll-blog-guide/">Jekyll 搭建個人博客完整指南</a></h4>
         <p class="post-excerpt">Jekyll 是一個靜態網站生成器，非常適合用來建立個人博客。本文將詳細介紹如何從零開始搭建...</p>
         <div class="post-meta">
-          <span class="post-date">2025-01-15</span>
-          <span class="post-tags">
+          <span class="post-date">📅 2025-01-15</span>
+          <div class="post-tags">
             <span class="tag">工具</span>
             <span class="tag">Jekyll</span>
-          </span>
+          </div>
         </div>
       </article>
 
-      <article class="popular-post-item">
+      <article class="post-card">
         <h4><a href="/人工智能/gnn/hello-world/">建站筆記：Hello, World!</a></h4>
         <p class="post-excerpt">這是第一篇測試文章。內容可以是你的技術分享、經歷或研究心得...</p>
         <div class="post-meta">
-          <span class="post-date">2025-09-10</span>
-          <span class="post-tags">
+          <span class="post-date">📅 2025-09-10</span>
+          <div class="post-tags">
             <span class="tag">學習</span>
             <span class="tag">筆記</span>
-          </span>
+          </div>
         </div>
       </article>
     </div>
@@ -412,5 +412,94 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 頁面載入完成後自動聚焦搜尋框
   input.focus();
+  
+  // 搜尋頁面的 TOC 生成
+  const tocContainer = document.getElementById("toc");
+  if (tocContainer) {
+    const tocItems = [
+      { href: '#search-title', text: '🔍 搜尋文章' },
+      { href: '#search-tips', text: '💡 搜尋小技巧' },
+    ];
+
+    const tocLinks = [];
+    tocItems.forEach(item => {
+      const link = document.createElement('a');
+      link.href = item.href;
+      link.textContent = item.text;
+      link.className = 'toc-link';
+      tocContainer.appendChild(link);
+      tocLinks.push(link);
+    });
+
+    // TOC 點擊事件和高亮邏輯
+    let isScrolling = false;
+    
+    tocItems.forEach((item, index) => {
+      const link = tocLinks[index];
+      if (link) {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          isScrolling = true;
+          
+          tocLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          
+          const target = document.querySelector(item.href);
+          if (target) {
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
+            window.scrollTo({
+              top: targetPosition,
+              behavior: "smooth"
+            });
+            history.replaceState(null, "", item.href);
+            
+            setTimeout(() => {
+              isScrolling = false;
+            }, 1500);
+          }
+        });
+      }
+    });
+
+    function updateActiveTOC() {
+      if (isScrolling) return;
+      
+      let currentActive = null;
+      const scrollTop = window.pageYOffset + 120;
+      
+      for (let i = tocItems.length - 1; i >= 0; i--) {
+        const sectionId = tocItems[i].href.substring(1);
+        const section = document.getElementById(sectionId);
+        
+        if (section && section.offsetTop <= scrollTop) {
+          currentActive = tocLinks[i];
+          break;
+        }
+      }
+      
+      if (!currentActive && tocLinks.length > 0) {
+        currentActive = tocLinks[0];
+      }
+      
+      tocLinks.forEach(link => link.classList.remove('active'));
+      if (currentActive) {
+        currentActive.classList.add('active');
+      }
+    }
+    
+    let ticking = false;
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveTOC();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+    
+    window.addEventListener('scroll', requestTick);
+    updateActiveTOC();
+  }
 });
 </script>

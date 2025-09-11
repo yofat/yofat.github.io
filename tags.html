@@ -68,20 +68,20 @@ classes: grid-page
   <!-- 右欄：側邊資訊 -->
   <aside class="siderail">
     <div class="card">
-      <div class="card-title">標籤統計</div>
+      <div class="card-title">📊 標籤統計</div>
       <div class="tags-stats">
         {% assign total_tags = 0 %}
         {% for big in site.data.tags %}
           {% assign total_tags = total_tags | plus: big[1].size %}
         {% endfor %}
-        <p>📊 總共 {{ site.data.tags.size }} 個大分類</p>
+        <p>� 總共 {{ site.data.tags.size }} 個大分類</p>
         <p>🏷️ 包含 {{ total_tags }} 個子標籤</p>
         <p>📝 共 {{ site.posts.size }} 篇文章</p>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title">熱門標籤</div>
+      <div class="card-title">🔥 熱門標籤</div>
       <div class="pill-group">
         {% for big in site.data.tags limit: 6 %}
           <a class="pill" href="#{{ big[0] }}">{{ big[0] }}</a>
@@ -90,15 +90,112 @@ classes: grid-page
     </div>
 
     <div class="card">
-      <div class="card-title">最新文章</div>
-      {% assign latest = site.posts | slice: 0, 3 %}
-      {% for post in latest %}
-        <p><a href="{{ post.url | relative_url }}">{{ post.title }}</a></p>
-        <small class="muted">{{ post.date | date: "%m-%d" }}</small>
-      {% endfor %}
+      <div class="card-title">📝 快速跳轉</div>
+      <div class="pill-group">
+        <a class="pill" href="{{ '/categories.html' | relative_url }}">所有分類</a>
+        <a class="pill" href="{{ '/search.html' | relative_url }}">搜尋文章</a>
+      </div>
     </div>
   </aside>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // 標籤頁面的 TOC 生成
+  const tocContainer = document.getElementById("toc");
+  if (tocContainer) {
+    const sections = document.querySelectorAll('h1[id], h2[id], h3[id]');
+    const tocLinks = [];
+    
+    sections.forEach(section => {
+      const link = document.createElement('a');
+      link.href = '#' + section.id;
+      link.textContent = section.textContent;
+      link.className = 'toc-link';
+      
+      // 根據標題層級設置樣式
+      if (section.tagName === 'H1') {
+        link.style.fontWeight = 'bold';
+      } else if (section.tagName === 'H2') {
+        link.style.paddingLeft = '1rem';
+      } else if (section.tagName === 'H3') {
+        link.style.paddingLeft = '2rem';
+        link.style.fontSize = '0.9em';
+        link.style.opacity = '0.8';
+      }
+      
+      tocContainer.appendChild(link);
+      tocLinks.push(link);
+    });
+
+    // TOC 點擊事件和高亮邏輯
+    let isScrolling = false;
+    
+    tocLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        isScrolling = true;
+        
+        // 移除所有 active 狀態
+        tocLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth"
+          });
+          history.replaceState(null, "", link.getAttribute('href'));
+          
+          setTimeout(() => {
+            isScrolling = false;
+          }, 1500);
+        }
+      });
+    });
+
+    function updateActiveTOC() {
+      if (isScrolling) return;
+      
+      let currentActive = null;
+      const scrollTop = window.pageYOffset + 120;
+      
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section.offsetTop <= scrollTop) {
+          currentActive = tocLinks[i];
+          break;
+        }
+      }
+      
+      if (!currentActive && tocLinks.length > 0) {
+        currentActive = tocLinks[0];
+      }
+      
+      tocLinks.forEach(link => link.classList.remove('active'));
+      if (currentActive) {
+        currentActive.classList.add('active');
+      }
+    }
+    
+    let ticking = false;
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveTOC();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+    
+    window.addEventListener('scroll', requestTick);
+    updateActiveTOC();
+  }
+});
+</script>
 
 <!-- TOC 功能 -->
 <script>
