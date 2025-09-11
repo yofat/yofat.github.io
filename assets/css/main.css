@@ -30,8 +30,16 @@
 
 /* ===== 備用樣式 (防止CSS變數不支援) ===== */
 body {
-  background-color: #0d1117;
-  color: #c9d1d9;
+  background-color: #0d1117 !important;
+  color: #c9d1d9 !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* 確保內容可見 */
+.grid-3col, .maincol, .hero, h1, p, a {
+  display: block;
+  visibility: visible;
 }
 
 /* ===== 基本樣式重置 ===== */
@@ -435,6 +443,13 @@ li {
 }
 
 /* ===== Grid佈局的頁面不受container限制 ===== */
+body.home .container {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 .container .post-layout,
 .container .grid-3col {
   max-width: none !important;
