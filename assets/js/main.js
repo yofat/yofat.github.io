@@ -96,7 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // === 自動產生 TOC（掃描中欄 .maincol 內的 h2/h3） ===
   const tocRoot = document.getElementById("toc");
   const scope = document.querySelector(".maincol");
-  if (tocRoot && scope) {
+  // 只在沒有手動 TOC 連結的情況下自動生成
+  if (tocRoot && scope && !tocRoot.querySelector("a")) {
     const headings = scope.querySelectorAll("h2, h3");
     const ids = new Set();
     function slugify(t) {
