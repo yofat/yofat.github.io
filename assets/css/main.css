@@ -405,11 +405,13 @@ body.home .container {
 }
 
 .reading-progress {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
-  height: 8px;
+  height: 10px;
   overflow: hidden;
   margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
 }
 
 .progress-bar {
@@ -417,7 +419,12 @@ body.home .container {
   height: 100%;
   width: 0%;
   transition: width 0.3s ease;
-  border-radius: 10px;
+  border-radius: 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 2px;
+  box-shadow: 0 0 10px rgba(110, 231, 183, 0.5);
 }
 
 .quick-nav {
