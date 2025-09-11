@@ -272,6 +272,176 @@ body.home .container {
 }
 
 /* =========================
+   文章頁面樣式
+========================= */
+.post-article {
+  background: var(--bg);
+  padding: 0;
+  margin: 0;
+}
+
+.post-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.post-header h1 {
+  margin: 0 0 15px 0;
+  font-size: 2.2em;
+  line-height: 1.3;
+  background: linear-gradient(135deg, var(--pri), var(--pri-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.post-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.post-meta span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.post-meta a {
+  color: var(--link);
+}
+
+.post-content {
+  line-height: 1.8;
+  font-size: 16px;
+  max-width: none;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+  margin: 2.5em 0 1.2em 0;
+  color: var(--fg);
+  position: relative;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.post-content h1:first-child,
+.post-content h2:first-child,
+.post-content h3:first-child {
+  margin-top: 0;
+}
+
+.post-content h1 { font-size: 2em; line-height: 1.3; }
+.post-content h2 { font-size: 1.6em; line-height: 1.4; }
+.post-content h3 { font-size: 1.4em; line-height: 1.4; }
+.post-content h4 { font-size: 1.2em; line-height: 1.4; }
+
+.post-content h2:before {
+  content: "##";
+  color: var(--pri);
+  margin-right: 12px;
+  font-weight: bold;
+  opacity: 0.7;
+}
+
+.post-content h3:before {
+  content: "###";
+  color: var(--pri-2);
+  margin-right: 10px;
+  font-size: 0.9em;
+  opacity: 0.7;
+}
+
+.post-content p {
+  margin: 1.4em 0;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.post-content ul,
+.post-content ol {
+  padding-left: 28px;
+  margin: 1.5em 0;
+}
+
+.post-content li {
+  margin: 0.8em 0;
+  line-height: 1.6;
+}
+
+.post-content li strong {
+  color: var(--pri);
+}
+
+.post-content blockquote {
+  border-left: 4px solid var(--pri);
+  background: rgba(110, 231, 183, 0.05);
+  margin: 2em 0;
+  padding: 1em 1.5em;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+}
+
+.post-content blockquote p {
+  margin: 0.5em 0;
+}
+
+.post-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+  margin-top: 30px;
+}
+
+.post-views {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.reading-progress {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  height: 8px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, var(--pri), var(--pri-2));
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 10px;
+}
+
+.quick-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.quick-nav li {
+  margin: 8px 0;
+}
+
+.quick-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.quick-nav a:hover {
+  color: var(--pri);
+}
+
+/* =========================
    主內容區域樣式
 ========================= */
 .section {
