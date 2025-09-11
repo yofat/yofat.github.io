@@ -592,48 +592,7 @@ a:hover{ text-decoration:underline; }
   margin-bottom: 8px;
 }
 
-.search-shortcuts {
-  background: var(--card);
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 20px;
-  border-left: 4px solid var(--link);
-}
 
-.search-shortcuts h4 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: var(--link);
-}
-
-.tag-shortcuts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.shortcut-btn {
-  background: linear-gradient(135deg, var(--pri), var(--pri-2));
-  color: #000;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(110, 231, 183, 0.3);
-}
-
-.shortcut-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(110, 231, 183, 0.5);
-}
-
-.shortcut-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(110, 231, 183, 0.3);
-}
 
 /* 載入動畫 */
 @keyframes pulse {
@@ -675,17 +634,7 @@ a:hover{ text-decoration:underline; }
     gap: 8px;
   }
   
-  .tag-shortcuts {
-    justify-content: center;
-  }
-  
-  .shortcut-btn {
-    font-size: 13px;
-    padding: 6px 12px;
-  }
-  
-  .search-tips,
-  .search-shortcuts {
+  .search-tips {
     padding: 16px;
   }
 }
@@ -710,14 +659,5 @@ a:hover{ text-decoration:underline; }
   
   .search-result-item h3 {
     font-size: 1.2em;
-  }
-  
-  .tag-shortcuts {
-    gap: 8px;
-  }
-  
-  .shortcut-btn {
-    font-size: 12px;
-    padding: 5px 10px;
   }
 }

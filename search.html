@@ -33,23 +33,11 @@ permalink: /search.html
   <div class="search-tips">
     <h3>💡 搜尋小技巧</h3>
     <ul>
-      <li>使用空格分隔多個關鍵字</li>
-      <li>搜尋會包含標題、內容、標籤和分類</li>
-      <li>不區分大小寫</li>
-      <li>試試搜尋 "Jekyll"、"Python"、"資料科學" 等關鍵字</li>
+      <li>支援模糊搜尋和關鍵字匹配</li>
+      <li>搜尋範圍包含標題、內容、標籤和分類</li>
+      <li>使用空格分隔多個關鍵字進行組合搜尋</li>
+      <li>不區分大小寫，支援中英文搜尋</li>
     </ul>
-  </div>
-
-  <div class="search-shortcuts">
-    <h4>🏷️ 快速搜尋</h4>
-    <div class="tag-shortcuts">
-      <button class="shortcut-btn" data-query="Jekyll">Jekyll</button>
-      <button class="shortcut-btn" data-query="Python">Python</button>
-      <button class="shortcut-btn" data-query="資料科學">資料科學</button>
-      <button class="shortcut-btn" data-query="人工智能">AI</button>
-      <button class="shortcut-btn" data-query="技術">技術</button>
-      <button class="shortcut-btn" data-query="教學">教學</button>
-    </div>
   </div>
 </div>
 
@@ -63,10 +51,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const idx = lunr(function () {
     this.ref('url');
-    this.field('title');
-    this.field('content');
-    this.field('categories');
-    this.field('tags');
+    this.field('title', { boost: 10 });      // 標題權重最高
+    this.field('categories', { boost: 5 });  // 分類權重較高
+    this.field('tags', { boost: 5 });        // 標籤權重較高
+    this.field('content');                    // 內容權重正常
     data.forEach(doc => this.add(doc));
   });
 
@@ -88,6 +76,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       searchCount.textContent = '輸入關鍵字開始搜尋';
     }
+    
+    // 排序結果按相關性和日期
+    items.sort((a, b) => {
+      // 首先按相關性分數排序
+      const scoreDiff = (b.score || 1) - (a.score || 1);
+      if (Math.abs(scoreDiff) > 0.1) return scoreDiff;
+      
+      // 相關性相似時按日期排序
+      const docA = data.find(d => d.url === a.ref);
+      const docB = data.find(d => d.url === b.ref);
+      return new Date(docB.date) - new Date(docA.date);
+    });
     
     items.forEach((item, index) => {
       const doc = data.find(d => d.url === item.ref);
@@ -131,7 +131,37 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       const excerpt = document.createElement('p');
       excerpt.className = 'search-excerpt';
-      const excerptText = doc.content ? doc.content.substring(0, 150) + '...' : '';
+      
+      // 嘗試找到包含關鍵字的段落作為摘要
+      let excerptText = '';
+      if (doc.content) {
+        const sentences = doc.content.split(/[。.!?！？]/);
+        const queryWords = query.toLowerCase().split(/\s+/);
+        
+        // 找到包含最多關鍵字的句子
+        let bestSentence = sentences[0] || '';
+        let maxMatches = 0;
+        
+        sentences.forEach(sentence => {
+          const sentenceLower = sentence.toLowerCase();
+          const matches = queryWords.filter(word => 
+            sentenceLower.includes(word.toLowerCase())).length;
+          
+          if (matches > maxMatches) {
+            maxMatches = matches;
+            bestSentence = sentence;
+          }
+        });
+        
+        excerptText = bestSentence.trim();
+        if (excerptText.length > 150) {
+          excerptText = excerptText.substring(0, 150) + '...';
+        }
+        if (!excerptText) {
+          excerptText = doc.content.substring(0, 150) + '...';
+        }
+      }
+      
       excerpt.innerHTML = highlightText(excerptText, query);
       
       article.appendChild(title);
@@ -172,12 +202,91 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 使用 setTimeout 讓 UI 有時間更新
     setTimeout(() => {
       try {
-        const items = idx.search(lunr.utils.asString(q));
+        let items = [];
+        
+        // 嘗試多種搜尋策略
+        const queries = buildSearchQueries(q);
+        
+        for (const query of queries) {
+          try {
+            const searchResults = idx.search(query);
+            if (searchResults.length > 0) {
+              items = searchResults;
+              break;
+            }
+          } catch (e) {
+            continue;
+          }
+        }
+        
+        // 如果沒有找到結果，嘗試簡單的關鍵字搜尋
+        if (items.length === 0) {
+          items = simpleSearch(q);
+        }
+        
         render(items, q);
       } catch (e) {
         render([], q); // 無效語法保護
       }
     }, 100);
+  }
+  
+  // 建立多種搜尋查詢策略
+  function buildSearchQueries(query) {
+    const queries = [];
+    const cleanQuery = query.replace(/[^\w\s\u4e00-\u9fa5]/g, ' ').trim();
+    
+    if (!cleanQuery) return queries;
+    
+    // 1. 完整匹配
+    queries.push(`"${cleanQuery}"`);
+    
+    // 2. 所有詞都必須包含
+    const words = cleanQuery.split(/\s+/);
+    if (words.length > 1) {
+      queries.push(words.map(w => `+${w}`).join(' '));
+    }
+    
+    // 3. 任一詞匹配
+    queries.push(words.join(' '));
+    
+    // 4. 模糊搜尋
+    queries.push(words.map(w => `${w}~1`).join(' '));
+    
+    // 5. 萬用字符搜尋
+    queries.push(words.map(w => `${w}*`).join(' '));
+    
+    return queries;
+  }
+  
+  // 簡單的備用搜尋算法
+  function simpleSearch(query) {
+    const results = [];
+    const queryLower = query.toLowerCase();
+    
+    data.forEach(doc => {
+      let score = 0;
+      const titleLower = doc.title.toLowerCase();
+      const contentLower = doc.content.toLowerCase();
+      
+      // 標題匹配得分最高
+      if (titleLower.includes(queryLower)) score += 10;
+      
+      // 分類和標籤匹配
+      if (doc.categories && doc.categories.some(cat => 
+          cat.toLowerCase().includes(queryLower))) score += 5;
+      if (doc.tags && doc.tags.some(tag => 
+          tag.toLowerCase().includes(queryLower))) score += 5;
+      
+      // 內容匹配
+      if (contentLower.includes(queryLower)) score += 1;
+      
+      if (score > 0) {
+        results.push({ ref: doc.url, score });
+      }
+    });
+    
+    return results.sort((a, b) => b.score - a.score);
   }
   
   input.addEventListener('input', performSearch);
@@ -186,22 +295,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     input.value = '';
     input.focus();
     performSearch();
-  });
-  
-  // 快速搜尋按鈕
-  const shortcutBtns = document.querySelectorAll('.shortcut-btn');
-  shortcutBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const query = btn.dataset.query;
-      input.value = query;
-      input.focus();
-      performSearch();
-      // 滾動到結果區域
-      document.getElementById('search-results').scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
-      });
-    });
   });
   
   // 鍵盤快捷鍵
@@ -219,8 +312,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
   
-  // 添加快捷鍵提示到 placeholder
-  input.placeholder = '輸入關鍵字搜尋... (Ctrl+K)';
+  // 動態 placeholder
+  const placeholders = [
+    '搜尋文章、標籤、分類... (Ctrl+K)',
+    '試試搜尋 "Python"、"Jekyll"...',
+    '輸入任何關鍵字開始搜尋...',
+    '搜尋技術文章和教學內容...'
+  ];
+  
+  let placeholderIndex = 0;
+  function updatePlaceholder() {
+    if (!input.value && document.activeElement !== input) {
+      input.placeholder = placeholders[placeholderIndex];
+      placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+    }
+  }
+  
+  // 每 3 秒更換 placeholder
+  setInterval(updatePlaceholder, 3000);
+  updatePlaceholder();
+  
+  // 當輸入框獲得焦點時使用標準 placeholder
+  input.addEventListener('focus', () => {
+    input.placeholder = '輸入關鍵字搜尋...';
+  });
+  
+  input.addEventListener('blur', updatePlaceholder);
   
   // 初始化時隱藏清除按鈕
   clearBtn.style.display = 'none';
