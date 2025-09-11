@@ -1,9 +1,12 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{{ page.title | default: site.title }}</title>
-<meta name="description" content="{{ site.description }}" />
+<meta name="description" content="{{ page.excerpt | default: site.description | strip_html | truncatewords: 50 }}" />
 
-<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+<!-- SEO 標籤 -->
+{% seo %}
+
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M' }}">
 <link rel="icon" href="data:,">
 
 <!-- anime.js for cool effects -->
@@ -18,4 +21,4 @@
 <!-- GitHub Buttons (Star) -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-<script defer src="{{ '/assets/js/main.js' | relative_url }}"></script>
+<script defer src="{{ '/assets/js/main.js' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M' }}"></script>

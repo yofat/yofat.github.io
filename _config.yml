@@ -1,7 +1,7 @@
 title: YoFat的個人網站
 description: 網路安全 × 人工智能 × 技術筆記
 # 你的 GitHub Pages 網域（務必改成你的）
-url: "https://github.com/yofat"
+url: "https://yofat.github.io"
 baseurl: ""
 
 # 你的 GitHub repo（用於星星按鈕與 API）
@@ -14,7 +14,23 @@ permalink: /:categories/:title/
 # 時區/語系
 timezone: Asia/Taipei
 
+# 語法高亮設定
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
+
 theme: null
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+  - jekyll-seo-tag
+
+# 構建設定
+safe: false
+incremental: false
+lsi: false
