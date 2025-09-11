@@ -18,9 +18,36 @@ document.addEventListener('DOMContentLoaded', function() {
         if (className.startsWith('language-')) {
           language = className.replace('language-', '');
           break;
+        } else if (className.startsWith('highlight-')) {
+          language = className.replace('highlight-', '');
+          break;
         }
       }
-      if (!language) language = 'text';
+      
+      // 檢查父元素的類別
+      if (!language && pre.classList) {
+        for (let className of pre.classList) {
+          if (className.startsWith('language-')) {
+            language = className.replace('language-', '');
+            break;
+          }
+        }
+      }
+      
+      // 預設值和美化語言名稱
+      if (!language) language = 'code';
+      language = language.toLowerCase();
+      
+      const languageMap = {
+        'py': 'python',
+        'js': 'javascript',
+        'ts': 'typescript',
+        'sh': 'bash',
+        'yml': 'yaml',
+        'md': 'markdown'
+      };
+      
+      language = languageMap[language] || language;
       
       // 獲取代碼內容和行數
       const codeContent = codeElement.textContent;
@@ -38,7 +65,9 @@ document.addEventListener('DOMContentLoaded', function() {
       codeHeader.className = 'code-header';
       codeHeader.innerHTML = `
         <span class="code-lang">${language}</span>
-        <button class="code-copy" onclick="copyCode(${index})">複製</button>
+        <button class="code-copy" onclick="copyCode(${index})">
+          <span>📋</span> 複製
+        </button>
       `;
       
       // 創建內容區域
@@ -98,13 +127,15 @@ document.addEventListener('DOMContentLoaded', function() {
       .parentElement.parentElement.querySelector('.code-copy');
     
     if (button) {
-      const originalText = button.textContent;
-      button.textContent = '已複製!';
-      button.style.background = 'rgba(110, 231, 183, 0.3)';
+      const originalContent = button.innerHTML;
+      button.innerHTML = '<span>✅</span> 已複製!';
+      button.style.background = 'rgba(110, 231, 183, 0.4)';
+      button.style.borderColor = 'rgba(110, 231, 183, 0.6)';
       
       setTimeout(() => {
-        button.textContent = originalText;
+        button.innerHTML = originalContent;
         button.style.background = '';
+        button.style.borderColor = '';
       }, 2000);
     }
   }
