@@ -36,7 +36,20 @@ permalink: /search.html
       <li>使用空格分隔多個關鍵字</li>
       <li>搜尋會包含標題、內容、標籤和分類</li>
       <li>不區分大小寫</li>
+      <li>試試搜尋 "Jekyll"、"Python"、"資料科學" 等關鍵字</li>
     </ul>
+  </div>
+
+  <div class="search-shortcuts">
+    <h4>🏷️ 快速搜尋</h4>
+    <div class="tag-shortcuts">
+      <button class="shortcut-btn" data-query="Jekyll">Jekyll</button>
+      <button class="shortcut-btn" data-query="Python">Python</button>
+      <button class="shortcut-btn" data-query="資料科學">資料科學</button>
+      <button class="shortcut-btn" data-query="人工智能">AI</button>
+      <button class="shortcut-btn" data-query="技術">技術</button>
+      <button class="shortcut-btn" data-query="教學">教學</button>
+    </div>
   </div>
 </div>
 
@@ -57,9 +70,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     data.forEach(doc => this.add(doc));
   });
 
+  function highlightText(text, query) {
+    if (!query) return text;
+    const regex = new RegExp(`(${query.split(' ').join('|')})`, 'gi');
+    return text.replace(regex, '<span class="search-highlight">$1</span>');
+  }
+
   function render(items, query = '') {
     const searchCount = document.getElementById('search-count');
     results.innerHTML = '';
+    results.classList.remove('search-loading');
     
     if (query && items.length > 0) {
       searchCount.textContent = `找到 ${items.length} 篇相關文章`;
@@ -79,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const title = document.createElement('h3');
       const titleLink = document.createElement('a');
       titleLink.href = doc.url;
-      titleLink.textContent = doc.title;
+      titleLink.innerHTML = highlightText(doc.title, query);
       title.appendChild(titleLink);
       
       const meta = document.createElement('div');
@@ -111,7 +131,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       const excerpt = document.createElement('p');
       excerpt.className = 'search-excerpt';
-      excerpt.textContent = doc.content ? doc.content.substring(0, 150) + '...' : '';
+      const excerptText = doc.content ? doc.content.substring(0, 150) + '...' : '';
+      excerpt.innerHTML = highlightText(excerptText, query);
       
       article.appendChild(title);
       article.appendChild(meta);
@@ -144,12 +165,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     clearBtn.style.display = 'block';
     
-    try {
-      const items = idx.search(lunr.utils.asString(q));
-      render(items, q);
-    } catch (e) {
-      render([], q); // 無效語法保護
-    }
+    // 顯示載入狀態
+    results.classList.add('search-loading');
+    document.getElementById('search-count').textContent = '搜尋中...';
+    
+    // 使用 setTimeout 讓 UI 有時間更新
+    setTimeout(() => {
+      try {
+        const items = idx.search(lunr.utils.asString(q));
+        render(items, q);
+      } catch (e) {
+        render([], q); // 無效語法保護
+      }
+    }, 100);
   }
   
   input.addEventListener('input', performSearch);
@@ -160,7 +188,44 @@ document.addEventListener('DOMContentLoaded', async () => {
     performSearch();
   });
   
+  // 快速搜尋按鈕
+  const shortcutBtns = document.querySelectorAll('.shortcut-btn');
+  shortcutBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const query = btn.dataset.query;
+      input.value = query;
+      input.focus();
+      performSearch();
+      // 滾動到結果區域
+      document.getElementById('search-results').scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    });
+  });
+  
+  // 鍵盤快捷鍵
+  document.addEventListener('keydown', (e) => {
+    // Ctrl/Cmd + K 聚焦搜尋框
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      input.focus();
+    }
+    
+    // ESC 清除搜尋
+    if (e.key === 'Escape' && document.activeElement === input) {
+      input.value = '';
+      performSearch();
+    }
+  });
+  
+  // 添加快捷鍵提示到 placeholder
+  input.placeholder = '輸入關鍵字搜尋... (Ctrl+K)';
+  
   // 初始化時隱藏清除按鈕
   clearBtn.style.display = 'none';
+  
+  // 頁面載入完成後自動聚焦搜尋框
+  input.focus();
 });
 </script>
