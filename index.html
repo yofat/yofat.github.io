@@ -69,11 +69,11 @@ classes: home
         </div>
         
         <div class="skills-compact">
-          <span class="skill-tag python">Python</span>
-          <span class="skill-tag js">JavaScript</span>
-          <span class="skill-tag security">資安基礎</span>
-          <span class="skill-tag ai">機器學習</span>
-          <span class="skill-tag web">網頁開發</span>
+          <span class="skill-tag python">🐍 Python</span>
+          <span class="skill-tag js">⚡ JavaScript</span>
+          <span class="skill-tag security">🔒 資安基礎</span>
+          <span class="skill-tag ai">🤖 機器學習</span>
+          <span class="skill-tag web">🌐 網頁開發</span>
         </div>
       </div>
     </section>
@@ -164,9 +164,9 @@ document.addEventListener("DOMContentLoaded", () => {
       tocLinks.forEach(link => link.classList.remove('active'));
       
       let activeSection = null;
-      let closestDistance = Infinity;
+      let minDistance = Infinity;
       
-      // 找到最接近頂部的可見區域
+      // 找到最接近視窗頂部的區域
       tocItems.forEach((item, index) => {
         const sectionId = item.href.substring(1);
         const section = document.getElementById(sectionId);
@@ -175,27 +175,46 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!section || !link) return;
         
         const rect = section.getBoundingClientRect();
-        const distanceFromTop = Math.abs(rect.top);
+        const sectionTop = rect.top;
         
-        // 如果區域在視窗內或即將進入視窗
-        if (rect.top <= 150 && rect.bottom >= 0) {
-          if (distanceFromTop < closestDistance) {
-            closestDistance = distanceFromTop;
+        // 如果區域在視窗頂部200px範圍內
+        if (sectionTop <= 200 && rect.bottom >= 0) {
+          const distance = Math.abs(sectionTop);
+          if (distance < minDistance) {
+            minDistance = distance;
             activeSection = link;
           }
         }
       });
       
-      // 設置最接近的區域為 active
+      // 如果沒有找到合適的區域，根據滾動位置決定
+      if (!activeSection) {
+        const scrollTop = window.pageYOffset;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // 如果接近頁面底部，高亮最後一個
+        if (scrollTop + windowHeight >= documentHeight - 100) {
+          activeSection = tocLinks[tocLinks.length - 1];
+        } else {
+          // 否則高亮第一個
+          activeSection = tocLinks[0];
+        }
+      }
+      
       if (activeSection) {
         activeSection.classList.add('active');
-      } else if (tocLinks.length > 0) {
-        // 如果沒有找到合適的區域，默認高亮第一個
-        tocLinks[0].classList.add('active');
       }
     }
     
-    window.addEventListener('scroll', updateActiveTOC);
+    // 使用節流函數避免滾動事件過於頻繁
+    let scrollTimeout;
+    function throttledUpdateTOC() {
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateActiveTOC, 100);
+    }
+    
+    window.addEventListener('scroll', throttledUpdateTOC);
     updateActiveTOC();
   }
 });

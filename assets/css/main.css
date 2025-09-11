@@ -839,23 +839,82 @@ line-clamp: 2;
 .skills-compact {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.8rem;
+  margin-top: 1rem;
 }
 
 .skills-compact .skill-tag {
-  font-size: 0.75rem;
-  padding: 0.25rem 0.6rem;
-  border-radius: 12px;
+  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
   font-weight: 600;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: default;
 }
 
-.skill-tag.python { background: rgba(52, 168, 83, 0.15); color: #34a853; }
-.skill-tag.js { background: rgba(251, 188, 5, 0.15); color: #fbbc05; }
-.skill-tag.security { background: rgba(234, 67, 53, 0.15); color: #ea4335; }
-.skill-tag.ai { background: rgba(66, 133, 244, 0.15); color: #4285f4; }
-.skill-tag.tools { background: rgba(156, 39, 176, 0.15); color: #9c27b0; }
-.skill-tag.web { background: rgba(0, 150, 136, 0.15); color: #009688; }
-.skill-tag.ctf { background: rgba(255, 87, 34, 0.15); color: #ff5722; }
+.skills-compact .skill-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.skill-tag.python { 
+  background: linear-gradient(135deg, rgba(52, 168, 83, 0.2), rgba(52, 168, 83, 0.1)); 
+  color: #2d5a3d; 
+  border-color: rgba(52, 168, 83, 0.3);
+}
+
+.skill-tag.python:hover {
+  background: linear-gradient(135deg, rgba(52, 168, 83, 0.3), rgba(52, 168, 83, 0.2));
+  border-color: rgba(52, 168, 83, 0.5);
+}
+
+.skill-tag.js { 
+  background: linear-gradient(135deg, rgba(251, 188, 5, 0.2), rgba(251, 188, 5, 0.1)); 
+  color: #8a6b02; 
+  border-color: rgba(251, 188, 5, 0.3);
+}
+
+.skill-tag.js:hover {
+  background: linear-gradient(135deg, rgba(251, 188, 5, 0.3), rgba(251, 188, 5, 0.2));
+  border-color: rgba(251, 188, 5, 0.5);
+}
+
+.skill-tag.security { 
+  background: linear-gradient(135deg, rgba(234, 67, 53, 0.2), rgba(234, 67, 53, 0.1)); 
+  color: #a33a2a; 
+  border-color: rgba(234, 67, 53, 0.3);
+}
+
+.skill-tag.security:hover {
+  background: linear-gradient(135deg, rgba(234, 67, 53, 0.3), rgba(234, 67, 53, 0.2));
+  border-color: rgba(234, 67, 53, 0.5);
+}
+
+.skill-tag.ai { 
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.2), rgba(66, 133, 244, 0.1)); 
+  color: #2c5aa0; 
+  border-color: rgba(66, 133, 244, 0.3);
+}
+
+.skill-tag.ai:hover {
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.3), rgba(66, 133, 244, 0.2));
+  border-color: rgba(66, 133, 244, 0.5);
+}
+
+.skill-tag.web { 
+  background: linear-gradient(135deg, rgba(0, 150, 136, 0.2), rgba(0, 150, 136, 0.1)); 
+  color: #006157; 
+  border-color: rgba(0, 150, 136, 0.3);
+}
+
+.skill-tag.web:hover {
+  background: linear-gradient(135deg, rgba(0, 150, 136, 0.3), rgba(0, 150, 136, 0.2));
+  border-color: rgba(0, 150, 136, 0.5);
+}
 
 /* 原有樣式保留作為備用 */
 .about-text {
