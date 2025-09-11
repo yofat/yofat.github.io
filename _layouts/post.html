@@ -135,24 +135,39 @@ document.addEventListener('DOMContentLoaded', function() {
   toc.innerHTML = tocHTML;
   
   // 閱讀進度
-  const progressBar = document.getElementById('reading-progress');
-  if (progressBar) {
-    window.addEventListener('scroll', function() {
-      const post = document.querySelector('.post-content');
-      if (!post) return;
+  setTimeout(function() {
+    const progressBar = document.getElementById('reading-progress');
+    const post = document.querySelector('.post-content');
+    
+    if (progressBar && post) {
+      console.log('Reading progress initialized'); // 調試信息
       
-      const postTop = post.offsetTop;
-      const postHeight = post.offsetHeight;
-      const windowTop = window.scrollY;
-      const windowHeight = window.innerHeight;
+      function updateProgress() {
+        const postTop = post.offsetTop;
+        const postHeight = post.offsetHeight;
+        const windowTop = window.scrollY;
+        const windowHeight = window.innerHeight;
+        
+        // 計算閱讀進度：從文章開始到當前視窗底部的百分比
+        const progress = Math.min(100, Math.max(0, 
+          ((windowTop + windowHeight - postTop) / postHeight) * 100
+        ));
+        
+        progressBar.style.width = progress + '%';
+      }
       
-      const progress = Math.min(100, Math.max(0, 
-        ((windowTop + windowHeight - postTop) / postHeight) * 100
-      ));
+      // 初始化時更新一次
+      updateProgress();
       
-      progressBar.style.width = progress + '%';
-    });
-  }
+      // 滾動時更新
+      window.addEventListener('scroll', updateProgress);
+      
+      // 視窗大小改變時也更新
+      window.addEventListener('resize', updateProgress);
+    } else {
+      console.log('Progress bar or post content not found'); // 調試信息
+    }
+  }, 100); // 延遲100ms確保DOM完全載入
   
   // TOC 高亮當前章節
   const tocLinks = document.querySelectorAll('.toc-link');

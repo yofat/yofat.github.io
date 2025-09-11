@@ -8,8 +8,9 @@ classes: home
 <div class="grid-3col content-root">
   <!-- 左欄：TOC 導航 -->
   <aside class="toc">
-    <h3>標籤導航</h3>
+    <h3>快速導航</h3>
     <nav id="toc">
+      <a href="#top" class="toc-link" data-level="1">回到頂部</a>
       {% for big in site.data.tags %}
         {% assign bigtag = big[0] %}
         <a href="#{{ bigtag }}" class="toc-link" data-level="1">{{ bigtag }}</a>
@@ -23,7 +24,7 @@ classes: home
   <!-- 中欄：主要內容 -->
   <div class="maincol">
     <section class="section">
-      <h1>標籤</h1>
+      <h1 id="top">標籤</h1>
       <p class="muted">📂 探索所有標籤分類</p>
       {% comment %}
       根據 _data/tags.yml 的結構，列出每個大類與小類
