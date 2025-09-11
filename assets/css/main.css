@@ -88,12 +88,82 @@ body {
   font-size: 1.1rem;
   margin-bottom: 1rem;
   font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toc-toggle {
+  color: var(--text-2);
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  background: var(--border);
+}
+
+.toc-toggle:hover {
+  background: var(--pri);
+  color: white;
 }
 
 .toc nav {
   display: flex;
   flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* H1 標題項目 */
+.toc-h1-item {
+  position: relative;
+}
+
+.toc-h1-toggle {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background: var(--bg-1);
+  border-left: 3px solid var(--pri);
+}
+
+.toc-h1-toggle:hover {
+  background: rgba(110, 231, 183, 0.1);
+}
+
+.toc-h1-icon {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.2s ease;
+  color: var(--text-2);
+}
+
+.toc-h1-icon.expanded {
+  transform: rotate(90deg);
+}
+
+.toc-h1-text {
+  color: var(--text-1);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* 子項目容器 */
+.toc-children {
+  margin-left: 1rem;
+  border-left: 2px solid var(--border);
+  padding-left: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.toc-children.expanded {
+  max-height: 500px;
 }
 
 .toc-link {
@@ -101,9 +171,11 @@ body {
   text-decoration: none;
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: all 0.2s ease;
   border-left: 3px solid transparent;
+  display: block;
+  margin: 0.1rem 0;
 }
 
 .toc-link:hover,
@@ -114,25 +186,15 @@ body {
 }
 
 .toc-link[data-level="2"] {
-  margin-left: 1rem;
-  font-size: 0.85rem;
-  color: #9ca3af;
-}
-
-.toc-link[data-level="2"]:hover {
-  color: var(--text-2);
-  background: rgba(110, 231, 183, 0.05);
-}
-
-.toc-link[data-level="3"] {
-  margin-left: 2rem;
+  margin-left: 0.5rem;
   font-size: 0.8rem;
   color: #9ca3af;
 }
 
-.toc-link[data-level="3"]:hover {
-  color: var(--text-2);
-  background: rgba(110, 231, 183, 0.05);
+.toc-link[data-level="3"] {
+  margin-left: 1rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
 }
 
 /* ===== 主內容區域 ===== */
