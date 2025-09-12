@@ -76,43 +76,30 @@ classes: grid-page
   </div>
 
   <div class="popular-posts">
-    <h3>🔥 熱門文章</h3>
+    <h3>🔥 推薦文章</h3>
     <div class="horizontal-posts">
-      <article class="post-card">
-        <h4><a href="/人工智能/深度學習/python-data-science/">Python 資料科學入門：從 NumPy 到 Pandas</a></h4>
-        <p class="post-excerpt">Python 已經成為資料科學領域最受歡迎的程式語言之一。本文將介紹 Python 資料科學的核心套件...</p>
-        <div class="post-meta">
-          <span class="post-date">📅 2024-12-01</span>
-          <div class="post-tags">
-            <span class="tag">程式語言</span>
-            <span class="tag">Python</span>
+      {% assign featured_articles = site.collections.articles.docs | sort: 'date' | reverse | limit: 3 %}
+      {% for article in featured_articles %}
+        <article class="post-card">
+          <h4><a href="{{ article.url | relative_url }}">{{ article.title }}</a></h4>
+          {% if article.excerpt %}
+            <p class="post-excerpt">{{ article.excerpt | strip_html | truncatewords: 15 }}</p>
+          {% endif %}
+          <div class="post-meta">
+            <span class="post-date">📅 {{ article.date | default: '2025-01-01' | date: "%Y-%m-%d" }}</span>
+            {% if article.category %}
+              <span class="post-category">{{ article.category }}</span>
+            {% endif %}
+            {% if article.tags and article.tags.size > 0 %}
+              <div class="post-tags">
+                {% for tag in article.tags limit: 2 %}
+                  <span class="tag">{{ tag }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
-        </div>
-      </article>
-
-      <article class="post-card">
-        <h4><a href="/技術/前端/jekyll-blog-guide/">Jekyll 搭建個人博客完整指南</a></h4>
-        <p class="post-excerpt">Jekyll 是一個靜態網站生成器，非常適合用來建立個人博客。本文將詳細介紹如何從零開始搭建...</p>
-        <div class="post-meta">
-          <span class="post-date">📅 2025-01-15</span>
-          <div class="post-tags">
-            <span class="tag">工具</span>
-            <span class="tag">Jekyll</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="post-card">
-        <h4><a href="/人工智能/gnn/hello-world/">建站筆記：Hello, World!</a></h4>
-        <p class="post-excerpt">這是第一篇測試文章。內容可以是你的技術分享、經歷或研究心得...</p>
-        <div class="post-meta">
-          <span class="post-date">📅 2025-09-10</span>
-          <div class="post-tags">
-            <span class="tag">學習</span>
-            <span class="tag">筆記</span>
-          </div>
-        </div>
-      </article>
+        </article>
+      {% endfor %}
     </div>
   </div>
     </section>
@@ -120,18 +107,47 @@ classes: grid-page
 
   <!-- 右欄：側邊資訊 -->
   <aside class="siderail">
-    <div class="card">
-      <div class="card-title">搜尋統計</div>
-      <p class="muted">📊 總共 {{ site.articles.size }} 篇文章</p>
-      <p class="muted">🏷️ {{ site.data.tags.size }} 個標籤</p>
-      <p class="muted">📁 {{ site.data.categories.size }} 個分類</p>
+    <!-- 統計資訊 -->
+    <div class="card stats-card">
+      <h3>📊 搜尋統計</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">{{ site.collections.articles.docs.size }}</div>
+          <div class="stat-label">總文章數</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ site.collections.articles.docs | map: 'category' | uniq | size }}</div>
+          <div class="stat-label">分類數量</div>
+        </div>
+      </div>
     </div>
 
+    <!-- 熱門文章 -->
     <div class="card">
-      <div class="card-title">快速跳轉</div>
-      <div class="pill-group">
-        <a class="pill" href="{{ '/categories.html' | relative_url }}">所有分類</a>
-        <a class="pill" href="{{ '/tags.html' | relative_url }}">所有標籤</a>
+      <h3>🔥 熱門文章</h3>
+      <div class="popular-articles">
+        {% assign recent_articles = site.collections.articles.docs | sort: 'date' | reverse | limit: 5 %}
+        {% for article in recent_articles %}
+          <a href="{{ article.url | relative_url }}" class="popular-article-link">
+            <h4>{{ article.title }}</h4>
+            <div class="article-meta">
+              <span class="article-date">{{ article.date | default: '2025-01-01' | date: "%Y-%m-%d" }}</span>
+              {% if article.category %}
+                <span class="article-category">{{ article.category }}</span>
+              {% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- 快速導航 -->
+    <div class="card">
+      <h3>📝 快速跳轉</h3>
+      <div class="nav-links">
+        <a href="{{ '/categories.html' | relative_url }}" class="nav-link">📂 分類瀏覽</a>
+        <a href="{{ '/tags.html' | relative_url }}" class="nav-link">🏷️ 標籤瀏覽</a>
+        <a href="{{ '/posts.html' | relative_url }}" class="nav-link">📰 全部文章</a>
       </div>
     </div>
   </aside>

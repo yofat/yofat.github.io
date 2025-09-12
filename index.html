@@ -15,35 +15,60 @@ classes: home
 
   <!-- 中欄：主要內容 -->
   <div class="maincol">
-    <!-- Banner 背景區域 -->
-    <div class="hero-banner">
-      <img src="{{ '/assets/image/banner.png' | relative_url }}" 
-           alt="YoFat Banner" 
-           class="banner-image"
-           loading="lazy"
-           decoding="async">
-      <div class="banner-overlay"></div>
-    </div>
-    
-    <!-- Hero 區域 -->
+    <!-- Hero 區域 - 整合 banner 和介紹 -->
     <section class="hero">
-      <div class="hero-content">
-        <h1 id="hero-title">
-          <span>Hi, 我是</span><span>YoFat</span>
-        </h1>
-        <p class="hero-subtitle">網路安全 × 人工智能 × 系統工程</p>
-        <div class="hero-buttons">
-          <a href="{{ '/categories.html' | relative_url }}" class="btn primary">看分類</a>
-          <a href="{{ '/search.html' | relative_url }}" class="btn outline">搜尋文章</a>
-        </div>
-      </div>
-      <div class="hero-image">
-        <img src="{{ '/assets/image/logo.jpg' | relative_url }}" 
-             alt="profile"
+      <div class="hero-background">
+        <img src="{{ '/assets/image/banner.png' | relative_url }}" 
+             alt="YoFat Banner Background" 
+             class="hero-bg-image"
              loading="lazy"
-             decoding="async"
-             width="300"
-             height="300">
+             decoding="async">
+        <div class="hero-overlay"></div>
+      </div>
+      
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 id="hero-title">
+              <span class="hero-greeting">Hi, 我是</span>
+              <span class="hero-name">YoFat</span>
+            </h1>
+            <p class="hero-subtitle">🔐 網路安全 × 🤖 人工智能 × ⚙️ 系統工程</p>
+            <p class="hero-description">專注於資訊安全、AI 技術與系統架構的技術分享</p>
+            <div class="hero-buttons">
+              <a href="{{ '/posts.html' | relative_url }}" class="btn primary">
+                <span class="btn-icon">📚</span>
+                瀏覽文章
+              </a>
+              <a href="{{ '/categories.html' | relative_url }}" class="btn outline">
+                <span class="btn-icon">📂</span>
+                看分類
+              </a>
+              <a href="{{ '/search.html' | relative_url }}" class="btn outline">
+                <span class="btn-icon">🔍</span>
+                搜尋文章
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hero-image">
+          <div class="hero-avatar">
+            <img src="{{ '/assets/image/logo.jpg' | relative_url }}" 
+                 alt="YoFat Profile"
+                 loading="lazy"
+                 decoding="async"
+                 width="200"
+                 height="200">
+          </div>
+          <!-- 技能標籤 -->
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">Security</span>
+            <span class="skill-tag">AI/ML</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -106,11 +131,42 @@ classes: home
     </div>
     
     <div class="card">
-      <div class="card-title">📊 統計</div>
+      <div class="card-title">📊 網站統計</div>
       <div class="stats-compact">
-        <p>📝 {{ site.articles.size }} 篇文章</p>
-        <p>📂 {{ site.categories.size }} 個分類</p>
-        <p>🏷️ {{ site.tags.size }} 個標籤</p>
+        <div class="stat-item">
+          <span class="stat-icon">📝</span>
+          <span class="stat-number">{{ site.articles.size }}</span>
+          <span class="stat-label">篇文章</span>
+        </div>
+        
+        <div class="stat-item">
+          <span class="stat-icon">📂</span>
+          <span class="stat-number">
+            {% assign categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq %}
+            {{ categories.size }}
+          </span>
+          <span class="stat-label">個分類</span>
+        </div>
+        
+        <div class="stat-item">
+          <span class="stat-icon">🏷️</span>
+          <span class="stat-number">
+            {% assign tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq %}
+            {{ tags.size }}
+          </span>
+          <span class="stat-label">個標籤</span>
+        </div>
+        
+        {% if site.articles.size > 0 %}
+        <div class="stat-item latest-post">
+          <span class="stat-icon">🕒</span>
+          <span class="stat-label">最新文章</span>
+          <a href="{{ site.articles.first.url | relative_url }}" class="latest-post-link">
+            {{ site.articles.first.title | truncate: 25 }}
+          </a>
+          <span class="stat-date">{{ site.articles.first.date | date: "%m-%d" }}</span>
+        </div>
+        {% endif %}
       </div>
     </div>
     

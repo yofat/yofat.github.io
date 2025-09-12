@@ -18,45 +18,60 @@ classes: grid-page
   <div class="maincol">
     <section class="section">
       <h1 id="top">標籤</h1>
-      <p class="muted">📂 探索所有標籤分類</p>
-      {% comment %}
-      根據 _data/tags.yml 的結構，列出每個大類與小類
-      文章 frontmatter 用 tags: [大類, 小類]
-      {% endcomment %}
+      <p class="muted">🏷️ 探索所有文章標籤</p>
 
-      {% for big in site.data.tags %}
-        {% assign bigtag = big[0] %}
-        <section class="tag-section">
-          <h2 id="{{ bigtag }}">{{ bigtag }}</h2>
-          {% for small in big[1] %}
-            <div class="tag-group">
-              <h3 id="{{ small }}">{{ small }}</h3>
-              <div class="posts-grid">
-                {% assign posts_in_big = site.posts | where_exp: "p", "p.tags contains bigtag" %}
-                {% assign posts_in_small = posts_in_big | where_exp: "p", "p.tags contains small" %}
-                {% if posts_in_small.size == 0 %}
-                  <div class="empty-notice">
-                    <em>🔍 尚無文章，期待您的貢獻！</em>
-                  </div>
-                {% else %}
-                  {% for p in posts_in_small %}
-                    <article class="post-card">
-                      <div class="post-card-content">
-                        <h4><a href="{{ p.url | relative_url }}">{{ p.title }}</a></h4>
-                        <div class="post-card-meta">
-                          <span class="post-date">{{ p.date | date: "%Y-%m-%d" }}</span>
-                          {% if p.excerpt %}
-                            <p class="post-excerpt">{{ p.excerpt | strip_html | truncatewords: 15 }}</p>
-                          {% endif %}
-                        </div>
+      <!-- 標籤導航 -->
+      <div class="tags-nav">
+        {% assign all_tags = site.collections.articles.docs | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
+        {% for tag in all_tags %}
+          {% unless tag == blank %}
+            <a href="#{{ tag | slugify }}" class="tag-nav-link">{{ tag }}</a>
+          {% endunless %}
+        {% endfor %}
+      </div>
+
+      <!-- 各標籤內容 -->
+      {% for tag in all_tags %}
+        {% unless tag == blank %}
+          {% assign tag_posts = site.collections.articles.docs | where_exp: "doc", "doc.tags contains tag" %}
+          {% if tag_posts.size > 0 %}
+            <section class="tag-section" id="{{ tag | slugify }}">
+              <h2>{{ tag }} <span class="count">({{ tag_posts.size }})</span></h2>
+              
+              <div class="articles-container">
+                {% for article in tag_posts %}
+                  <article class="article-card">
+                    <div class="article-content">
+                      <h3><a href="{{ article.url | relative_url }}">{{ article.title }}</a></h3>
+                      
+                      <div class="article-meta">
+                        <span class="article-date">
+                          {{ article.date | default: '2025-01-01' | date: "%Y年%m月%d日" }}
+                        </span>
+                        
+                        {% if article.category %}
+                          <span class="article-category">{{ article.category }}</span>
+                        {% endif %}
+                        
+                        {% if article.tags and article.tags.size > 0 %}
+                          <div class="article-tags">
+                            {% for tag_item in article.tags %}
+                              <span class="tag">{{ tag_item }}</span>
+                            {% endfor %}
+                          </div>
+                        {% endif %}
                       </div>
-                    </article>
-                  {% endfor %}
-                {% endif %}
+                      
+                      {% if article.excerpt %}
+                        <p class="article-excerpt">{{ article.excerpt | strip_html | truncatewords: 15 }}</p>
+                      {% endif %}
+                    </div>
+                  </article>
+                {% endfor %}
               </div>
-            </div>
-          {% endfor %}
-        </section>
+            </section>
+          {% endif %}
+        {% endunless %}
       {% endfor %}
 
       <div class="back-nav">
@@ -67,33 +82,36 @@ classes: grid-page
 
   <!-- 右欄：側邊資訊 -->
   <aside class="siderail">
-    <div class="card">
-      <div class="card-title">📊 標籤統計</div>
-      <div class="tags-stats">
-        {% assign total_tags = 0 %}
-        {% for big in site.data.tags %}
-          {% assign total_tags = total_tags | plus: big[1].size %}
-        {% endfor %}
-        <p>📊 總共 {{ site.data.tags.size }} 個大分類</p>
-        <p>🏷️ 包含 {{ total_tags }} 個子標籤</p>
-        <p>📝 共 {{ site.articles.size }} 篇文章</p>
+    <!-- 統計資訊 -->
+    <div class="card stats-card">
+      <h3>📊 標籤統計</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">{{ site.collections.articles.docs.size }}</div>
+          <div class="stat-label">總文章數</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ all_tags.size }}</div>
+          <div class="stat-label">標籤數量</div>
+        </div>
       </div>
     </div>
 
+    <!-- 熱門標籤 -->
     <div class="card">
-      <div class="card-title">🔥 熱門標籤</div>
-      <div class="pill-group">
-        {% for big in site.data.tags limit: 6 %}
-          <a class="pill" href="#{{ big[0] }}">{{ big[0] }}</a>
-        {% endfor %}
+      <h3>🏷️ 熱門標籤</h3>
+      <div class="popular-tags">
+        <!-- JavaScript 將動態計算並顯示熱門標籤 -->
       </div>
     </div>
 
+    <!-- 快速導航 -->
     <div class="card">
-      <div class="card-title">📝 快速跳轉</div>
-      <div class="pill-group">
-        <a class="pill" href="{{ '/categories.html' | relative_url }}">所有分類</a>
-        <a class="pill" href="{{ '/search.html' | relative_url }}">搜尋文章</a>
+      <h3>📝 快速跳轉</h3>
+      <div class="nav-links">
+        <a href="{{ '/categories.html' | relative_url }}" class="nav-link">📂 分類瀏覽</a>
+        <a href="{{ '/posts.html' | relative_url }}" class="nav-link">📰 全部文章</a>
+        <a href="{{ '/search.html' | relative_url }}" class="nav-link">🔍 搜尋文章</a>
       </div>
     </div>
   </aside>
@@ -101,7 +119,7 @@ classes: grid-page
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // 標籤頁面的 TOC 生成
+  // 標籤頁面的 TOC 生成和統計數據
   const tocContainer = document.getElementById("toc");
   if (tocContainer) {
     const sections = document.querySelectorAll('h1[id], h2[id], h3[id]');
@@ -221,11 +239,55 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('scroll', requestTick);
     updateActiveTOC();
   }
-});
-</script>
 
-<!-- TOC 功能 -->
-<script>
+  // 統計數據更新 - 從實際文章數據計算
+  const allArticles = document.querySelectorAll('.article-card');
+  const totalArticles = allArticles.length;
+  
+  const tagCount = new Map();
+  allArticles.forEach(article => {
+    const tagsContainer = article.querySelector('.article-tags');
+    if (tagsContainer) {
+      const tags = tagsContainer.querySelectorAll('.tag');
+      tags.forEach(tagElement => {
+        const tag = tagElement.textContent.trim();
+        tagCount.set(tag, (tagCount.get(tag) || 0) + 1);
+      });
+    }
+  });
+  
+  // 更新右欄統計數據
+  const statsElement = document.querySelector('.stats-grid .stat-number');
+  if (statsElement) {
+    statsElement.textContent = totalArticles;
+  }
+  
+  const tagsStatElement = document.querySelectorAll('.stats-grid .stat-number')[1];
+  if (tagsStatElement) {
+    tagsStatElement.textContent = tagCount.size;
+  }
+  
+  // 更新熱門標籤
+  const popularTagsContainer = document.querySelector('.popular-tags');
+  if (popularTagsContainer) {
+    // 清空現有內容
+    popularTagsContainer.innerHTML = '';
+    
+    // 將標籤按使用次數排序
+    const sortedTags = Array.from(tagCount.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8); // 只顯示前8個
+    
+    sortedTags.forEach(([tag, count]) => {
+      const tagLink = document.createElement('a');
+      tagLink.href = '#' + tag.toLowerCase().replace(/\s+/g, '-');
+      tagLink.className = 'tag-link';
+      tagLink.innerHTML = `${tag} <span class="count">(${count})</span>`;
+      popularTagsContainer.appendChild(tagLink);
+    });
+  }
+});
+
 // TOC 收起/展開功能 (全域函式)
 function toggleTOC() {
   const toc = document.getElementById('post-toc');
@@ -257,8 +319,8 @@ document.addEventListener('DOMContentLoaded', function() {
   checkScreenWidth();
   window.addEventListener('resize', checkScreenWidth);
   
-  // TOC 鏈接點擊平滑滾動
-  document.querySelectorAll('#tags-toc a').forEach(link => {
+  // 標籤導航點擊平滑滾動
+  document.querySelectorAll('.tag-nav-link').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const target = document.querySelector(this.getAttribute('href'));
@@ -269,4 +331,3 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
-

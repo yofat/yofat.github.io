@@ -13,7 +13,10 @@ classes: grid-page
 
 <div class="grid-3col content-root">
   <!-- 左欄：HackMD 風格 TOC -->
-  <aside class="toc">
+  <aside class="toc" id="post-toc">
+    <button class="toc-toggle" onclick="toggleTOC()" id="toc-toggle">
+      <span id="toc-icon">☰</span> 目錄
+    </button>
     <h3>大綱</h3>
     <nav id="toc">
       <!-- JavaScript 會根據文章標題自動生成 -->
@@ -155,6 +158,152 @@ classes: grid-page
 // 文章頁面功能
 document.addEventListener('DOMContentLoaded', function() {
   
+  // TOC 生成功能
+  function generateTOC() {
+    const tocContainer = document.getElementById('toc');
+    if (!tocContainer) return;
+    
+    const headings = document.querySelectorAll('.article-content h1, .article-content h2, .article-content h3, .article-content h4');
+    if (headings.length === 0) {
+      // 如果沒有標題，隱藏TOC
+      const tocAside = document.getElementById('post-toc');
+      if (tocAside) tocAside.style.display = 'none';
+      return;
+    }
+    
+    const tocLinks = [];
+    
+    headings.forEach((heading, index) => {
+      // 為標題添加ID（如果沒有）
+      if (!heading.id) {
+        heading.id = 'heading-' + index;
+      }
+      
+      const link = document.createElement('a');
+      link.href = '#' + heading.id;
+      link.textContent = heading.textContent;
+      link.className = 'toc-link';
+      
+      // 根據標題層級設置樣式
+      const level = parseInt(heading.tagName.substring(1));
+      if (level > 1) {
+        link.style.paddingLeft = ((level - 1) * 1) + 'rem';
+        if (level > 2) {
+          link.style.fontSize = '0.85em';
+          link.style.opacity = '0.8';
+        }
+      }
+      
+      tocContainer.appendChild(link);
+      tocLinks.push(link);
+    });
+    
+    // TOC 點擊事件和高亮邏輯
+    let isScrolling = false;
+    
+    tocLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        isScrolling = true;
+        
+        // 移除所有 active 狀態
+        tocLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth"
+          });
+          history.replaceState(null, "", link.getAttribute('href'));
+          
+          setTimeout(() => {
+            isScrolling = false;
+          }, 1500);
+        }
+      });
+    });
+
+    // 滾動時更新活動TOC項目
+    function updateActiveTOC() {
+      if (isScrolling) return;
+      
+      let currentActive = null;
+      const scrollTop = window.pageYOffset + 120;
+      
+      // 從後往前檢查，找到當前應該高亮的區域
+      for (let i = headings.length - 1; i >= 0; i--) {
+        const heading = headings[i];
+        if (heading.offsetTop <= scrollTop) {
+          currentActive = tocLinks[i];
+          break;
+        }
+      }
+      
+      // 如果沒有找到，根據滾動位置決定
+      if (!currentActive) {
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // 如果接近頁面底部，高亮最後一個
+        if (scrollTop + windowHeight >= documentHeight - 200) {
+          currentActive = tocLinks[tocLinks.length - 1];
+        } else {
+          // 否則高亮第一個
+          currentActive = tocLinks[0];
+        }
+      }
+      
+      // 更新高亮
+      tocLinks.forEach(link => link.classList.remove('active'));
+      if (currentActive) {
+        currentActive.classList.add('active');
+      }
+    }
+    
+    let ticking = false;
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveTOC();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+    
+    window.addEventListener('scroll', requestTick);
+    updateActiveTOC();
+  }
+  
+  // TOC 收起/展開功能
+  window.toggleTOC = function() {
+    const toc = document.getElementById('post-toc');
+    const icon = document.getElementById('toc-icon');
+    
+    if (!toc || !icon) return;
+    
+    if (toc.classList.contains('collapsed')) {
+      toc.classList.remove('collapsed');
+      icon.textContent = '☰';
+    } else {
+      toc.classList.add('collapsed');
+      icon.textContent = '▶';
+    }
+  };
+  
+  // 響應式檢查
+  function checkScreenWidth() {
+    const toc = document.getElementById('post-toc');
+    if (window.innerWidth < 1024 && toc) {
+      toc.classList.add('collapsed');
+      const icon = document.getElementById('toc-icon');
+      if (icon) icon.textContent = '▶';
+    }
+  }
+  
   // 複製連結功能
   window.copyToClipboard = function() {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -187,6 +336,11 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', updateProgress, { passive: true });
     window.addEventListener('resize', updateProgress);
   }
+  
+  // 初始化所有功能
+  generateTOC();
+  checkScreenWidth();
+  window.addEventListener('resize', checkScreenWidth);
   
   // 延遲初始化避免布局問題
   setTimeout(initReadingProgress, 100);

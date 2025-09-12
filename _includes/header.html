@@ -3,7 +3,14 @@
     <a class="brand" href="{{ '/' | relative_url }}">
       <img src="{{ '/assets/image/logo_transparent.png' | relative_url }}" 
            alt="YoFat Logo" 
-           class="brand-logo"
+           class="brand-logo light-logo"
+           loading="lazy"
+           decoding="async"
+           width="40"
+           height="40">
+      <img src="{{ '/assets/image/logo_inverted.png' | relative_url }}" 
+           alt="YoFat Logo" 
+           class="brand-logo dark-logo"
            loading="lazy"
            decoding="async"
            width="40"
