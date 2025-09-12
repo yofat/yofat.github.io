@@ -27,6 +27,27 @@
 })();
 
 document.addEventListener("DOMContentLoaded", () => {
+  // === 滾動進度條 ===
+  const progressTop = document.getElementById('scroll-progress-top');
+  const progressBottom = document.getElementById('scroll-progress-bottom');
+  
+  function updateProgress() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrollPercent = (scrollTop / docHeight) * 100;
+    
+    if (progressTop) {
+      progressTop.style.width = scrollPercent + '%';
+    }
+    if (progressBottom) {
+      progressBottom.style.width = scrollPercent + '%';
+      progressBottom.style.opacity = scrollPercent > 10 ? '1' : '0';
+    }
+  }
+  
+  window.addEventListener('scroll', updateProgress);
+  updateProgress();
+
   // === Hero 標題動畫 ===
   const heroSpans = document.querySelectorAll("#hero-title span");
   if (heroSpans.length > 0) {
@@ -39,6 +60,17 @@ document.addEventListener("DOMContentLoaded", () => {
       easing: "easeOutExpo"
     });
   }
+
+  // === 文章連結功能 ===
+  const articleLinks = document.querySelectorAll('.article-link, .btn-primary');
+  articleLinks.forEach(link => {
+    if (link.href && link.href.includes('/posts.html')) {
+      link.addEventListener('click', (e) => {
+        // 確保連結正常工作
+        window.location.href = link.href;
+      });
+    }
+  });
 
   // === TOC 生成（只在文章頁面） ===
   const tocRoot = document.getElementById("toc");
