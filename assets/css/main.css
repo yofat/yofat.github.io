@@ -1005,9 +1005,48 @@ html:not(.light) .logo-image {
   margin: var(--spacing-xxl) 0;
 }
 
+/* 最新文章區域特殊樣式 */
+#latest-posts {
+  position: relative;
+  overflow: hidden;
+}
+
+#latest-posts::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(255, 43, 71, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 40% 60%, rgba(255, 43, 71, 0.02) 0%, transparent 30%);
+  animation: backgroundFloat 20s ease-in-out infinite;
+  z-index: -1;
+}
+
+/* 背景浮動動畫 */
+@keyframes backgroundFloat {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(-2%, -1%) rotate(1deg);
+  }
+  50% {
+    transform: translate(1%, -2%) rotate(-0.5deg);
+  }
+  75% {
+    transform: translate(-1%, 1%) rotate(0.5deg);
+  }
+}
+
 .section-header {
   text-align: center;
   margin-bottom: var(--spacing-xl);
+  position: relative;
+  padding: var(--spacing-lg) 0;
 }
 
 .section-title {
@@ -1016,12 +1055,127 @@ html:not(.light) .logo-image {
   margin: 0 0 var(--spacing-md) 0;
   color: var(--text-primary);
   text-shadow: 0 0 5px rgba(255, 43, 71, 0.3);
+  position: relative;
+  display: inline-block;
+  animation: titlePulse 3s ease-in-out infinite;
+}
+
+/* 火焰圖標動畫 */
+.section-title::before {
+  content: '🔥';
+  position: absolute;
+  left: -3rem;
+  animation: flameFlicker 1.5s ease-in-out infinite alternate;
+  filter: hue-rotate(0deg);
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--primary-red) 20%, 
+    var(--primary-blue) 80%, 
+    transparent 100%);
+  border-radius: 2px;
+  animation: underlineGlow 2s ease-in-out infinite alternate;
 }
 
 .section-description {
   font-size: 1.1rem;
   color: var(--text-secondary);
   margin: 0;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease-out 0.5s forwards;
+  position: relative;
+}
+
+.section-description::before {
+  content: '✨';
+  margin-right: 0.5rem;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+/* 標題脈動動畫 */
+@keyframes titlePulse {
+  0%, 100% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% { 
+    transform: scale(1.02);
+    filter: brightness(1.1);
+  }
+}
+
+/* 火焰閃爍動畫 */
+@keyframes flameFlicker {
+  0% { 
+    transform: rotate(-2deg) scale(1);
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  25% {
+    transform: rotate(1deg) scale(1.05);
+    filter: hue-rotate(10deg) brightness(1.1);
+  }
+  50% {
+    transform: rotate(-1deg) scale(1.02);
+    filter: hue-rotate(-5deg) brightness(1.05);
+  }
+  75% {
+    transform: rotate(2deg) scale(1.03);
+    filter: hue-rotate(8deg) brightness(1.08);
+  }
+  100% { 
+    transform: rotate(-2deg) scale(1);
+    filter: hue-rotate(0deg) brightness(1);
+  }
+}
+
+/* 底線發光動畫 */
+@keyframes underlineGlow {
+  0% {
+    box-shadow: 0 0 5px rgba(255, 43, 71, 0.5);
+    opacity: 0.7;
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
+    opacity: 1;
+  }
+}
+
+/* 文字淡入向上動畫 */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 星星閃爍動畫 */
+@keyframes sparkle {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.7;
+  }
+  25% {
+    transform: scale(1.2) rotate(90deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.8) rotate(180deg);
+    opacity: 0.8;
+  }
+  75% {
+    transform: scale(1.1) rotate(270deg);
+    opacity: 1;
+  }
 }
 
 .section-footer {
@@ -1053,6 +1207,26 @@ html:not(.light) .logo-image {
   display: flex;
   flex-direction: column;
   min-height: 180px;
+  
+  /* 進入動畫 */
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  animation: cardSlideIn 0.8s ease-out forwards;
+}
+
+.article-card:nth-child(1) { animation-delay: 0.1s; }
+.article-card:nth-child(2) { animation-delay: 0.2s; }
+.article-card:nth-child(3) { animation-delay: 0.3s; }
+.article-card:nth-child(4) { animation-delay: 0.4s; }
+.article-card:nth-child(5) { animation-delay: 0.5s; }
+.article-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* 文章卡片進入動畫 */
+@keyframes cardSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .article-card::before {
