@@ -47,6 +47,10 @@ classes: home three-column
   <main class="main-content">
     <!-- Hero 區域 -->
     <section class="hero-section" id="hero">
+      <div class="hero-background">
+        <img src="/assets/image/banner.png" alt="Hero Background" class="hero-bg-image">
+        <div class="hero-overlay"></div>
+      </div>
       <div class="hero-container">
         <div class="hero-content">
           <div class="hero-text">
@@ -94,76 +98,88 @@ classes: home three-column
       <div class="articles-grid">
         <!-- 示例文章卡片 -->
         <article class="article-card">
-          <div class="article-header">
-            <h3 class="article-title">
-              <a href="/posts.html">Git完整教學指南</a>
-            </h3>
-            <div class="article-meta">
-              <span class="article-date">📅 2025-01-17</span>
-              <span class="article-category">教學</span>
+          <div class="article-content">
+            <div class="article-header">
+              <h3 class="article-title">
+                <a href="/posts.html">Git完整教學指南</a>
+              </h3>
+              <div class="article-meta">
+                <span class="article-date">📅 2025-01-17</span>
+                <span class="article-category">教學</span>
+              </div>
+            </div>
+            
+            <div class="article-excerpt">
+              從基礎到進階，完整學習Git版本控制系統的使用方法，包含分支管理、衝突解決、協作開發等實用技巧...
+            </div>
+            
+            <div class="article-footer">
+              <div class="article-tags">
+                <span class="article-tag">Git</span>
+                <span class="article-tag">版本控制</span>
+                <span class="article-tag">教學</span>
+              </div>
             </div>
           </div>
-          
-          <div class="article-excerpt">
-            從基礎到進階，完整學習Git版本控制系統的使用方法，包含分支管理、衝突解決、協作開發等實用技巧...
-          </div>
-          
-          <div class="article-footer">
-            <div class="article-tags">
-              <span class="article-tag">Git</span>
-              <span class="article-tag">版本控制</span>
-              <span class="article-tag">教學</span>
-            </div>
+          <div class="article-action">
             <a href="/posts.html" class="btn btn-outline">閱讀更多</a>
           </div>
         </article>
         
         <article class="article-card">
-          <div class="article-header">
-            <h3 class="article-title">
-              <a href="/posts.html">Python資料科學入門</a>
-            </h3>
-            <div class="article-meta">
-              <span class="article-date">📅 2024-12-01</span>
-              <span class="article-category">程式語言</span>
+          <div class="article-content">
+            <div class="article-header">
+              <h3 class="article-title">
+                <a href="/posts.html">Python資料科學入門</a>
+              </h3>
+              <div class="article-meta">
+                <span class="article-date">📅 2024-12-01</span>
+                <span class="article-category">程式語言</span>
+              </div>
+            </div>
+            
+            <div class="article-excerpt">
+              使用Python進行資料分析和機器學習的完整指南，涵蓋pandas、numpy、matplotlib等重要套件的使用...
+            </div>
+            
+            <div class="article-footer">
+              <div class="article-tags">
+                <span class="article-tag">Python</span>
+                <span class="article-tag">資料科學</span>
+                <span class="article-tag">機器學習</span>
+              </div>
             </div>
           </div>
-          
-          <div class="article-excerpt">
-            使用Python進行資料分析和機器學習的完整指南，涵蓋pandas、numpy、matplotlib等重要套件的使用...
-          </div>
-          
-          <div class="article-footer">
-            <div class="article-tags">
-              <span class="article-tag">Python</span>
-              <span class="article-tag">資料科學</span>
-              <span class="article-tag">機器學習</span>
-            </div>
+          <div class="article-action">
             <a href="/posts.html" class="btn btn-outline">閱讀更多</a>
           </div>
         </article>
         
         <article class="article-card">
-          <div class="article-header">
-            <h3 class="article-title">
-              <a href="/posts.html">JavaScript進階技巧</a>
-            </h3>
-            <div class="article-meta">
-              <span class="article-date">📅 2025-01-16</span>
-              <span class="article-category">程式語言</span>
+          <div class="article-content">
+            <div class="article-header">
+              <h3 class="article-title">
+                <a href="/posts.html">JavaScript進階技巧</a>
+              </h3>
+              <div class="article-meta">
+                <span class="article-date">📅 2025-01-16</span>
+                <span class="article-category">程式語言</span>
+              </div>
+            </div>
+            
+            <div class="article-excerpt">
+              深入探討JavaScript的進階概念，包含閉包、原型鏈、異步編程等核心主題的詳細解析...
+            </div>
+            
+            <div class="article-footer">
+              <div class="article-tags">
+                <span class="article-tag">JavaScript</span>
+                <span class="article-tag">前端開發</span>
+                <span class="article-tag">進階</span>
+              </div>
             </div>
           </div>
-          
-          <div class="article-excerpt">
-            深入探討JavaScript的進階概念，包含閉包、原型鏈、異步編程等核心主題的詳細解析...
-          </div>
-          
-          <div class="article-footer">
-            <div class="article-tags">
-              <span class="article-tag">JavaScript</span>
-              <span class="article-tag">前端開發</span>
-              <span class="article-tag">進階</span>
-            </div>
+          <div class="article-action">
             <a href="/posts.html" class="btn btn-outline">閱讀更多</a>
           </div>
         </article>
@@ -299,39 +315,48 @@ classes: home three-column
   <!-- 右欄：精簡資訊 -->
   <aside class="right-sidebar">
     <div class="sidebar-content">
+      <!-- 個人資訊卡片 -->
       <div class="info-card">
-        <h3 class="card-title">📊 統計數據</h3>
+        <div class="profile-section">
+          <img src="/assets/image/logo_inverted.png" 
+               alt="YoFat Avatar" 
+               class="profile-avatar">
+          <h3 class="profile-name">YoFat</h3>
+          <p class="profile-title">Security Researcher</p>
+        </div>
+      </div>
+      
+      <div class="info-card">
+        <h3 class="card-title">📊 統計</h3>
         <div class="stats-compact">
-          <div class="stat-item">
-            <span class="stat-number">25</span>
-            <span class="stat-label">篇文章</span>
+          <div class="stat-row">
+            <span class="stat-icon">📝</span>
+            <span class="stat-text">25 篇文章</span>
           </div>
-          
-          <div class="stat-item">
-            <span class="stat-number">8</span>
-            <span class="stat-label">個分類</span>
+          <div class="stat-row">
+            <span class="stat-icon">📂</span>
+            <span class="stat-text">8 個分類</span>
           </div>
-          
-          <div class="stat-item">
-            <span class="stat-number">42</span>
-            <span class="stat-label">個標籤</span>
+          <div class="stat-row">
+            <span class="stat-icon">🏷️</span>
+            <span class="stat-text">42 個標籤</span>
           </div>
         </div>
       </div>
       
       <div class="info-card">
-        <h3 class="card-title">🚀 快速鏈接</h3>
-        <div class="quick-links">
-          <a href="/posts.html" class="quick-link">📝 所有文章</a>
-          <a href="/categories.html" class="quick-link">📂 分類瀏覽</a>
-          <a href="/search.html" class="quick-link">🔍 搜尋功能</a>
+        <h3 class="card-title">🚀 鏈接</h3>
+        <div class="quick-links-compact">
+          <a href="/posts.html" class="quick-link-compact">📝 文章</a>
+          <a href="/categories.html" class="quick-link-compact">📂 分類</a>
+          <a href="/search.html" class="quick-link-compact">🔍 搜尋</a>
         </div>
       </div>
       
       <div class="info-card">
         <h3 class="card-title">⭐ GitHub</h3>
         <div class="github-section">
-          <a class="btn btn-secondary" 
+          <a class="btn btn-secondary btn-compact" 
              href="https://github.com/yofat/yofat.github.io"
              target="_blank"
              rel="noopener">
