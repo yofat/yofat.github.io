@@ -2263,3 +2263,26 @@ pre code {
     padding: 4px 8px;
   }
 }
+
+/* 標籤雲大小樣式 */
+.tag-cloud-item.tag-sm {
+  font-size: 0.9rem !important;
+  opacity: 0.7;
+}
+
+.tag-cloud-item.tag-md {
+  font-size: 1.1rem !important;
+  opacity: 0.8;
+}
+
+.tag-cloud-item.tag-lg {
+  font-size: 1.3rem !important;
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.tag-cloud-item.tag-xl {
+  font-size: 1.6rem !important;
+  opacity: 1;
+  font-weight: 700;
+}
