@@ -178,7 +178,12 @@ classes: post-page
       <!-- 相關文章 -->
       {% if page.categories.size > 0 %}
         {% assign category = page.categories.first %}
-        {% assign related_posts = site.articles | where_exp: "article", "article.categories contains page.categories.first and article.url != page.url" | limit: 5 %}
+        {% assign related_posts = "" | split: "," %}
+        {% for article in site.articles %}
+          {% if article.categories contains category and article.url != page.url and related_posts.size < 5 %}
+            {% assign related_posts = related_posts | push: article %}
+          {% endif %}
+        {% endfor %}
         {% if related_posts.size > 0 %}
         <div class="sidebar-card">
           <h3 class="card-title">📂 相關威脅</h3>
