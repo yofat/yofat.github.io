@@ -47,47 +47,35 @@ classes: home three-column
   <main class="main-content">
     <!-- Hero 區域 -->
     <section class="hero-section" id="hero">
-      <div class="hero-background">
-        <img src="{{ '/assets/image/banner.png' | relative_url }}" 
-             alt="YoFat Banner Background" 
-             class="hero-bg-image"
-             loading="lazy"
-             decoding="async">
-        <div class="hero-overlay"></div>
-      </div>
-      
       <div class="hero-container">
         <div class="hero-content">
           <div class="hero-text">
             <h1 class="hero-title">
-              <span class="hero-greeting">Hi, 我是</span>
-              <span class="hero-name glow-effect">YOFAT</span>
+              <span class="hero-greeting">Hello, I'm</span>
+              <span class="hero-name">YOFAT</span>
             </h1>
-            <p class="hero-subtitle">🔐 網路安全 × 🤖 人工智能 × ⚔️ 紅藍對抗</p>
-            <p class="hero-description">專注於資訊安全、AI 技術與攻防技術的邪氣分享</p>
+            <p class="hero-subtitle">🔐 Cybersecurity × 🤖 AI × ⚔️ Red Team</p>
+            <p class="hero-description">專注於資訊安全、人工智能與攻防技術的學習分享</p>
             <div class="hero-buttons">
               <a href="{{ '/posts.html' | relative_url }}" class="btn btn-primary">
-                <span class="btn-icon">📚</span>
-                瀏覽文章
+                開始探索
               </a>
-              <a href="{{ '/categories.html' | relative_url }}" class="btn btn-secondary">
-                <span class="btn-icon">📂</span>
-                看分類
-              </a>
-              <a href="{{ '/search.html' | relative_url }}" class="btn btn-accent">
-                <span class="btn-icon">🔍</span>
-                搜尋文章
+              <a href="{{ '/explore.html' | relative_url }}" class="btn btn-outline">
+                了解更多
               </a>
             </div>
           </div>
-          <div class="hero-image">
+          <div class="hero-visual">
             <div class="hero-avatar">
               <img src="{{ '/assets/image/logo.jpg' | relative_url }}" 
                    alt="YoFat Profile"
                    loading="lazy"
-                   decoding="async"
-                   width="200"
-                   height="200">
+                   decoding="async">
+            </div>
+            <div class="floating-elements">
+              <div class="floating-item">🔒</div>
+              <div class="floating-item">🤖</div>
+              <div class="floating-item">⚡</div>
             </div>
           </div>
         </div>
@@ -99,7 +87,7 @@ classes: home three-column
     <!-- 最新文章區域 -->
     <section id="latest-posts" class="content-section">
       <div class="section-header">
-        <h2 class="section-title glow-effect">🔥 最新文章</h2>
+        <h2 class="section-title">🔥 最新文章</h2>
         <p class="section-description">探索最新的技術分享與學習心得</p>
       </div>
       
@@ -143,74 +131,45 @@ classes: home three-column
 
     <div class="content-divider"></div>
 
-    <!-- 分類概覽 -->
-    <section id="categories-overview" class="content-section">
+    <!-- 快速導航 -->
+    <section id="quick-nav-section" class="quick-nav-section">
       <div class="section-header">
-        <h2 class="section-title glow-effect">📂 內容分類</h2>
-        <p class="section-description">按主題瀏覽不同類型的技術內容</p>
+        <h2 class="section-title">� 快速導航</h2>
+        <p class="section-description">快速找到你感興趣的內容</p>
       </div>
       
-      <div class="categories-grid">
-        {% assign sorted_categories = site.data.categories %}
-        {% for category_data in sorted_categories %}
-          {% assign category_name = category_data[0] %}
-          {% assign category_info = category_data[1] %}
-          {% assign category_posts = site.articles | where_exp: "post", "post.categories contains category_name" %}
-          
-          <div class="category-card">
-            <div class="category-icon">
-              {% case category_name %}
-                {% when '人工智能' %}🤖
-                {% when '程式語言' %}💻
-                {% when '網頁開發' %}🌐
-                {% when '生活分享' %}🌱
-                {% when '教學' %}📖
-                {% when '功能項目' %}⚙️
-                {% when '工具分享' %}🛠️
-                {% when '心得筆記' %}💭
-                {% else %}📄
-              {% endcase %}
-            </div>
-            <h3 class="category-title">{{ category_name }}</h3>
-            <p class="category-count">{{ category_posts.size }} 篇文章</p>
-            <div class="category-topics">
-              {% for topic in category_info limit:3 %}
-                <span class="category-topic">{{ topic }}</span>
-              {% endfor %}
-            </div>
-            <a href="{{ '/categories.html' | relative_url }}#{{ category_name }}" class="btn btn-outline">探索</a>
+      <div class="nav-grid">
+        <a href="{{ '/explore.html' | relative_url }}" class="nav-card-link">
+          <div class="nav-card-large">
+            <div class="nav-icon">🔍</div>
+            <h3>探索內容</h3>
+            <p>瀏覽分類和了解作者</p>
           </div>
-        {% endfor %}
-      </div>
-    </section>
-
-    <div class="content-divider"></div>
-
-    <!-- 關於我區域 -->
-    <section id="about-me" class="content-section">
-      <div class="section-header">
-        <h2 class="section-title glow-effect">💀 關於駭客</h2>
-        <p class="section-description">一個在網路安全與AI領域探索的邪氣學習者</p>
-      </div>
-      
-      <div class="about-content">
-        <div class="about-text">
-          <p>🔥 我是 <strong class="highlight-text">YOFAT</strong>，正在深入學習網路安全與人工智能技術。</p>
-          <p>⚔️ 專注於紅隊攻擊技術、藍隊防禦策略，以及AI在資安領域的應用。</p>
-          <p>💭 透過實戰經驗和技術研究，將學習成果記錄在這個被污染的數位空間中。</p>
-        </div>
+        </a>
         
-        <div class="skills-showcase">
-          <h4 class="skills-title">🛠️ 技術棧</h4>
-          <div class="skills-grid">
-            <span class="skill-tag python">🐍 Python</span>
-            <span class="skill-tag js">⚡ JavaScript</span>
-            <span class="skill-tag security">🔒 滲透測試</span>
-            <span class="skill-tag ai">🤖 機器學習</span>
-            <span class="skill-tag web">🌐 網頁開發</span>
-            <span class="skill-tag crypto">🔐 密碼學</span>
+        <a href="{{ '/categories.html' | relative_url }}" class="nav-card-link">
+          <div class="nav-card-large">
+            <div class="nav-icon">📂</div>
+            <h3>分類瀏覽</h3>
+            <p>按主題查找文章</p>
           </div>
-        </div>
+        </a>
+        
+        <a href="{{ '/tags.html' | relative_url }}" class="nav-card-link">
+          <div class="nav-card-large">
+            <div class="nav-icon">🏷️</div>
+            <h3>標籤雲</h3>
+            <p>按標籤篩選內容</p>
+          </div>
+        </a>
+        
+        <a href="{{ '/search.html' | relative_url }}" class="nav-card-link">
+          <div class="nav-card-large">
+            <div class="nav-icon">🔍</div>
+            <h3>搜尋功能</h3>
+            <p>快速找到特定內容</p>
+          </div>
+        </a>
       </div>
     </section>
   </main>
@@ -219,69 +178,49 @@ classes: home three-column
   <aside class="right-sidebar">
     <div class="sidebar-content">
       <div class="info-card">
-        <h3 class="card-title">📊 網站統計</h3>
-        <div class="stats-list">
+        <h3 class="card-title">📊 統計數據</h3>
+        <div class="stats-compact">
           <div class="stat-item">
-            <span class="stat-icon">📝</span>
-            <div class="stat-info">
-              <span class="stat-number">{{ site.articles.size }}</span>
-              <span class="stat-label">篇文章</span>
-            </div>
+            <span class="stat-number">{{ site.articles.size }}</span>
+            <span class="stat-label">篇文章</span>
           </div>
           
           <div class="stat-item">
-            <span class="stat-icon">📂</span>
-            <div class="stat-info">
-              <span class="stat-number">
-                {% assign categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq %}
-                {{ categories.size }}
-              </span>
-              <span class="stat-label">個分類</span>
-            </div>
+            <span class="stat-number">
+              {% assign categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq %}
+              {{ categories.size }}
+            </span>
+            <span class="stat-label">個分類</span>
           </div>
           
           <div class="stat-item">
-            <span class="stat-icon">🏷️</span>
-            <div class="stat-info">
-              <span class="stat-number">
-                {% assign tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq %}
-                {{ tags.size }}
-              </span>
-              <span class="stat-label">個標籤</span>
-            </div>
+            <span class="stat-number">
+              {% assign tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq %}
+              {{ tags.size }}
+            </span>
+            <span class="stat-label">個標籤</span>
           </div>
         </div>
       </div>
       
       <div class="info-card">
-        <h3 class="card-title">🚀 最新動態</h3>
-        <div class="recent-posts">
-          {% for post in site.articles limit:5 %}
-            <article class="recent-post">
-              <a href="{{ post.url | relative_url }}" class="recent-post-link">
-                <h4 class="recent-post-title">{{ post.title | truncate: 30 }}</h4>
-                <div class="recent-post-meta">
-                  <span class="recent-post-date">{{ post.date | date: "%m-%d" }}</span>
-                  {% if post.categories.size > 0 %}
-                    <span class="recent-post-category">{{ post.categories | first }}</span>
-                  {% endif %}
-                </div>
-              </a>
-            </article>
-          {% endfor %}
+        <h3 class="card-title">🚀 快速鏈接</h3>
+        <div class="quick-links">
+          <a href="{{ '/posts.html' | relative_url }}" class="quick-link">📝 所有文章</a>
+          <a href="{{ '/categories.html' | relative_url }}" class="quick-link">📂 分類瀏覽</a>
+          <a href="{{ '/search.html' | relative_url }}" class="quick-link">🔍 搜尋功能</a>
         </div>
       </div>
       
       <div class="info-card">
-        <h3 class="card-title">⭐ 源碼庫</h3>
+        <h3 class="card-title">⭐ GitHub</h3>
         <div class="github-section">
-          <p class="github-description">這個被污染的數位堡壘的源碼</p>
           <a class="btn btn-secondary" 
              href="https://github.com/{{ site.github_owner }}/{{ site.github_repo }}"
              target="_blank"
              rel="noopener">
             <span class="btn-icon">⭐</span>
-            Star on GitHub
+            Star
           </a>
         </div>
       </div>
@@ -336,8 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (tocContainer) {
     const tocItems = [
       { href: '#latest-posts', text: '🔥 最新文章' },
-      { href: '#categories-overview', text: '📂 內容分類' },
-      { href: '#about-me', text: '💀 關於駭客' }
+      { href: '#quick-nav-section', text: '� 快速導航' }
     ];
 
     tocItems.forEach(item => {
