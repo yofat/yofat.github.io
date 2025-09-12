@@ -302,6 +302,23 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleBtn.addEventListener("click", () => {
       document.documentElement.classList.toggle("light");
       toggleBtn.textContent = document.documentElement.classList.contains("light") ? "☀️" : "🌙";
+      
+      // 切換右欄頭像
+      updateProfileAvatar();
     });
   }
+  
+  // 初始化時設置正確的頭像
+  updateProfileAvatar();
 });
+
+// 更新個人頭像根據主題
+function updateProfileAvatar() {
+  const profileAvatar = document.getElementById("profile-avatar");
+  if (profileAvatar) {
+    const isLightTheme = document.documentElement.classList.contains("light");
+    profileAvatar.src = isLightTheme 
+      ? "/assets/image/logo_transparent.png" 
+      : "/assets/image/logo_inverted.png";
+  }
+}

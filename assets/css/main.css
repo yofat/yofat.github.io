@@ -371,15 +371,6 @@ body.light-theme {
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Light theme 中的頭像圖片切換 */
-body.light-theme .profile-avatar {
-  content: url('/assets/image/logo.jpg');
-}
-
-body:not(.light-theme) .profile-avatar {
-  content: url('/assets/image/logo_inverted.png');
-}
-
 /* Light theme 中的 Logo 切換 */
 body.light-theme .logo-image {
   content: url('/assets/image/logo.png');
@@ -673,32 +664,6 @@ body:not(.light-theme) .logo-image {
   margin: 0;
 }
 
-/* ====================================
-   🖼️ 區域裝飾圖片
-   ==================================== */
-
-.section-visual {
-  text-align: center;
-  margin: var(--spacing-xl) 0;
-}
-
-.section-banner {
-  max-width: 400px;
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius-lg);
-  opacity: 0.8;
-  transition: all var(--duration-normal) ease;
-  border: 2px solid var(--border);
-}
-
-.section-banner:hover {
-  opacity: 1;
-  transform: scale(1.02);
-  border-color: var(--blood-red);
-  box-shadow: 0 10px 30px rgba(255, 43, 71, 0.2);
-}
-
 .section-footer {
   text-align: center;
   margin-top: var(--spacing-xl);
@@ -976,64 +941,6 @@ body:not(.light-theme) .logo-image {
 
 .github-section {
   text-align: center;
-}
-
-/* ====================================
-   🧭 快速導航卡片
-   ==================================== */
-
-.quick-nav-section {
-  margin-bottom: var(--spacing-xxl);
-}
-
-.nav-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-lg);
-}
-
-.nav-card-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.nav-card-large {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-xl);
-  text-align: center;
-  transition: all var(--duration-normal) ease;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.nav-card-large:hover {
-  border-color: var(--corrupt-blue);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
-}
-
-.nav-card-large .nav-icon {
-  font-size: 3rem;
-  margin-bottom: var(--spacing-md);
-  opacity: 0.8;
-}
-
-.nav-card-large h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 0 0 var(--spacing-sm) 0;
-  color: var(--text-primary);
-}
-
-.nav-card-large p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin: 0;
 }
 
 /* ====================================

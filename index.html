@@ -260,55 +260,6 @@ classes: home three-column
         </a>
       </div>
     </section>
-
-    <!-- 快速導航 -->
-    <section id="quick-nav-section" class="quick-nav-section">
-      <div class="section-header">
-        <h2 class="section-title">🚀 快速導航</h2>
-        <p class="section-description">快速找到你感興趣的內容</p>
-      </div>
-      
-      <!-- 裝飾性圖片 -->
-      <div class="section-visual">
-        <img src="/assets/image/banner.png" 
-             alt="Navigation Banner" 
-             class="section-banner">
-      </div>
-      
-      <div class="nav-grid">
-        <a href="/explore.html" class="nav-card-link">
-          <div class="nav-card-large">
-            <div class="nav-icon">🔍</div>
-            <h3>探索內容</h3>
-            <p>瀏覽分類和了解作者</p>
-          </div>
-        </a>
-        
-        <a href="/categories.html" class="nav-card-link">
-          <div class="nav-card-large">
-            <div class="nav-icon">📂</div>
-            <h3>分類瀏覽</h3>
-            <p>按主題查找文章</p>
-          </div>
-        </a>
-        
-        <a href="/tags.html" class="nav-card-link">
-          <div class="nav-card-large">
-            <div class="nav-icon">🏷️</div>
-            <h3>標籤雲</h3>
-            <p>按標籤篩選內容</p>
-          </div>
-        </a>
-        
-        <a href="/search.html" class="nav-card-link">
-          <div class="nav-card-large">
-            <div class="nav-icon">🔍</div>
-            <h3>搜尋功能</h3>
-            <p>快速找到特定內容</p>
-          </div>
-        </a>
-      </div>
-    </section>
   </main>
 
   <!-- 右欄：精簡資訊 -->
@@ -319,7 +270,8 @@ classes: home three-column
         <div class="profile-section">
           <img src="/assets/image/logo_inverted.png" 
                alt="YoFat Avatar" 
-               class="profile-avatar">
+               class="profile-avatar"
+               id="profile-avatar">
           <h3 class="profile-name">YoFat</h3>
           <p class="profile-title">Security Researcher</p>
         </div>
@@ -349,19 +301,6 @@ classes: home three-column
           <a href="/posts.html" class="quick-link-compact">📝 文章</a>
           <a href="/categories.html" class="quick-link-compact">📂 分類</a>
           <a href="/search.html" class="quick-link-compact">🔍 搜尋</a>
-        </div>
-      </div>
-      
-      <div class="info-card">
-        <h3 class="card-title">⭐ GitHub</h3>
-        <div class="github-section">
-          <a class="btn btn-secondary btn-compact" 
-             href="https://github.com/yofat/yofat.github.io"
-             target="_blank"
-             rel="noopener">
-            <span class="btn-icon">⭐</span>
-            Star
-          </a>
         </div>
       </div>
     </div>
@@ -418,8 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const tocContainer = document.getElementById("toc");
   if (tocContainer) {
     const tocItems = [
-      { href: '#latest-posts', text: '🔥 最新文章' },
-      { href: '#quick-nav-section', text: '🚀 快速導航' }
+      { href: '#latest-posts', text: '🔥 最新文章' }
     ];
 
     tocItems.forEach(item => {
@@ -496,18 +434,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // 為文章卡片添加懸停效果
   const articleCards = document.querySelectorAll('.article-card');
   articleCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      card.style.transform = 'translateY(-4px)';
-    });
-    
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'translateY(0)';
-    });
-  });
-  
-  // 為導航卡片添加懸停效果
-  const navCards = document.querySelectorAll('.nav-card-large');
-  navCards.forEach(card => {
     card.addEventListener('mouseenter', () => {
       card.style.transform = 'translateY(-4px)';
     });
