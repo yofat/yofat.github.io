@@ -361,10 +361,49 @@ html.light .profile-avatar {
 }
 
 /* ====================================
+   🌞 主題切換按鈕
+   ==================================== */
+
+.theme-toggle-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
+}
+
+.theme-toggle-btn {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all var(--duration-normal) ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  transform: scale(1.1) rotate(10deg);
+  box-shadow: 0 4px 15px rgba(255, 43, 71, 0.3);
+}
+
+.theme-toggle-text {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ====================================
    🌞 Light Theme 亮色主題
    ==================================== */
 
-body.light-theme {
+html.light {
   --bg-primary: #ffffff;
   --bg-secondary: #f8f9fa;
   --bg-tertiary: #ffffff;
@@ -379,11 +418,11 @@ body.light-theme {
 }
 
 /* Light theme 中的 Logo 切換 */
-body.light-theme .logo-image {
+html.light .logo-image {
   content: url('/assets/image/logo.png');
 }
 
-body:not(.light-theme) .logo-image {
+html:not(.light) .logo-image {
   content: url('/assets/image/logo_transparent.png');
 }
 

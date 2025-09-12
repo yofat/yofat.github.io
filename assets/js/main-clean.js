@@ -43,13 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // === TOC 生成（只在文章頁面） ===
   const tocRoot = document.getElementById("toc");
   const scope = document.querySelector(".main-content");
-  const isPostPage = document.body.classList.contains('post-page') || document.querySelector('article.post-content') || document.body.classList.contains('layout-post');
-  
-  // 首頁隱藏 TOC，顯示簡單導航
-  if (tocRoot && !isPostPage) {
-    tocRoot.innerHTML = '<div class="home-nav"><h4>🏠 首頁導航</h4><p>瀏覽最新文章和精選內容</p></div>';
-    return;
-  }
+  const isPostPage = document.body.classList.contains('grid-page') || document.querySelector('article.post-article');
   
   if (tocRoot && scope && isPostPage) {
     const headings = scope.querySelectorAll("article h1, article h2, article h3, .post-content h1, .post-content h2, .post-content h3");

@@ -1,7 +1,27 @@
-// YoFat's Blog - Main JavaScript
-// 簡潔乾淨的主要功能
+// --- anime.js hero 動畫 + 粒子 ---
+document.addEventListener('DOMContentLoaded', () => {
+  const title = document.getElementById('hero-title');
+  if (title) {
+    anime({ targets: '#hero-title', translateY: [-12, 0], opacity: [0,1], duration: 1200, easing: 'easeOutExpo' });
+  }
+  const canvas = document.getElementById('hero-particles');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width = canvas.offsetWidth, h = canvas.height;
+    const dots = Array.from({length: 60}, ()=>({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*2+0.5, vx:(Math.random()-0.5)*0.6, vy:(Math.random()-0.5)*0.6 }));
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      dots.forEach(d=>{
+        d.x+=d.vx; d.y+=d.vy;
+        if(d.x<0||d.x>w) d.vx*=-1; if(d.y<0||d.y>h) d.vy*=-1;
+        ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,Math.PI*2); ctx.fillStyle='rgba(110,231,183,0.6)'; ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    } draw();
+  }
+});
 
-// === 計數器功能 ===
+// --- 免費 countapi：總站與每篇文章計數 ---
 (function(){
   const NAMESPACE = (window.__COUNT_NS__) || (location.hostname || 'localhost');
   function hit(key){
@@ -27,11 +47,11 @@
 })();
 
 document.addEventListener("DOMContentLoaded", () => {
-  // === Hero 標題動畫 ===
-  const heroSpans = document.querySelectorAll("#hero-title span");
-  if (heroSpans.length > 0) {
+  // Hero title animation: 每個 span 逐一淡入
+  const spans = document.querySelectorAll("#hero-title span");
+  if (spans.length > 0) {
     anime({
-      targets: heroSpans,
+      targets: spans,
       opacity: [0, 1],
       translateY: [30, 0],
       delay: anime.stagger(200),
@@ -40,72 +60,60 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === TOC 生成（只在文章頁面） ===
+  // === 自動產生 HackMD 風格的可折疊 TOC（只在文章頁面） ===
   const tocRoot = document.getElementById("toc");
-  const scope = document.querySelector(".main-content");
-  const isPostPage = document.body.classList.contains('post-page') || document.querySelector('article.post-content') || document.body.classList.contains('layout-post');
-  
-  // 首頁隱藏 TOC，顯示簡單導航
-  if (tocRoot && !isPostPage) {
-    tocRoot.innerHTML = '<div class="home-nav"><h4>🏠 首頁導航</h4><p>瀏覽最新文章和精選內容</p></div>';
-    return;
-  }
+  const scope = document.querySelector(".maincol");
+  const isPostPage = document.body.classList.contains('grid-page') || document.querySelector('article.post-article');
   
   if (tocRoot && scope && isPostPage) {
     const headings = scope.querySelectorAll("article h1, article h2, article h3, .post-content h1, .post-content h2, .post-content h3");
+    const ids = new Set();
     
-    if (headings.length === 0) {
-      tocRoot.innerHTML = '<p class="toc-empty">本文暂无目录</p>';
-      return;
+    // 創建全部展開/收縮按鈕
+    const tocHeader = tocRoot.parentElement.querySelector("h3");
+    if (tocHeader) {
+      const toggleAll = document.createElement("span");
+      toggleAll.className = "toc-toggle";
+      toggleAll.textContent = "全部展開";
+      toggleAll.addEventListener("click", () => {
+        const isExpanded = toggleAll.textContent === "全部收縮";
+        const h1Items = tocRoot.querySelectorAll(".toc-h1-item");
+        h1Items.forEach(item => {
+          const children = item.querySelector(".toc-children");
+          const icon = item.querySelector(".toc-h1-icon");
+          if (isExpanded) {
+            children.classList.remove("expanded");
+            icon.classList.remove("expanded");
+          } else {
+            children.classList.add("expanded");
+            icon.classList.add("expanded");
+          }
+        });
+        toggleAll.textContent = isExpanded ? "全部展開" : "全部收縮";
+      });
+      tocHeader.appendChild(toggleAll);
     }
-
-    // 為標題添加 ID
-    headings.forEach((heading, index) => {
-      if (!heading.id) {
-        heading.id = `heading-${index}`;
-      }
-    });
-
-    // 創建 TOC 標題
-    const tocHeader = document.createElement("div");
-    tocHeader.className = "toc-header";
-    tocHeader.innerHTML = '<h4 class="toc-title">📖 文章目錄</h4>';
     
-    // 全部展開/收縮按鈕
-    const toggleAll = document.createElement("span");
-    toggleAll.className = "toc-toggle";
-    toggleAll.textContent = "全部展開";
-    toggleAll.addEventListener("click", () => {
-      const isExpanded = toggleAll.textContent === "全部收縮";
-      const allChildren = tocRoot.querySelectorAll(".toc-children");
-      const allIcons = tocRoot.querySelectorAll(".toc-h1-icon");
-      
-      allChildren.forEach(child => {
-        if (isExpanded) {
-          child.classList.remove("expanded");
-        } else {
-          child.classList.add("expanded");
-        }
-      });
-      
-      allIcons.forEach(icon => {
-        if (isExpanded) {
-          icon.classList.remove("expanded");
-        } else {
-          icon.classList.add("expanded");
-        }
-      });
-      
-      toggleAll.textContent = isExpanded ? "全部展開" : "全部收縮";
-    });
-    tocHeader.appendChild(toggleAll);
-    tocRoot.appendChild(tocHeader);
-
-    // 生成層級結構
+    function slugify(t) {
+      return t.toLowerCase().trim()
+        .replace(/[^\u4e00-\u9fa5\w\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+    }
+    
+    // 建立階層結構
     const structure = [];
     let currentH1 = null;
     
     headings.forEach(h => {
+      if (!h.id) {
+        let base = slugify(h.textContent) || "section";
+        let id = base, i = 2;
+        while (ids.has(id)) { id = `${base}-${i++}`; }
+        ids.add(id);
+        h.id = id;
+      }
+      
       if (h.tagName === "H1") {
         currentH1 = { heading: h, children: [] };
         structure.push(currentH1);
@@ -125,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       const icon = document.createElement("span");
       icon.className = "toc-h1-icon";
-      icon.innerHTML = "▶";
+      icon.innerHTML = "▶"; // 使用三角形箭頭
       
       const text = document.createElement("span");
       text.className = "toc-h1-text";
@@ -138,21 +146,33 @@ document.addEventListener("DOMContentLoaded", () => {
       toggle.addEventListener("click", (e) => {
         e.preventDefault();
         
+        // 平滑滾動到 H1 - 使用更好的滾動效果
         const targetPosition = item.heading.getBoundingClientRect().top + window.pageYOffset - 80;
+        
         window.scrollTo({
           top: targetPosition,
           behavior: "smooth"
         });
         
+        // 更新 URL 但不跳轉
         history.replaceState(null, "", `#${item.heading.id}`);
         
         // 切換折疊狀態
         const children = h1Item.querySelector(".toc-children");
-        const isExpanded = children && children.classList.contains("expanded");
+        const isExpanded = children.classList.contains("expanded");
         
-        if (children) {
-          children.classList.toggle("expanded");
-          icon.classList.toggle("expanded");
+        children.classList.toggle("expanded");
+        icon.classList.toggle("expanded");
+        
+        // 如果是展開動作，先展開再滾動到內容
+        if (!isExpanded) {
+          setTimeout(() => {
+            const newPosition = item.heading.getBoundingClientRect().top + window.pageYOffset - 80;
+            window.scrollTo({
+              top: newPosition,
+              behavior: "smooth"
+            });
+          }, 200);
         }
       });
       
@@ -172,6 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
           
           link.addEventListener("click", (e) => {
             e.preventDefault();
+            // 平滑滾動到子標題 - 動態計算位置
             const targetPosition = child.getBoundingClientRect().top + window.pageYOffset - 80;
             
             window.scrollTo({
@@ -214,29 +235,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(en => {
         if (en.isIntersecting) {
-          const link = linkMap.get(en.target.id);
-          if (link) {
-            // 移除所有活動狀態
-            allLinks.forEach(l => l.classList.remove("active"));
-            // 添加當前活動狀態
-            link.classList.add("active");
-            
-            // 如果是 H2/H3，自動展開父級 H1
+          const id = en.target.id;
+          // 清除所有 active 狀態
+          allLinks.forEach(l => l.classList.remove("active"));
+          // 設置當前 active
+          const activeElement = linkMap.get(id);
+          if (activeElement) {
+            activeElement.classList.add("active");
+            // 如果是 H2/H3，確保其父 H1 是展開的
             if (en.target.tagName !== "H1") {
-              const parentH1 = Array.from(headings).find(h => 
-                h.tagName === "H1" && h.compareDocumentPosition(en.target) & Node.DOCUMENT_POSITION_FOLLOWING
-              );
-              if (parentH1) {
-                const parentToggle = linkMap.get(parentH1.id);
-                if (parentToggle) {
-                  const parentItem = parentToggle.closest(".toc-h1-item");
-                  const children = parentItem.querySelector(".toc-children");
-                  const icon = parentToggle.querySelector(".toc-h1-icon");
-                  
-                  if (children && !children.classList.contains("expanded")) {
-                    children.classList.add("expanded");
-                    icon.classList.add("expanded");
-                  }
+              const h1Item = activeElement.closest(".toc-h1-item");
+              if (h1Item) {
+                const children = h1Item.querySelector(".toc-children");
+                const icon = h1Item.querySelector(".toc-h1-icon");
+                if (children && !children.classList.contains("expanded")) {
+                  children.classList.add("expanded");
+                  icon.classList.add("expanded");
                 }
               }
             }
@@ -248,9 +262,22 @@ document.addEventListener("DOMContentLoaded", () => {
     headings.forEach(h => observer.observe(h));
   }
 
-  // === 主題切換 ===
+  // Hero title animation: 每個 span 逐一淡入
+  const spans = document.querySelectorAll("#hero-title span");
+  if (spans.length > 0) {
+    anime({
+      targets: spans,
+      opacity: [0, 1],
+      translateY: [30, 0],
+      delay: anime.stagger(200),
+      duration: 1000,
+      easing: "easeOutExpo"
+    });
+  }
+
+  // 主題切換
   const toggleBtn = document.getElementById("theme-toggle");
-  if (toggleBtn) {
+  if(toggleBtn){
     toggleBtn.addEventListener("click", () => {
       document.documentElement.classList.toggle("light");
       toggleBtn.textContent = document.documentElement.classList.contains("light") ? "☀️" : "🌙";
@@ -264,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateProfileAvatar();
 });
 
-// === 更新個人頭像根據主題 ===
+// 更新個人頭像根據主題
 function updateProfileAvatar() {
   const profileAvatar = document.getElementById("profile-avatar");
   if (profileAvatar) {
