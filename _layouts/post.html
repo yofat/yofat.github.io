@@ -178,19 +178,19 @@ classes: post-page
       <!-- 相關文章 -->
       {% if page.categories.size > 0 %}
         {% assign category = page.categories.first %}
-        {% assign related_posts = site.articles | where_exp: "post", "post.categories contains category and post.url != page.url" | limit: 5 %}
+        {% assign related_posts = site.articles | where_exp: "article", "article.categories contains page.categories.first and article.url != page.url" | limit: 5 %}
         {% if related_posts.size > 0 %}
         <div class="sidebar-card">
           <h3 class="card-title">📂 相關威脅</h3>
           <div class="related-posts">
-            {% for post in related_posts %}
+            {% for article in related_posts %}
               <article class="related-post">
-                <a href="{{ post.url | relative_url }}" class="related-link">
-                  <h4 class="related-title">{{ post.title | truncate: 40 }}</h4>
+                <a href="{{ article.url | relative_url }}" class="related-link">
+                  <h4 class="related-title">{{ article.title | truncate: 40 }}</h4>
                   <div class="related-meta">
-                    <span class="related-date">{{ post.date | date: "%m/%d" }}</span>
-                    {% if post.tags.size > 0 %}
-                      <span class="related-tag">{{ post.tags.first }}</span>
+                    <span class="related-date">{{ article.date | date: "%m/%d" }}</span>
+                    {% if article.tags.size > 0 %}
+                      <span class="related-tag">{{ article.tags.first }}</span>
                     {% endif %}
                   </div>
                 </a>
