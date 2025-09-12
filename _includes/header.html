@@ -1,7 +1,13 @@
 <header class="site-header">
   <div class="container">
     <a class="brand" href="{{ '/' | relative_url }}">
-      <img src="{{ '/assets/image/logo_transparent.png' | relative_url }}" alt="YoFat Logo" class="brand-logo">
+      <img src="{{ '/assets/image/logo_transparent.png' | relative_url }}" 
+           alt="YoFat Logo" 
+           class="brand-logo"
+           loading="lazy"
+           decoding="async"
+           width="40"
+           height="40">
       <span class="brand-text">YoFat</span>
     </a>
     <nav class="nav">

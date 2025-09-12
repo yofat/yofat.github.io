@@ -160,6 +160,11 @@ a:hover {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  /* 圖片優化設定 */
+  max-width: 1200px;
+  filter: brightness(0.9);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .banner-overlay {
@@ -182,6 +187,24 @@ img {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
+  /* 圖片載入優化 */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* 圖片容器大小限制 */
+.content img {
+  max-width: 800px;
+  max-height: 600px;
+  object-fit: contain;
+}
+
+/* Logo 圖片大小限制 */
+.brand-logo {
+  max-width: 40px;
+  max-height: 40px;
+  width: auto;
+  height: auto;
 }
 
 /* 圖片懸停效果 */
@@ -289,6 +312,9 @@ img {
   border-radius: 24px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
   transition: transform .4s ease;
+  /* 優化載入 */
+  aspect-ratio: 1;
+  object-fit: cover;
 }
 
 .hero-image img:hover {

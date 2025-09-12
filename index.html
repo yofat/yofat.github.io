@@ -17,7 +17,11 @@ classes: home
   <div class="maincol">
     <!-- Banner 背景區域 -->
     <div class="hero-banner">
-      <img src="{{ '/assets/image/banner.png' | relative_url }}" alt="YoFat Banner" class="banner-image">
+      <img src="{{ '/assets/image/banner.png' | relative_url }}" 
+           alt="YoFat Banner" 
+           class="banner-image"
+           loading="lazy"
+           decoding="async">
       <div class="banner-overlay"></div>
     </div>
     
@@ -34,7 +38,12 @@ classes: home
         </div>
       </div>
       <div class="hero-image">
-        <img src="{{ '/assets/image/logo.jpg' | relative_url }}" alt="profile">
+        <img src="{{ '/assets/image/logo.jpg' | relative_url }}" 
+             alt="profile"
+             loading="lazy"
+             decoding="async"
+             width="300"
+             height="300">
       </div>
     </section>
 
