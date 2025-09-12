@@ -15,6 +15,12 @@ classes: home
 
   <!-- 中欄：主要內容 -->
   <div class="maincol">
+    <!-- Banner 背景區域 -->
+    <div class="hero-banner">
+      <img src="{{ '/assets/image/banner.png' | relative_url }}" alt="YoFat Banner" class="banner-image">
+      <div class="banner-overlay"></div>
+    </div>
+    
     <!-- Hero 區域 -->
     <section class="hero">
       <div class="hero-content">
@@ -93,7 +99,7 @@ classes: home
     <div class="card">
       <div class="card-title">📊 統計</div>
       <div class="stats-compact">
-        <p>📝 {{ site.posts.size }} 篇文章</p>
+        <p>📝 {{ site.articles.size }} 篇文章</p>
         <p>📂 {{ site.categories.size }} 個分類</p>
         <p>🏷️ {{ site.tags.size }} 個標籤</p>
       </div>

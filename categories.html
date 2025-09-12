@@ -74,9 +74,9 @@ classes: grid-page
         {% for big in site.data.categories %}
           {% assign total_categories = total_categories | plus: big[1].size %}
         {% endfor %}
-        <p>� 總共 {{ site.data.categories.size }} 個大分類</p>
-        <p>� 包含 {{ total_categories }} 個子分類</p>
-        <p>📝 共 {{ site.posts.size }} 篇文章</p>
+        <p>📊 總共 {{ site.data.categories.size }} 個大分類</p>
+        <p>📁 包含 {{ total_categories }} 個子分類</p>
+        <p>📝 共 {{ site.articles.size }} 篇文章</p>
       </div>
     </div>
 

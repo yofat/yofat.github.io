@@ -6,12 +6,12 @@
 
 ### Windows PowerShell 工具
 
-| 工具名稱 | 功能說明 | 使用方式 |
-|----------|----------|----------|
-| **quick-post.ps1** | 快速創建文章 | `.\tools\quick-post.ps1 -Title "標題" -Category "分類"` |
-| **article-manager.ps1** | 全功能文章管理器 | `.\tools\article-manager.ps1` |
-| **drop-article.ps1** | 拖放文章處理工具 | 拖拽 .md 檔案到此腳本 |
-| **manage-posts.ps1** | 傳統文章管理 | `.\tools\manage-posts.ps1` |
+| 工具名稱 | 功能說明 | 使用方式 | 推薦度 |
+|----------|----------|----------|--------|
+| **master-tool.ps1** | 🎯 統一管理工具 (推薦) | `.\tools\master-tool.ps1` | ⭐⭐⭐⭐⭐ |
+| **quick-post.ps1** | 📝 快速創建文章 | `.\tools\quick-post.ps1 -Title "標題" -Category "分類"` | ⭐⭐⭐⭐ |
+| **article-manager.ps1** | 📦 批量文章管理器 | `.\tools\article-manager.ps1` | ⭐⭐⭐⭐ |
+| **drop-article.ps1** | 📁 拖放文章處理工具 | 拖拽 .md 檔案到此腳本 | ⭐⭐⭐ |
 
 ### Linux/Mac 工具
 
@@ -21,13 +21,19 @@
 
 ## 🚀 快速開始
 
-### 方法一：一鍵快速創建
+### 🎯 推薦方式：使用統一工具
 ```powershell
-# Windows
-.\tools\quick-post.ps1 -Title "我的文章" -Category "生活分享"
+# 啟動主工具 (互動模式)
+.\tools\master-tool.ps1
 
-# Linux/Mac  
-./tools/manage-posts.sh
+# 命令列模式 - 快速創建
+.\tools\master-tool.ps1 -Action create -Title "我的文章" -Category "程式語言"
+
+# 其他命令
+.\tools\master-tool.ps1 -Action stats    # 顯示統計
+.\tools\master-tool.ps1 -Action clean    # 清理空檔案
+.\tools\master-tool.ps1 -Action search   # 搜尋文章
+```
 ```
 
 ### 方法二：全功能管理器

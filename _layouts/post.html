@@ -49,7 +49,7 @@ classes: grid-page
           <div class="meta-row">
             {% if page.categories %}
               <div class="meta-group">
-                <span class="meta-label">� 分類</span>
+                <span class="meta-label">📁 分類</span>
                 {% for category in page.categories %}
                   <a href="{{ '/categories.html#' | append: category | relative_url }}" class="meta-tag category-tag">{{ category }}</a>
                 {% endfor %}
@@ -86,7 +86,7 @@ classes: grid-page
         
         {% if page.updated %}
         <div class="updated-info">
-          <small>� 最後更新：{{ page.updated | date: "%Y年%m月%d日" }}</small>
+          <small>🕐 最後更新：{{ page.updated | date: "%Y年%m月%d日" }}</small>
         </div>
         {% endif %}
         
@@ -104,7 +104,7 @@ classes: grid-page
   <aside class="siderail">
     <!-- 閱讀進度 -->
     <div class="card">
-      <div class="card-title">� 閱讀進度</div>
+      <div class="card-title">📊 閱讀進度</div>
       <div class="progress-container">
         <div class="progress-bar" id="reading-progress"></div>
         <span class="progress-text" id="progress-text">0%</span>
@@ -117,7 +117,7 @@ classes: grid-page
       <div class="action-buttons">
         <button class="action-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆️ 回頂部</button>
         <button class="action-btn" onclick="copyToClipboard()">🔗 複製連結</button>
-        <button class="action-btn" onclick="window.print()">�️ 列印</button>
+        <button class="action-btn" onclick="window.print()">🖨️ 列印</button>
       </div>
     </div>
 
@@ -127,7 +127,7 @@ classes: grid-page
       {% assign related_posts = site.categories[category] | where_exp: "post", "post.url != page.url" | slice: 0, 3 %}
       {% if related_posts.size > 0 %}
       <div class="card">
-        <div class="card-title">� {{ category }}相關</div>
+        <div class="card-title">📂 {{ category }}相關</div>
         {% for post in related_posts %}
           <div class="related-post">
             <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
