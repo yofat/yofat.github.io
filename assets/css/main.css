@@ -1060,15 +1060,6 @@ html:not(.light) .logo-image {
   animation: titlePulse 3s ease-in-out infinite;
 }
 
-/* 火焰圖標動畫 */
-.section-title::before {
-  content: '🔥';
-  position: absolute;
-  left: -3rem;
-  animation: flameFlicker 1.5s ease-in-out infinite alternate;
-  filter: hue-rotate(0deg);
-}
-
 .section-title::after {
   content: '';
   position: absolute;
