@@ -22,7 +22,11 @@ classes: grid-page
 
       <!-- 標籤導航 -->
       <div class="tags-nav">
-        {% assign all_tags = site.collections.articles.docs | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
+        {% if site.articles %}
+          {% assign all_tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
+        {% else %}
+          {% assign all_tags = site.posts | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
+        {% endif %}
         {% for tag in all_tags %}
           {% unless tag == blank %}
             <a href="#{{ tag | slugify }}" class="tag-nav-link">{{ tag }}</a>
@@ -33,7 +37,11 @@ classes: grid-page
       <!-- 各標籤內容 -->
       {% for tag in all_tags %}
         {% unless tag == blank %}
-          {% assign tag_posts = site.collections.articles.docs | where_exp: "doc", "doc.tags contains tag" %}
+          {% if site.articles %}
+            {% assign tag_posts = site.articles | where_exp: "doc", "doc.tags contains tag" %}
+          {% else %}
+            {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains tag" %}
+          {% endif %}
           {% if tag_posts.size > 0 %}
             <section class="tag-section" id="{{ tag | slugify }}">
               <h2>{{ tag }} <span class="count">({{ tag_posts.size }})</span></h2>
@@ -87,7 +95,11 @@ classes: grid-page
       <h3>📊 標籤統計</h3>
       <div class="stats-grid">
         <div class="stat-item">
-          <div class="stat-number">{{ site.collections.articles.docs.size }}</div>
+          {% if site.articles %}
+            <div class="stat-number">{{ site.articles.size }}</div>
+          {% else %}
+            <div class="stat-number">{{ site.posts.size }}</div>
+          {% endif %}
           <div class="stat-label">總文章數</div>
         </div>
         <div class="stat-item">

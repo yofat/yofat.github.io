@@ -78,7 +78,11 @@ classes: grid-page
   <div class="popular-posts">
     <h3>🔥 推薦文章</h3>
     <div class="horizontal-posts">
-      {% assign featured_articles = site.collections.articles.docs | sort: 'date' | reverse | limit: 3 %}
+      {% if site.articles %}
+        {% assign featured_articles = site.articles | sort: 'date' | reverse | limit: 3 %}
+      {% else %}
+        {% assign featured_articles = site.posts | sort: 'date' | reverse | limit: 3 %}
+      {% endif %}
       {% for article in featured_articles %}
         <article class="post-card">
           <h4><a href="{{ article.url | relative_url }}">{{ article.title }}</a></h4>
@@ -112,11 +116,19 @@ classes: grid-page
       <h3>📊 搜尋統計</h3>
       <div class="stats-grid">
         <div class="stat-item">
-          <div class="stat-number">{{ site.collections.articles.docs.size }}</div>
+          {% if site.articles %}
+            <div class="stat-number">{{ site.articles.size }}</div>
+          {% else %}
+            <div class="stat-number">{{ site.posts.size }}</div>
+          {% endif %}
           <div class="stat-label">總文章數</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">{{ site.collections.articles.docs | map: 'category' | uniq | size }}</div>
+          {% if site.articles %}
+            <div class="stat-number">{{ site.articles | map: 'category' | uniq | size }}</div>
+          {% else %}
+            <div class="stat-number">{{ site.posts | map: 'categories' | flatten | uniq | size }}</div>
+          {% endif %}
           <div class="stat-label">分類數量</div>
         </div>
       </div>
@@ -126,7 +138,11 @@ classes: grid-page
     <div class="card">
       <h3>🔥 熱門文章</h3>
       <div class="popular-articles">
-        {% assign recent_articles = site.collections.articles.docs | sort: 'date' | reverse | limit: 5 %}
+        {% if site.articles %}
+          {% assign recent_articles = site.articles | sort: 'date' | reverse | limit: 5 %}
+        {% else %}
+          {% assign recent_articles = site.posts | sort: 'date' | reverse | limit: 5 %}
+        {% endif %}
         {% for article in recent_articles %}
           <a href="{{ article.url | relative_url }}" class="popular-article-link">
             <h4>{{ article.title }}</h4>

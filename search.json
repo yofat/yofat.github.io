@@ -3,8 +3,8 @@ layout: null
 permalink: /search.json
 ---
 [
-{% assign posts = site.posts | sort: 'date' | reverse %}
-{% for p in posts %}
+{% assign all_posts = site.posts | concat: site.articles | sort: 'date' | reverse %}
+{% for p in all_posts %}
   {
     "title": {{ p.title | jsonify }},
     "url": {{ p.url | relative_url | jsonify }},
