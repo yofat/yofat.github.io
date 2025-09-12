@@ -293,6 +293,27 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // 初始化時設置正確的頭像
   updateProfileAvatar();
+  
+  // === 滾動進度條 ===
+  const scrollProgressTop = document.getElementById('scroll-progress-top');
+  const scrollProgressBottom = document.getElementById('scroll-progress-bottom');
+  
+  if (scrollProgressTop || scrollProgressBottom) {
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / documentHeight) * 100;
+      
+      if (scrollProgressTop) {
+        scrollProgressTop.style.width = scrollPercent + '%';
+      }
+      
+      if (scrollProgressBottom) {
+        scrollProgressBottom.style.width = scrollPercent + '%';
+        scrollProgressBottom.style.opacity = scrollPercent > 10 ? '1' : '0';
+      }
+    });
+  }
 });
 
 // === 更新個人頭像根據主題 ===

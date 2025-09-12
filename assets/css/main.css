@@ -109,6 +109,9 @@ body {
   font-size: 1rem;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ====================================
@@ -541,6 +544,16 @@ html.light {
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 白色主題的 Hero 區域特殊漸變 */
+html.light .hero-section {
+  background: linear-gradient(135deg, 
+    #ffffff 0%, 
+    #f8f9fa 25%, 
+    #ffeaa7 70%, 
+    #fdcb6e 85%, 
+    #e17055 100%);
 }
 
 /* Light theme 中的 Logo 切換 */
@@ -985,10 +998,10 @@ html:not(.light) .logo-image {
   overflow: hidden;
   position: relative;
   
-  /* 橫向布局 */
-  display: grid;
-  grid-template-columns: 1fr auto;
-  min-height: 140px;
+  /* 統一高度和布局 */
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
 }
 
 .article-card::before {
@@ -1020,10 +1033,10 @@ html:not(.light) .logo-image {
   position: relative;
   z-index: 2;
   padding: var(--spacing-xl);
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  justify-content: center;
 }
 
 .article-header {
@@ -1133,8 +1146,13 @@ html:not(.light) .logo-image {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
+  margin-top: auto;
+  padding-top: var(--spacing-md);
+}
+
+.article-action {
+  margin-top: var(--spacing-md);
+  padding: 0 var(--spacing-xl) var(--spacing-xl) var(--spacing-xl);
 }
 
 .article-tags {
@@ -2825,7 +2843,7 @@ header {
   background: var(--bg-secondary);
   border-top: 1px solid var(--border);
   padding: var(--spacing-xl) 0;
-  margin-top: var(--spacing-3xl);
+  margin-top: auto;
   text-align: center;
   position: relative;
   z-index: 10;
