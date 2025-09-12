@@ -42,13 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === TOC 生成（只在文章頁面） ===
   const tocRoot = document.getElementById("toc");
-  const isPostPage = document.body.classList.contains('post-page') || document.querySelector('article.post-content') || document.body.classList.contains('layout-post');
-  
-  // 首頁不顯示 TOC
-  if (tocRoot && !isPostPage) {
-    // TOC 區域由 HTML 直接處理，不需要 JavaScript
-    return;
-  }
+  const scope = document.querySelector(".main-content");
+  const isPostPage = document.body.classList.contains('grid-page') || document.querySelector('article.post-article');
   
   if (tocRoot && scope && isPostPage) {
     const headings = scope.querySelectorAll("article h1, article h2, article h3, .post-content h1, .post-content h2, .post-content h3");

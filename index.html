@@ -9,6 +9,7 @@ classes: home three-column
 
 <!-- Hero 區域 - 佔滿整個寬度 -->
 <section class="hero-section full-width" id="hero">
+  <div class="hero-bg-pattern"></div>
   <div class="hero-container">
     <div class="hero-content">
       <div class="hero-text">
@@ -19,20 +20,41 @@ classes: home three-column
         <p class="hero-subtitle">資安研究員 / 程式開發者 / 技術分享者</p>
         <p class="hero-description">分享資訊安全、程式開發、以及各種技術相關的心得與經驗</p>
       </div>
+      <div class="hero-visual">
+        <div class="hero-avatar">
+          <img src="/assets/image/logo.jpg" alt="YoFat Profile" class="hero-profile-img">
+        </div>
+        <div class="floating-elements">
+          <div class="floating-item">🔐</div>
+          <div class="floating-item">💻</div>
+          <div class="floating-item">🚀</div>
+        </div>
+      </div>
     </div>
   </div>
+  <div class="hero-bottom-border"></div>
 </section>
 
 <!-- 三欄式布局 -->
-<div class="three-column-layout">
+<div class="three-column-layout with-border">
   <!-- 左欄：導航目錄 -->
   <aside class="left-sidebar">
     <div class="sidebar-content">
-      <div class="nav-card">
-        <h3 class="sidebar-title">🗺️ 快速導航</h3>
-        <nav id="toc" class="toc-nav">
-          <!-- JavaScript 會動態生成目錄 -->
-        </nav>
+      <div class="nav-card welcome-card">
+        <h3 class="sidebar-title">🏠 首頁導航</h3>
+        <div class="welcome-content">
+          <p class="welcome-text">歡迎來到我的技術部落格</p>
+          <div class="welcome-stats">
+            <div class="stat-item">
+              <span class="stat-number">25+</span>
+              <span class="stat-label">篇文章</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">8</span>
+              <span class="stat-label">個分類</span>
+            </div>
+          </div>
+        </div>
       </div>
       
       <div class="nav-card">
