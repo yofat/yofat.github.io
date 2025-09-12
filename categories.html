@@ -2,19 +2,32 @@
 layout: default
 title: 分類
 permalink: /categories.html
-classes: grid-page
+classes: categories-page
 ---
 
 <div class="grid-3col content-root">
   <!-- 左欄：分類導航 -->
   <aside class="toc">
-    <h3>📂 分類導航</h3>
+    <h3>�️ 攻擊向量導航</h3>
     <nav id="categories-nav">
       {% assign all_categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
       {% for category in all_categories %}
         {% unless category == '' %}
           {% assign posts_count = site.articles | where_exp: "post", "post.categories contains category" | size %}
           <a href="#{{ category | slugify }}" class="toc-link" data-count="{{ posts_count }}">
+            <span class="category-icon">
+              {% case category %}
+                {% when '人工智能' %}🤖
+                {% when '程式語言' %}💻
+                {% when '網頁開發' %}🌐
+                {% when '生活分享' %}🌱
+                {% when '教學' %}📖
+                {% when '功能項目' %}⚙️
+                {% when '工具分享' %}🛠️
+                {% when '心得筆記' %}💭
+                {% else %}📄
+              {% endcase %}
+            </span>
             <span class="category-name">{{ category }}</span>
             <span class="category-count">{{ posts_count }}</span>
           </a>
@@ -25,79 +38,326 @@ classes: grid-page
 
   <!-- 中欄：分類內容 -->
   <div class="maincol">
-    <section class="section">
-      <h1>📂 文章分類</h1>
-      <p class="page-description">探索按主題組織的所有文章</p>
+    <!-- 頁面標題 -->
+    <header class="page-title">
+      <h1 class="glow-gold rune-text">📂 攻擊向量分類</h1>
+      <p class="page-description">按技術領域分類的威脅情報與入侵記錄</p>
+    </header>
       
-      {% assign all_categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
-      {% for category in all_categories %}
-        {% unless category == '' %}
-          {% assign category_posts = site.articles | where_exp: "post", "post.categories contains category" %}
-          {% if category_posts.size > 0 %}
-            <section class="category-section" id="{{ category | slugify }}">
-              <div class="category-header">
-                <h2>{{ category }}</h2>
-                <span class="category-count-badge">{{ category_posts.size }} 篇文章</span>
+    {% assign all_categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
+    {% for category in all_categories %}
+      {% unless category == '' %}
+        {% assign category_posts = site.articles | where_exp: "post", "post.categories contains category" | sort: 'date' | reverse %}
+        {% if category_posts.size > 0 %}
+          <section class="category-section" id="{{ category | slugify }}">
+            <div class="category-header card">
+              <div class="category-title-group">
+                <span class="category-icon-large">
+                  {% case category %}
+                    {% when '人工智能' %}🤖
+                    {% when '程式語言' %}💻
+                    {% when '網頁開發' %}🌐
+                    {% when '生活分享' %}🌱
+                    {% when '教學' %}📖
+                    {% when '功能項目' %}⚙️
+                    {% when '工具分享' %}🛠️
+                    {% when '心得筆記' %}💭
+                    {% else %}📄
+                  {% endcase %}
+                </span>
+                <div class="category-title-info">
+                  <h2 class="glow-blue">{{ category }}</h2>
+                  <p class="category-description">
+                    {% case category %}
+                      {% when '人工智能' %}AI、機器學習、深度學習相關技術
+                      {% when '程式語言' %}程式語言教學和開發技巧
+                      {% when '網頁開發' %}前端、後端、框架技術分享
+                      {% when '生活分享' %}個人經驗、日常記錄與思考
+                      {% when '教學' %}詳細教學指南和步驟教學
+                      {% when '功能項目' %}專案實作展示和功能開發
+                      {% when '工具分享' %}實用工具推薦和資源分享
+                      {% when '心得筆記' %}學習心得和技術筆記整理
+                      {% else %}其他相關內容
+                    {% endcase %}
+                  </p>
+                </div>
               </div>
-              
-              <div class="posts-grid">
-                {% for post in category_posts %}
-                  <article class="post-card">
-                    <div class="post-card-content">
-                      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-                      <div class="post-card-meta">
-                        <span class="post-date">📅 {{ post.date | date: "%Y-%m-%d" }}</span>
+              <div class="category-stats">
+                <span class="category-count-badge glow-red">{{ category_posts.size }} 個威脅</span>
+              </div>
+            </div>
+            
+            <div class="posts-horizontal-list">
+              {% for post in category_posts %}
+                <article class="post-horizontal-card card">
+                  <div class="post-horizontal-content">
+                    <div class="post-horizontal-main">
+                      <h3 class="post-horizontal-title">
+                        <a href="{{ post.url | relative_url }}" class="glow-blue">{{ post.title }}</a>
+                      </h3>
+                      
+                      <div class="post-horizontal-meta">
+                        <span class="post-date">
+                          <span class="meta-icon">�</span>
+                          {{ post.date | date: "%Y-%m-%d" }}
+                        </span>
                         {% if post.tags.size > 0 %}
-                          <div class="post-tags">
-                            {% for tag in post.tags limit:3 %}
+                          <div class="post-tags-inline">
+                            {% for tag in post.tags limit:4 %}
                               <span class="tag">{{ tag }}</span>
                             {% endfor %}
+                            {% if post.tags.size > 4 %}
+                              <span class="tag-more">+{{ post.tags.size | minus: 4 }}</span>
+                            {% endif %}
                           </div>
                         {% endif %}
                       </div>
+                      
                       {% if post.excerpt %}
-                        <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
+                        <div class="post-horizontal-excerpt">
+                          {{ post.excerpt | strip_html | truncatewords: 30 }}
+                        </div>
                       {% endif %}
                     </div>
-                  </article>
-                {% endfor %}
-              </div>
-            </section>
-          {% endif %}
-        {% endunless %}
-      {% endfor %}
+                    
+                    <div class="post-horizontal-actions">
+                      <a href="{{ post.url | relative_url }}" class="btn secondary">
+                        <span class="btn-icon">👁️</span>
+                        檢視威脅
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+            
+            <hr class="divider">
+          </section>
+        {% endif %}
+      {% endunless %}
+    {% endfor %}
 
-      <div class="back-nav">
-        <a href="{{ '/' | relative_url }}" class="back-link">← 返回首頁</a>
-      </div>
-    </section>
+    <div class="navigation-footer">
+      <a href="{{ '/' | relative_url }}" class="btn outline">
+        <span class="btn-icon">🏠</span>
+        返回總部
+      </a>
+      <a href="{{ '/posts.html' | relative_url }}" class="btn primary">
+        <span class="btn-icon">📚</span>
+        檢視所有威脅
+      </a>
+    </div>
   </div>
 
-  <!-- 右欄：分類統計 -->
-  <aside class="siderail">
-    <div class="card">
-      <div class="card-title">📊 分類統計</div>
-      <div class="categories-stats">
+  <!-- 右欄：分類統計與工具 -->
+  <aside class="sidebar">
+    <div class="card breathing-glow">
+      <h3>📊 威脅統計</h3>
+      <div class="categories-stats-grid">
         {% assign all_categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq %}
         {% assign categories_count = all_categories | size %}
-        <div class="stat-item">
-          <span class="stat-icon">📂</span>
-          <span class="stat-number">{{ categories_count }}</span>
-          <span class="stat-label">個分類</span>
+        
+        <div class="stat-card">
+          <div class="stat-icon glow-gold">📂</div>
+          <div class="stat-info">
+            <div class="stat-number">{{ categories_count }}</div>
+            <div class="stat-label">攻擊向量</div>
+          </div>
         </div>
         
-        <div class="stat-item">
-          <span class="stat-icon">📝</span>
-          <span class="stat-number">{{ site.articles.size }}</span>
-          <span class="stat-label">篇文章</span>
+        <div class="stat-card">
+          <div class="stat-icon glow-blue">📝</div>
+          <div class="stat-info">
+            <div class="stat-number">{{ site.articles.size }}</div>
+            <div class="stat-label">威脅情報</div>
+          </div>
         </div>
         
         {% if site.articles.size > 0 %}
           {% assign avg_per_category = site.articles.size | divided_by: categories_count %}
-          <div class="stat-item">
-            <span class="stat-icon">📈</span>
-            <span class="stat-number">{{ avg_per_category }}</span>
-            <span class="stat-label">平均文章數</span>
+          <div class="stat-card">
+            <div class="stat-icon glow-red">📈</div>
+            <div class="stat-info">
+              <div class="stat-number">{{ avg_per_category }}</div>
+              <div class="stat-label">平均威脅數</div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>🔥 熱門攻擊向量</h3>
+      <div class="hot-categories-list">
+        {% assign sorted_categories = all_categories | map: 'name' %}
+        {% assign category_with_counts = '' | split: ',' %}
+        
+        {% for category in all_categories %}
+          {% unless category == '' %}
+            {% assign category_posts = site.articles | where_exp: "post", "post.categories contains category" %}
+            {% assign category_info = category | append: '|' | append: category_posts.size %}
+            {% assign category_with_counts = category_with_counts | push: category_info %}
+          {% endunless %}
+        {% endfor %}
+        
+        {% assign sorted_category_with_counts = category_with_counts | sort | reverse %}
+        
+        {% for category_info in sorted_category_with_counts limit:6 %}
+          {% assign category_parts = category_info | split: '|' %}
+          {% assign category = category_parts[0] %}
+          {% assign count = category_parts[1] %}
+          
+          <div class="hot-category-item">
+            <a href="#{{ category | slugify }}" class="hot-category-link">
+              <span class="hot-category-icon">
+                {% case category %}
+                  {% when '人工智能' %}🤖
+                  {% when '程式語言' %}�
+                  {% when '網頁開發' %}🌐
+                  {% when '生活分享' %}🌱
+                  {% when '教學' %}📖
+                  {% when '功能項目' %}⚙️
+                  {% when '工具分享' %}🛠️
+                  {% when '心得筆記' %}💭
+                  {% else %}📄
+                {% endcase %}
+              </span>
+              <span class="hot-category-name">{{ category }}</span>
+              <span class="hot-category-count">{{ count }}</span>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 探索工具</h3>
+      <div class="exploration-tools">
+        <a href="{{ '/tags.html' | relative_url }}" class="tool-link">
+          <span class="tool-icon">🏷️</span>
+          <div class="tool-info">
+            <span class="tool-name">標籤雲</span>
+            <span class="tool-desc">按標籤探索</span>
+          </div>
+        </a>
+        
+        <a href="{{ '/search.html' | relative_url }}" class="tool-link">
+          <span class="tool-icon">🔍</span>
+          <div class="tool-info">
+            <span class="tool-name">搜尋引擎</span>
+            <span class="tool-desc">全文搜尋</span>
+          </div>
+        </a>
+        
+        <a href="{{ '/posts.html' | relative_url }}" class="tool-link">
+          <span class="tool-icon">📋</span>
+          <div class="tool-info">
+            <span class="tool-name">文章列表</span>
+            <span class="tool-desc">所有威脅</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📅 最新入侵</h3>
+      <div class="recent-posts-sidebar">
+        {% for post in site.articles limit:5 %}
+          <article class="recent-post-item">
+            <a href="{{ post.url | relative_url }}" class="recent-post-link">
+              <h4 class="recent-post-title">{{ post.title | truncate: 35 }}</h4>
+              <div class="recent-post-meta">
+                <span class="recent-post-date">{{ post.date | date: "%m-%d" }}</span>
+                {% if post.categories.size > 0 %}
+                  <span class="recent-post-category">{{ post.categories | first }}</span>
+                {% endif %}
+              </div>
+            </a>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // 分類導航高亮
+  const categoryLinks = document.querySelectorAll('#categories-nav .toc-link');
+  const categorySection = document.querySelectorAll('.category-section');
+
+  // 滾動監聽
+  function updateActiveCategory() {
+    let current = '';
+    const scrollTop = window.pageYOffset + 100;
+
+    categorySection.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      
+      if (scrollTop >= sectionTop && scrollTop < sectionTop + sectionHeight) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    categoryLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  // 平滑滾動
+  categoryLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href').substring(1);
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 100;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+        
+        // 更新 URL
+        history.pushState(null, '', '#' + targetId);
+      }
+    });
+  });
+
+  // 滾動事件監聽
+  let ticking = false;
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateActiveCategory();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', requestTick);
+  
+  // 初始化
+  updateActiveCategory();
+  
+  // 處理 URL hash
+  if (window.location.hash) {
+    setTimeout(() => {
+      const target = document.querySelector(window.location.hash);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
+});
+</script>
           </div>
         {% endif %}
       </div>
