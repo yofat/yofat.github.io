@@ -260,8 +260,8 @@ body {
 }
 
 .profile-avatar {
-  width: 60px;
-  height: 60px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   margin-bottom: var(--spacing-md);
   border: 3px solid var(--border);
@@ -269,9 +269,16 @@ body {
   object-fit: cover;
 }
 
+/* 光明模式下的邊線 */
+html.light .profile-avatar {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .profile-avatar:hover {
-  border-color: var(--blood-red);
+  border-color: var(--accent-color);
   box-shadow: 0 0 15px rgba(255, 43, 71, 0.3);
+  transform: scale(1.05);
 }
 
 .profile-name {
@@ -416,31 +423,57 @@ body:not(.light-theme) .logo-image {
   justify-content: center;
   margin-bottom: var(--spacing-3xl);
   background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
-  border-radius: var(--radius-xl);
   overflow: hidden;
   width: 100%;
+}
+
+.hero-section.full-width {
+  margin: 0 0 var(--spacing-3xl) 0;
+  border-radius: 0;
 }
 
 .hero-container {
   position: relative;
   z-index: 3;
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
   padding: var(--spacing-xxl);
+  text-align: center;
 }
 
 .hero-content {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--spacing-xxl);
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: var(--spacing-lg);
 }
 
 .hero-title {
-  font-size: 3.5rem;
+  font-size: 4rem;
   font-weight: 700;
-  margin: 0 0 var(--spacing-lg) 0;
+  margin: 0;
   line-height: 1.1;
+  color: var(--text-primary);
+}
+
+.hero-title span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.hero-subtitle {
+  font-size: 1.4rem;
+  color: var(--text-secondary);
+  margin: 0;
+  font-weight: 500;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 600px;
 }
 
 .hero-greeting {

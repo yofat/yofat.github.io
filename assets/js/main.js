@@ -79,20 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  // === Hero title：逐字淡入 ===
-  const spans = document.querySelectorAll("#hero-title span");
-  if (spans.length) {
-    anime({
-      targets: spans,
-      opacity: [0, 1],
-      translateY: [30, 0],
-      delay: anime.stagger(200),
-      duration: 1000,
-      easing: "easeOutExpo"
-    });
-  }
-
   // === 自動產生 HackMD 風格的可折疊 TOC（只在文章頁面） ===
   const tocRoot = document.getElementById("toc");
   const scope = document.querySelector(".maincol");
@@ -296,6 +282,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 document.addEventListener("DOMContentLoaded", () => {
+  // Hero title animation: 每個 span 逐一淡入
+  const spans = document.querySelectorAll("#hero-title span");
+  if (spans.length > 0) {
+    anime({
+      targets: spans,
+      opacity: [0, 1],
+      translateY: [30, 0],
+      delay: anime.stagger(200),
+      duration: 1000,
+      easing: "easeOutExpo"
+    });
+  }
+
   // 主題切換
   const toggleBtn = document.getElementById("theme-toggle");
   if(toggleBtn){
