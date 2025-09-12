@@ -1,103 +1,419 @@
 ---
 layout: default
-classes: grid-page
+classes: post-page
 ---
-
-{%- comment -%}
-文章模板 - 投影片母片風格
-只需在 _posts/ 中提供 Markdown 檔案，自動套用統一設計
-{%- endcomment -%}
 
 {% assign words = page.content | strip_html | normalize_whitespace | split: ' ' %}
 {% assign reading_time = words.size | divided_by: 200 | ceil %}
 
-<div class="grid-3col content-root">
-  <!-- 左欄：HackMD 風格 TOC -->
-  <aside class="toc" id="post-toc">
-    <button class="toc-toggle" onclick="toggleTOC()" id="toc-toggle">
-      <span id="toc-icon">☰</span> 目錄
-    </button>
-    <h3>大綱</h3>
-    <nav id="toc">
-      <!-- JavaScript 會根據文章標題自動生成 -->
-    </nav>
-  </aside>
+<div class="post-layout">
+  <!-- 文章主體 -->
+  <div class="post-container">
+    <!-- 左側目錄 -->
+    <aside class="post-toc">
+      <div class="toc-wrapper">
+        <button class="toc-toggle" onclick="toggleTOC()" id="toc-toggle">
+          <span id="toc-icon">📋</span>
+          <span class="toc-text">目錄</span>
+        </button>
+        <nav id="toc-nav" class="toc-nav">
+          <!-- JavaScript 自動生成 -->
+        </nav>
+      </div>
+    </aside>
 
-  <!-- 中欄：文章內容 -->
-  <div class="maincol">
-    <article class="post-article" data-count-key="post:{{ page.id | replace: '/', ':' }}">
-      <!-- 文章標題區 -->
-      <header class="article-header">
-        <h1 class="article-title">{{ page.title }}</h1>
-        
-        <div class="article-meta">
-          <div class="meta-row">
-            <span class="meta-item">
-              <i>📅</i>
-              <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y年%m月%d日" }}</time>
-            </span>
-            
-            <span class="meta-item">
-              <i>⏱️</i>
-              <span>約 {{ reading_time }} 分鐘閱讀</span>
-            </span>
-            
-            <span class="meta-item">
-              <i>👁️</i>
-              <span id="view-count">載入中...</span> 次瀏覽
-            </span>
-          </div>
-          
-          {% if page.categories or page.tags %}
-          <div class="meta-row">
-            {% if page.categories %}
-              <div class="meta-group">
-                <span class="meta-label">📁 分類</span>
-                {% for category in page.categories %}
-                  <a href="{{ '/categories.html#' | append: category | relative_url }}" class="meta-tag category-tag">{{ category }}</a>
-                {% endfor %}
-              </div>
+    <!-- 中間內容區 -->
+    <main class="post-main">
+      <article class="post-article">
+        <!-- 文章標題區 -->
+        <header class="post-header">
+          <div class="post-breadcrumb">
+            <a href="{{ '/' | relative_url }}" class="breadcrumb-link">🏠 首頁</a>
+            <span class="breadcrumb-separator">›</span>
+            {% if page.categories.size > 0 %}
+              <a href="{{ '/categories.html#' | append: page.categories.first | slugify | relative_url }}" class="breadcrumb-link">
+                📂 {{ page.categories.first }}
+              </a>
+              <span class="breadcrumb-separator">›</span>
             {% endif %}
+            <span class="breadcrumb-current">{{ page.title | truncate: 30 }}</span>
+          </div>
+
+          <h1 class="post-title glow-red rune-text">{{ page.title }}</h1>
+          
+          {% if page.description %}
+          <p class="post-description">{{ page.description }}</p>
+          {% endif %}
+
+          <div class="post-meta">
+            <div class="meta-primary">
+              <div class="meta-item">
+                <span class="meta-icon">📅</span>
+                <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y年%m月%d日" }}</time>
+              </div>
+              
+              <div class="meta-item">
+                <span class="meta-icon">⏱️</span>
+                <span>約 {{ reading_time }} 分鐘閱讀</span>
+              </div>
+              
+              <div class="meta-item">
+                <span class="meta-icon">👁️</span>
+                <span id="view-count">載入中...</span>
+              </div>
+
+              {% if page.updated %}
+              <div class="meta-item">
+                <span class="meta-icon">🔄</span>
+                <span>更新於 {{ page.updated | date: "%Y/%m/%d" }}</span>
+              </div>
+              {% endif %}
+            </div>
             
-            {% if page.tags %}
+            {% if page.categories.size > 0 or page.tags.size > 0 %}
+            <div class="meta-secondary">
+              {% if page.categories.size > 0 %}
+              <div class="meta-group">
+                <span class="meta-label">� 分類</span>
+                <div class="meta-tags">
+                  {% for category in page.categories %}
+                    <a href="{{ '/categories.html#' | append: category | slugify | relative_url }}" class="meta-tag category-tag">{{ category }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endif %}
+              
+              {% if page.tags.size > 0 %}
               <div class="meta-group">
                 <span class="meta-label">🏷️ 標籤</span>
-                {% for tag in page.tags %}
-                  <a href="{{ '/tags.html#' | append: tag | relative_url }}" class="meta-tag tag-tag">{{ tag }}</a>
-                {% endfor %}
+                <div class="meta-tags">
+                  {% for tag in page.tags %}
+                    <a href="{{ '/tags.html#' | append: tag | slugify | relative_url }}" class="meta-tag tag-tag">{{ tag }}</a>
+                  {% endfor %}
+                </div>
               </div>
+              {% endif %}
+            </div>
             {% endif %}
+          </div>
+        </header>
+
+        <!-- 文章內容 -->
+        <div class="post-content">
+          {{ content }}
+        </div>
+
+        <!-- 文章結尾 -->
+        <footer class="post-footer">
+          <div class="post-end-divider"></div>
+          
+          <div class="post-actions">
+            <button class="action-btn primary" onclick="copyToClipboard()" id="copy-btn">
+              <span class="btn-icon">🔗</span>
+              <span class="btn-text">複製連結</span>
+            </button>
+            
+            <button class="action-btn secondary" onclick="window.print()">
+              <span class="btn-icon">🖨️</span>
+              <span class="btn-text">列印文章</span>
+            </button>
+            
+            <button class="action-btn outline" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+              <span class="btn-icon">⬆️</span>
+              <span class="btn-text">回到頂部</span>
+            </button>
+          </div>
+
+          <div class="post-navigation">
+            {% if page.previous %}
+            <div class="nav-prev">
+              <span class="nav-label">← 上一篇</span>
+              <a href="{{ page.previous.url | relative_url }}" class="nav-link">{{ page.previous.title }}</a>
+            </div>
+            {% endif %}
+            
+            {% if page.next %}
+            <div class="nav-next">
+              <span class="nav-label">下一篇 →</span>
+              <a href="{{ page.next.url | relative_url }}" class="nav-link">{{ page.next.title }}</a>
+            </div>
+            {% endif %}
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <!-- 右側工具欄 -->
+    <aside class="post-sidebar">
+      <!-- 閱讀進度 -->
+      <div class="sidebar-card">
+        <h3 class="card-title">📊 閱讀進度</h3>
+        <div class="progress-container">
+          <div class="progress-track">
+            <div class="progress-bar" id="reading-progress"></div>
+          </div>
+          <span class="progress-text" id="progress-text">0%</span>
+        </div>
+      </div>
+      
+      <!-- 快速動作 -->
+      <div class="sidebar-card">
+        <h3 class="card-title">⚡ 快速動作</h3>
+        <div class="quick-actions">
+          <button class="quick-btn" onclick="copyToClipboard()" title="複製文章連結">
+            <span class="quick-icon">🔗</span>
+          </button>
+          <button class="quick-btn" onclick="window.print()" title="列印文章">
+            <span class="quick-icon">🖨️</span>
+          </button>
+          <button class="quick-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="回到頂部">
+            <span class="quick-icon">⬆️</span>
+          </button>
+          <button class="quick-btn" onclick="toggleTheme()" title="切換主題">
+            <span class="quick-icon">🌙</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 相關文章 -->
+      {% if page.categories.size > 0 %}
+        {% assign category = page.categories.first %}
+        {% assign related_posts = site.articles | where_exp: "post", "post.categories contains category and post.url != page.url" | limit: 5 %}
+        {% if related_posts.size > 0 %}
+        <div class="sidebar-card">
+          <h3 class="card-title">📂 相關威脅</h3>
+          <div class="related-posts">
+            {% for post in related_posts %}
+              <article class="related-post">
+                <a href="{{ post.url | relative_url }}" class="related-link">
+                  <h4 class="related-title">{{ post.title | truncate: 40 }}</h4>
+                  <div class="related-meta">
+                    <span class="related-date">{{ post.date | date: "%m/%d" }}</span>
+                    {% if post.tags.size > 0 %}
+                      <span class="related-tag">{{ post.tags.first }}</span>
+                    {% endif %}
+                  </div>
+                </a>
+              </article>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      {% endif %}
+
+      <!-- 文章統計 -->
+      <div class="sidebar-card">
+        <h3 class="card-title">📈 文章統計</h3>
+        <div class="article-stats">
+          <div class="stat-item">
+            <span class="stat-value">{{ words.size }}</span>
+            <span class="stat-label">字數</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">{{ reading_time }}</span>
+            <span class="stat-label">分鐘</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="view-count-sidebar">-</span>
+            <span class="stat-label">瀏覽</span>
+          </div>
+          {% if page.tags.size > 0 %}
+          <div class="stat-item">
+            <span class="stat-value">{{ page.tags.size }}</span>
+            <span class="stat-label">標籤</span>
           </div>
           {% endif %}
         </div>
-        
-        {% if page.description %}
-        <div class="article-description">
-          <p>{{ page.description }}</p>
-        </div>
-        {% endif %}
-      </header>
-
-      <!-- 文章內容 -->
-      <div class="article-content">
-        {{ content }}
       </div>
 
-      <!-- 文章結尾資訊 -->
-      <footer class="article-footer">
-        <div class="article-end-line"></div>
-        
-        {% if page.updated %}
-        <div class="updated-info">
-          <small>🕐 最後更新：{{ page.updated | date: "%Y年%m月%d日" }}</small>
+      <!-- 導航快捷 -->
+      <div class="sidebar-card">
+        <h3 class="card-title">🧭 站內導航</h3>
+        <div class="nav-shortcuts">
+          <a href="{{ '/' | relative_url }}" class="nav-shortcut">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-text">首頁</span>
+          </a>
+          <a href="{{ '/posts.html' | relative_url }}" class="nav-shortcut">
+            <span class="nav-icon">📚</span>
+            <span class="nav-text">所有威脅</span>
+          </a>
+          <a href="{{ '/categories.html' | relative_url }}" class="nav-shortcut">
+            <span class="nav-icon">📂</span>
+            <span class="nav-text">分類</span>
+          </a>
+          <a href="{{ '/tags.html' | relative_url }}" class="nav-shortcut">
+            <span class="nav-icon">🏷️</span>
+            <span class="nav-text">標籤</span>
+          </a>
         </div>
-        {% endif %}
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // TOC 自動生成
+  function generateTOC() {
+    const tocNav = document.getElementById('toc-nav');
+    if (!tocNav) return;
+    
+    const headings = document.querySelectorAll('.post-content h1, .post-content h2, .post-content h3, .post-content h4, .post-content h5, .post-content h6');
+    if (headings.length === 0) {
+      document.querySelector('.post-toc').style.display = 'none';
+      return;
+    }
+    
+    const tocItems = [];
+    
+    headings.forEach((heading, index) => {
+      // 為標題添加 ID
+      if (!heading.id) {
+        heading.id = 'heading-' + index;
+      }
+      
+      const level = parseInt(heading.tagName.substring(1));
+      const link = document.createElement('a');
+      link.href = '#' + heading.id;
+      link.textContent = heading.textContent.trim();
+      link.className = `toc-link toc-level-${level}`;
+      link.dataset.level = level;
+      
+      tocNav.appendChild(link);
+      tocItems.push({ link, heading });
+    });
+    
+    // TOC 點擊事件
+    let isScrolling = false;
+    
+    tocItems.forEach(({ link, heading }) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        isScrolling = true;
         
-        <div class="article-share">
-          <span>覺得有幫助嗎？分享給更多人：</span>
-          <div class="share-buttons">
-            <a href="javascript:void(0)" onclick="copyToClipboard()" class="share-btn">📋 複製連結</a>
-          </div>
+        // 更新活動狀態
+        tocItems.forEach(({ link: l }) => l.classList.remove('active'));
+        link.classList.add('active');
+        
+        // 平滑滾動
+        const targetPosition = heading.getBoundingClientRect().top + window.pageYOffset - 100;
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+        
+        // 更新 URL
+        history.replaceState(null, null, link.getAttribute('href'));
+        
+        setTimeout(() => { isScrolling = false; }, 1000);
+      });
+    });
+
+    // 滾動時更新活動項目
+    function updateActiveTOC() {
+      if (isScrolling) return;
+      
+      let activeItem = null;
+      const scrollTop = window.pageYOffset + 150;
+      
+      for (let i = headings.length - 1; i >= 0; i--) {
+        if (headings[i].offsetTop <= scrollTop) {
+          activeItem = tocItems[i];
+          break;
+        }
+      }
+      
+      tocItems.forEach(({ link }) => link.classList.remove('active'));
+      if (activeItem) {
+        activeItem.link.classList.add('active');
+      }
+    }
+    
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveTOC();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+    
+    updateActiveTOC();
+  }
+  
+  // TOC 收起展開
+  window.toggleTOC = function() {
+    const tocWrapper = document.querySelector('.toc-wrapper');
+    const tocIcon = document.getElementById('toc-icon');
+    
+    tocWrapper.classList.toggle('collapsed');
+    tocIcon.textContent = tocWrapper.classList.contains('collapsed') ? '📋' : '📋';
+  };
+  
+  // 複製連結功能
+  window.copyToClipboard = function() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('copy-btn');
+      const originalText = btn.querySelector('.btn-text').textContent;
+      btn.querySelector('.btn-text').textContent = '已複製！';
+      btn.classList.add('success');
+      
+      setTimeout(() => {
+        btn.querySelector('.btn-text').textContent = originalText;
+        btn.classList.remove('success');
+      }, 2000);
+    }).catch(err => {
+      console.error('複製失敗:', err);
+    });
+  };
+  
+  // 閱讀進度條
+  function initReadingProgress() {
+    const progressBar = document.getElementById('reading-progress');
+    const progressText = document.getElementById('progress-text');
+    
+    if (!progressBar) return;
+    
+    function updateProgress() {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = Math.min(Math.round((scrollTop / docHeight) * 100), 100);
+      
+      progressBar.style.width = scrollPercent + '%';
+      if (progressText) {
+        progressText.textContent = scrollPercent + '%';
+      }
+    }
+    
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
+  }
+  
+  // 響應式 TOC
+  function handleResponsive() {
+    const tocWrapper = document.querySelector('.toc-wrapper');
+    if (window.innerWidth < 1200 && tocWrapper) {
+      tocWrapper.classList.add('collapsed');
+    }
+  }
+  
+  // 初始化
+  generateTOC();
+  initReadingProgress();
+  handleResponsive();
+  
+  window.addEventListener('resize', handleResponsive);
+});
+</script>
+
+<!-- 代碼塊增強功能 -->
+<script src="{{ '/assets/js/code-blocks.js' | relative_url }}"></script>
         </div>
       </footer>
     </article>
