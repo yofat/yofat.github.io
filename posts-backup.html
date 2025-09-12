@@ -1,0 +1,232 @@
+---
+layout: default
+title: 所有文章
+permalink: /posts.html
+classes: grid-page
+---
+
+<div class="grid-3col content-root">
+  <!-- 左欄：TOC 導航 -->
+  <aside class="toc">
+    <h3>大綱</h3>
+    <nav id="toc">
+      <!-- JavaScript 會根據頁面內容自動生成 TOC -->
+    </nav>
+  </aside>
+
+  <!-- 中欄：主要內容 -->
+  <div class="maincol">
+    <section class="section">
+      <h1 id="top">所有文章</h1>
+      <p class="muted">📝 瀏覽所有已發布的文章</p>
+      
+      <!-- 文章統計 -->
+      <div class="stats-container">
+        <div class="stat-item">
+          <span class="stat-number">{{ site.articles.size }}</span>
+          <span class="stat-label">篇文章</span>
+        </div>
+        <div class="stat-item">
+          {% assign total_words = 0 %}
+          {% for post in site.articles %}
+            {% assign words = post.content | strip_html | normalize_whitespace | split: ' ' %}
+            {% assign total_words = total_words | plus: words.size %}
+          {% endfor %}
+          <span class="stat-number">{{ total_words | divided_by: 1000 }}K</span>
+          <span class="stat-label">字數</span>
+        </div>
+      </div>
+
+      <!-- 按年份分組的文章 -->
+      {% assign posts_by_year = site.articles | group_by_exp: "post", "post.date | date: '%Y'" %}
+      {% for year_group in posts_by_year %}
+        <section class="year-section">
+          <h2 id="year-{{ year_group.name }}">{{ year_group.name }} 年</h2>
+          <div class="posts-timeline">
+            {% for post in year_group.items %}
+              <article class="timeline-post">
+                <div class="timeline-date">
+                  <span class="month">{{ post.date | date: "%m月" }}</span>
+                  <span class="day">{{ post.date | date: "%d" }}</span>
+                </div>
+                <div class="timeline-content">
+                  <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+                  {% if post.excerpt %}
+                    <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
+                  {% endif %}
+                  <div class="post-meta">
+                    {% if post.categories and post.categories.size > 0 %}
+                      <div class="categories">
+                        {% for category in post.categories %}
+                          <span class="category">{{ category }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                    {% if post.tags and post.tags.size > 0 %}
+                      <div class="tags">
+                        {% for tag in post.tags %}
+                          <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        </section>
+      {% endfor %}
+
+      {% if site.articles.size == 0 %>
+        <div class="empty-notice">
+          <h3>🔍 尚無文章</h3>
+          <p>期待您的第一篇創作！</p>
+        </div>
+      {% endif %}
+    </section>
+  </div>
+
+  <!-- 右欄：側邊欄 -->
+  <aside class="sidebar">
+    <div class="widget">
+      <h3>🗂️ 快速導航</h3>
+      <ul class="nav-links">
+        <li><a href="#top">回到頂部</a></li>
+        {% for year_group in posts_by_year %}
+          <li><a href="#year-{{ year_group.name }}">{{ year_group.name }} 年 ({{ year_group.size }})</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="widget">
+      <h3>📊 文章分佈</h3>
+      <div class="year-stats">
+        {% if site.articles.size > 0 %}
+          {% for year_group in posts_by_year %}
+            <div class="year-stat">
+              <span class="year">{{ year_group.name }}</span>
+              <div class="progress-bar">
+                {% assign progress_width = year_group.size | times: 100 | divided_by: site.articles.size %}
+                <div class="progress" style="width: {{ progress_width }}%;"></div>
+              </div>
+              <span class="count">{{ year_group.size }}</span>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="muted">尚無文章分佈資料</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="widget">
+      <h3>🏷️ 熱門標籤</h3>
+      <div class="tag-cloud">
+        {% assign all_tags = "" | split: "" %}
+        {% for post in site.articles %}
+          {% if post.tags %}
+            {% for tag in post.tags %}
+              {% assign all_tags = all_tags | push: tag %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+        {% if all_tags.size > 0 %}
+          {% assign tag_counts = all_tags | group_by_exp: "tag", "tag" %}
+          {% assign sorted_tags = tag_counts | sort: "size" | reverse %}
+          {% for tag_group in sorted_tags limit: 10 %}
+            <a href="{{ '/tags.html' | relative_url }}#{{ tag_group.name | slugify }}" class="tag-link">
+              {{ tag_group.name }} ({{ tag_group.size }})
+            </a>
+          {% endfor %}
+        {% else %}
+          <p class="muted">尚無標籤</p>
+        {% endif %}
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+// 為 posts 頁面生成 TOC
+document.addEventListener('DOMContentLoaded', function() {
+  const tocContainer = document.getElementById('toc');
+  const headings = document.querySelectorAll('.maincol h1, .maincol h2, .maincol h3');
+  
+  if (headings.length === 0) {
+    tocContainer.innerHTML = '<p class="toc-empty">無標題可導航</p>';
+    return;
+  }
+
+  let tocHTML = '';
+  let currentLevel = 1;
+
+  headings.forEach((heading, index) => {
+    const level = parseInt(heading.tagName.substring(1));
+    const id = heading.id || `heading-${index}`;
+    const text = heading.textContent;
+
+    if (!heading.id) {
+      heading.id = id;
+    }
+
+    if (level === 1) {
+      if (currentLevel > 1) {
+        tocHTML += '</div>';
+      }
+      tocHTML += `<div class="toc-h1-item">
+        <button class="toc-h1-toggle" data-target="${id}">
+          <span class="toc-h1-icon">▶</span>
+          <span class="toc-h1-text">${text}</span>
+        </button>
+        <div class="toc-children">`;
+      currentLevel = 1;
+    } else {
+      tocHTML += `<a href="#${id}" class="toc-link" data-level="${level}">${text}</a>`;
+    }
+  });
+
+  if (currentLevel > 1) {
+    tocHTML += '</div>';
+  }
+  tocHTML += '</div>';
+
+  tocContainer.innerHTML = tocHTML;
+
+  // TOC 展開/收縮功能
+  const toggles = tocContainer.querySelectorAll('.toc-h1-toggle');
+  toggles.forEach(toggle => {
+    toggle.addEventListener('click', function() {
+      const icon = this.querySelector('.toc-h1-icon');
+      const children = this.nextElementSibling;
+      
+      if (children.classList.contains('expanded')) {
+        children.classList.remove('expanded');
+        icon.textContent = '▶';
+      } else {
+        children.classList.add('expanded');
+        icon.textContent = '▼';
+      }
+    });
+  });
+
+  // TOC 導航高亮
+  const tocLinks = tocContainer.querySelectorAll('.toc-link');
+  const observerOptions = {
+    rootMargin: '-20% 0px -70% 0px',
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.id;
+      const tocLink = tocContainer.querySelector(`[href="#${id}"]`);
+      
+      if (entry.isIntersecting && tocLink) {
+        tocLinks.forEach(link => link.classList.remove('active'));
+        tocLink.classList.add('active');
+      }
+    });
+  }, observerOptions);
+
+  headings.forEach(heading => observer.observe(heading));
+});
+</script>
