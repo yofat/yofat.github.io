@@ -563,6 +563,12 @@ html.light {
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  
+  /* 🔄 覆蓋黑色變數為合適的光明模式顏色 */
+  --deep-black: var(--text-primary);
+  --primary-black: var(--text-primary);
+  --black-red: var(--primary-red);
+  --charcoal: var(--bg-secondary);
 }
 
 /* 白色主題的 Hero 區域 - 紅藍白漸變 */
@@ -933,8 +939,8 @@ html:not(.light) .logo-image {
 }
 
 .btn-accent {
-  background: var(--corrupt-blue);
-  color: var(--deep-black);
+  background: var(--secondary-accent);
+  color: var(--bg-primary);
 }
 
 .btn-accent:hover {
