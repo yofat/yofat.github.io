@@ -22,19 +22,19 @@ classes: home three-column
       <div class="nav-card">
         <h3 class="sidebar-title">📚 站點導航</h3>
         <div class="site-nav">
-          <a href="{{ '/posts.html' | relative_url }}" class="nav-link">
+          <a href="/posts.html" class="nav-link">
             <span class="nav-icon">📝</span>
             <span class="nav-text">所有文章</span>
           </a>
-          <a href="{{ '/categories.html' | relative_url }}" class="nav-link">
+          <a href="/categories.html" class="nav-link">
             <span class="nav-icon">📂</span>
             <span class="nav-text">分類瀏覽</span>
           </a>
-          <a href="{{ '/tags.html' | relative_url }}" class="nav-link">
+          <a href="/tags.html" class="nav-link">
             <span class="nav-icon">🏷️</span>
             <span class="nav-text">標籤雲</span>
           </a>
-          <a href="{{ '/search.html' | relative_url }}" class="nav-link">
+          <a href="/search.html" class="nav-link">
             <span class="nav-icon">🔍</span>
             <span class="nav-text">搜尋功能</span>
           </a>
@@ -57,17 +57,17 @@ classes: home three-column
             <p class="hero-subtitle">🔐 Cybersecurity × 🤖 AI × ⚔️ Red Team</p>
             <p class="hero-description">專注於資訊安全、人工智能與攻防技術的學習分享</p>
             <div class="hero-buttons">
-              <a href="{{ '/posts.html' | relative_url }}" class="btn btn-primary">
+              <a href="/posts.html" class="btn btn-primary">
                 開始探索
               </a>
-              <a href="{{ '/explore.html' | relative_url }}" class="btn btn-outline">
+              <a href="/explore.html" class="btn btn-outline">
                 了解更多
               </a>
             </div>
           </div>
           <div class="hero-visual">
             <div class="hero-avatar">
-              <img src="{{ '/assets/image/logo.jpg' | relative_url }}" 
+              <img src="/assets/image/logo.jpg" 
                    alt="YoFat Profile"
                    loading="lazy"
                    decoding="async">
@@ -92,38 +92,160 @@ classes: home three-column
       </div>
       
       <div class="articles-grid">
-        {% for post in site.articles limit:6 %}
-          <article class="article-card">
-            <div class="article-header">
-              <h3 class="article-title">
-                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-              </h3>
-              <div class="article-meta">
-                <span class="article-date">📅 {{ post.date | date: "%Y-%m-%d" }}</span>
-                {% if post.categories.size > 0 %}
-                  <span class="article-category">{{ post.categories | first }}</span>
-                {% endif %}
-              </div>
+        <!-- 示例文章卡片 -->
+        <article class="article-card">
+          <div class="article-header">
+            <h3 class="article-title">
+              <a href="/posts.html">Git完整教學指南</a>
+            </h3>
+            <div class="article-meta">
+              <span class="article-date">📅 2025-01-17</span>
+              <span class="article-category">教學</span>
             </div>
-            
-            <div class="article-excerpt">
-              {{ post.excerpt | strip_html | truncatewords: 20 }}
+          </div>
+          
+          <div class="article-excerpt">
+            從基礎到進階，完整學習Git版本控制系統的使用方法，包含分支管理、衝突解決、協作開發等實用技巧...
+          </div>
+          
+          <div class="article-footer">
+            <div class="article-tags">
+              <span class="article-tag">Git</span>
+              <span class="article-tag">版本控制</span>
+              <span class="article-tag">教學</span>
             </div>
-            
-            <div class="article-footer">
-              <div class="article-tags">
-                {% for tag in post.tags limit:3 %}
-                  <span class="article-tag">{{ tag }}</span>
-                {% endfor %}
-              </div>
-              <a href="{{ post.url | relative_url }}" class="btn btn-outline">閱讀更多</a>
+            <a href="/posts.html" class="btn btn-outline">閱讀更多</a>
+          </div>
+        </article>
+        
+        <article class="article-card">
+          <div class="article-header">
+            <h3 class="article-title">
+              <a href="/posts.html">Python資料科學入門</a>
+            </h3>
+            <div class="article-meta">
+              <span class="article-date">📅 2024-12-01</span>
+              <span class="article-category">程式語言</span>
             </div>
-          </article>
-        {% endfor %}
+          </div>
+          
+          <div class="article-excerpt">
+            使用Python進行資料分析和機器學習的完整指南，涵蓋pandas、numpy、matplotlib等重要套件的使用...
+          </div>
+          
+          <div class="article-footer">
+            <div class="article-tags">
+              <span class="article-tag">Python</span>
+              <span class="article-tag">資料科學</span>
+              <span class="article-tag">機器學習</span>
+            </div>
+            <a href="/posts.html" class="btn btn-outline">閱讀更多</a>
+          </div>
+        </article>
+        
+        <article class="article-card">
+          <div class="article-header">
+            <h3 class="article-title">
+              <a href="/posts.html">JavaScript進階技巧</a>
+            </h3>
+            <div class="article-meta">
+              <span class="article-date">📅 2025-01-16</span>
+              <span class="article-category">程式語言</span>
+            </div>
+          </div>
+          
+          <div class="article-excerpt">
+            深入探討JavaScript的進階概念，包含閉包、原型鏈、異步編程等核心主題的詳細解析...
+          </div>
+          
+          <div class="article-footer">
+            <div class="article-tags">
+              <span class="article-tag">JavaScript</span>
+              <span class="article-tag">前端開發</span>
+              <span class="article-tag">進階</span>
+            </div>
+            <a href="/posts.html" class="btn btn-outline">閱讀更多</a>
+          </div>
+        </article>
+        
+        <article class="article-card">
+          <div class="article-header">
+            <h3 class="article-title">
+              <a href="/posts.html">網站重構完成</a>
+            </h3>
+            <div class="article-meta">
+              <span class="article-date">📅 2025-09-12</span>
+              <span class="article-category">功能項目</span>
+            </div>
+          </div>
+          
+          <div class="article-excerpt">
+            網站全面重構完成，採用全新的三欄式布局設計，優化使用體驗和視覺效果...
+          </div>
+          
+          <div class="article-footer">
+            <div class="article-tags">
+              <span class="article-tag">重構</span>
+              <span class="article-tag">設計</span>
+              <span class="article-tag">優化</span>
+            </div>
+            <a href="/posts.html" class="btn btn-outline">閱讀更多</a>
+          </div>
+        </article>
+        
+        <article class="article-card">
+          <div class="article-header">
+            <h3 class="article-title">
+              <a href="/posts.html">Jekyll部落格指南</a>
+            </h3>
+            <div class="article-meta">
+              <span class="article-date">📅 2025-01-15</span>
+              <span class="article-category">網頁開發</span>
+            </div>
+          </div>
+          
+          <div class="article-excerpt">
+            從零開始建立Jekyll靜態部落格，包含主題自訂、插件使用、GitHub Pages部署等完整教學...
+          </div>
+          
+          <div class="article-footer">
+            <div class="article-tags">
+              <span class="article-tag">Jekyll</span>
+              <span class="article-tag">部落格</span>
+              <span class="article-tag">GitHub Pages</span>
+            </div>
+            <a href="/posts.html" class="btn btn-outline">閱讀更多</a>
+          </div>
+        </article>
+        
+        <article class="article-card">
+          <div class="article-header">
+            <h3 class="article-title">
+              <a href="/posts.html">資安基礎概念</a>
+            </h3>
+            <div class="article-meta">
+              <span class="article-date">📅 2025-01-10</span>
+              <span class="article-category">資訊安全</span>
+            </div>
+          </div>
+          
+          <div class="article-excerpt">
+            資訊安全基礎知識介紹，涵蓋常見攻擊手法、防護措施、滲透測試基本概念等重要主題...
+          </div>
+          
+          <div class="article-footer">
+            <div class="article-tags">
+              <span class="article-tag">資安</span>
+              <span class="article-tag">滲透測試</span>
+              <span class="article-tag">基礎</span>
+            </div>
+            <a href="/posts.html" class="btn btn-outline">閱讀更多</a>
+          </div>
+        </article>
       </div>
       
       <div class="section-footer">
-        <a href="{{ '/posts.html' | relative_url }}" class="btn btn-primary">
+        <a href="/posts.html" class="btn btn-primary">
           查看所有文章 →
         </a>
       </div>
@@ -134,12 +256,12 @@ classes: home three-column
     <!-- 快速導航 -->
     <section id="quick-nav-section" class="quick-nav-section">
       <div class="section-header">
-        <h2 class="section-title">� 快速導航</h2>
+        <h2 class="section-title">🚀 快速導航</h2>
         <p class="section-description">快速找到你感興趣的內容</p>
       </div>
       
       <div class="nav-grid">
-        <a href="{{ '/explore.html' | relative_url }}" class="nav-card-link">
+        <a href="/explore.html" class="nav-card-link">
           <div class="nav-card-large">
             <div class="nav-icon">🔍</div>
             <h3>探索內容</h3>
@@ -147,7 +269,7 @@ classes: home three-column
           </div>
         </a>
         
-        <a href="{{ '/categories.html' | relative_url }}" class="nav-card-link">
+        <a href="/categories.html" class="nav-card-link">
           <div class="nav-card-large">
             <div class="nav-icon">📂</div>
             <h3>分類瀏覽</h3>
@@ -155,7 +277,7 @@ classes: home three-column
           </div>
         </a>
         
-        <a href="{{ '/tags.html' | relative_url }}" class="nav-card-link">
+        <a href="/tags.html" class="nav-card-link">
           <div class="nav-card-large">
             <div class="nav-icon">🏷️</div>
             <h3>標籤雲</h3>
@@ -163,7 +285,7 @@ classes: home three-column
           </div>
         </a>
         
-        <a href="{{ '/search.html' | relative_url }}" class="nav-card-link">
+        <a href="/search.html" class="nav-card-link">
           <div class="nav-card-large">
             <div class="nav-icon">🔍</div>
             <h3>搜尋功能</h3>
@@ -181,23 +303,17 @@ classes: home three-column
         <h3 class="card-title">📊 統計數據</h3>
         <div class="stats-compact">
           <div class="stat-item">
-            <span class="stat-number">{{ site.articles.size }}</span>
+            <span class="stat-number">25</span>
             <span class="stat-label">篇文章</span>
           </div>
           
           <div class="stat-item">
-            <span class="stat-number">
-              {% assign categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq %}
-              {{ categories.size }}
-            </span>
+            <span class="stat-number">8</span>
             <span class="stat-label">個分類</span>
           </div>
           
           <div class="stat-item">
-            <span class="stat-number">
-              {% assign tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq %}
-              {{ tags.size }}
-            </span>
+            <span class="stat-number">42</span>
             <span class="stat-label">個標籤</span>
           </div>
         </div>
@@ -206,9 +322,9 @@ classes: home three-column
       <div class="info-card">
         <h3 class="card-title">🚀 快速鏈接</h3>
         <div class="quick-links">
-          <a href="{{ '/posts.html' | relative_url }}" class="quick-link">📝 所有文章</a>
-          <a href="{{ '/categories.html' | relative_url }}" class="quick-link">📂 分類瀏覽</a>
-          <a href="{{ '/search.html' | relative_url }}" class="quick-link">🔍 搜尋功能</a>
+          <a href="/posts.html" class="quick-link">📝 所有文章</a>
+          <a href="/categories.html" class="quick-link">📂 分類瀏覽</a>
+          <a href="/search.html" class="quick-link">🔍 搜尋功能</a>
         </div>
       </div>
       
@@ -216,7 +332,7 @@ classes: home three-column
         <h3 class="card-title">⭐ GitHub</h3>
         <div class="github-section">
           <a class="btn btn-secondary" 
-             href="https://github.com/{{ site.github_owner }}/{{ site.github_repo }}"
+             href="https://github.com/yofat/yofat.github.io"
              target="_blank"
              rel="noopener">
             <span class="btn-icon">⭐</span>
@@ -243,15 +359,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const scrollPercent = (scrollTop / docHeight) * 100;
     
     // 頂部進度條
-    scrollProgressTop.style.width = scrollPercent + '%';
+    if (scrollProgressTop) {
+      scrollProgressTop.style.width = scrollPercent + '%';
+    }
     
     // 底部進度條 (當滾動到底部時顯示)
-    if (scrollPercent > 95) {
-      scrollProgressBottom.style.opacity = '1';
-      scrollProgressBottom.style.width = '100%';
-    } else {
-      scrollProgressBottom.style.opacity = '0';
-      scrollProgressBottom.style.width = '0%';
+    if (scrollProgressBottom) {
+      if (scrollPercent > 95) {
+        scrollProgressBottom.style.opacity = '1';
+        scrollProgressBottom.style.width = '100%';
+      } else {
+        scrollProgressBottom.style.opacity = '0';
+        scrollProgressBottom.style.width = '0%';
+      }
     }
   }
   
@@ -275,7 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (tocContainer) {
     const tocItems = [
       { href: '#latest-posts', text: '🔥 最新文章' },
-      { href: '#quick-nav-section', text: '� 快速導航' }
+      { href: '#quick-nav-section', text: '🚀 快速導航' }
     ];
 
     tocItems.forEach(item => {
@@ -361,9 +481,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
   
-  // 為分類卡片添加懸停效果
-  const categoryCards = document.querySelectorAll('.category-card');
-  categoryCards.forEach(card => {
+  // 為導航卡片添加懸停效果
+  const navCards = document.querySelectorAll('.nav-card-large');
+  navCards.forEach(card => {
     card.addEventListener('mouseenter', () => {
       card.style.transform = 'translateY(-4px)';
     });
@@ -372,263 +492,5 @@ document.addEventListener("DOMContentLoaded", () => {
       card.style.transform = 'translateY(0)';
     });
   });
-});
-</script>
-      }
-    }
-    
-    let ticking = false;
-    function requestTick() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateActiveTOC();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }
-    
-    window.addEventListener('scroll', requestTick);
-    updateActiveTOC();
-  }
-});
-</script>
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <div class="hero-image">
-          <div class="hero-avatar">
-            <img src="{{ '/assets/image/logo.jpg' | relative_url }}" 
-                 alt="YoFat Profile"
-                 loading="lazy"
-                 decoding="async"
-                 width="200"
-                 height="200">
-          </div>
-          <!-- 技能標籤 -->
-          <div class="skill-tags">
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">Security</span>
-            <span class="skill-tag">AI/ML</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 熱門文章區域 -->
-    <section id="latest-posts" class="section">
-      <h2>🔥 熱門文章</h2>
-      <div class="posts-horizontal">
-        {% for post in site.articles limit:3 %}
-          <article class="post-card-horizontal">
-            <div class="post-content-horizontal">
-              <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-              <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 15 }}</p>
-              <div class="post-meta-horizontal">
-                <span class="post-date">{{ post.date | date: "%m-%d" }}</span>
-                {% if post.categories.size > 0 %}
-                  <span class="post-category">{{ post.categories | first }}</span>
-                {% endif %}
-              </div>
-            </div>
-            <div class="post-read-more">
-              <a href="{{ post.url | relative_url }}" class="read-more-btn">閱讀 →</a>
-            </div>
-          </article>
-        {% endfor %}
-      </div>
-    </section>
-
-    <!-- 關於我區域 -->
-    <section id="about-me" class="section">
-      <h2>👨‍💻 關於我</h2>
-      <div class="about-content">
-        <div class="intro-card">
-          <div class="intro-icon">👋</div>
-          <div class="intro-text">
-            <p>你好，我是 <strong>YoFat</strong>，正在學習網路安全和人工智能技術的學生。</p>
-            <p>我喜歡透過實作來學習新技術，並將學習過程記錄在這個部落格中。</p>
-          </div>
-        </div>
-        
-        <div class="skills-compact">
-          <span class="skill-tag python">🐍 Python</span>
-          <span class="skill-tag js">⚡ JavaScript</span>
-          <span class="skill-tag security">🔒 資安基礎</span>
-          <span class="skill-tag ai">🤖 機器學習</span>
-          <span class="skill-tag web">🌐 網頁開發</span>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- 右欄：精簡工具 -->
-  <aside class="siderail">
-    <div class="card">
-      <div class="card-title">🚀 快速導航</div>
-      <div class="quick-nav">
-        <a href="{{ '/categories.html' | relative_url }}" class="nav-item">📂 分類</a>
-        <a href="{{ '/tags.html' | relative_url }}" class="nav-item">🏷️ 標籤</a>
-        <a href="{{ '/search.html' | relative_url }}" class="nav-item">🔍 搜尋</a>
-      </div>
-    </div>
-    
-    <div class="card">
-      <div class="card-title">📊 網站統計</div>
-      <div class="stats-compact">
-        <div class="stat-item">
-          <span class="stat-icon">📝</span>
-          <span class="stat-number">{{ site.articles.size }}</span>
-          <span class="stat-label">篇文章</span>
-        </div>
-        
-        <div class="stat-item">
-          <span class="stat-icon">📂</span>
-          <span class="stat-number">
-            {% assign categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq %}
-            {{ categories.size }}
-          </span>
-          <span class="stat-label">個分類</span>
-        </div>
-        
-        <div class="stat-item">
-          <span class="stat-icon">🏷️</span>
-          <span class="stat-number">
-            {% assign tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq %}
-            {{ tags.size }}
-          </span>
-          <span class="stat-label">個標籤</span>
-        </div>
-        
-        {% if site.articles.size > 0 %}
-        <div class="stat-item latest-post">
-          <span class="stat-icon">🕒</span>
-          <span class="stat-label">最新文章</span>
-          <a href="{{ site.articles.first.url | relative_url }}" class="latest-post-link">
-            {{ site.articles.first.title | truncate: 25 }}
-          </a>
-          <span class="stat-date">{{ site.articles.first.date | date: "%m-%d" }}</span>
-        </div>
-        {% endif %}
-      </div>
-    </div>
-    
-    <div class="card">
-      <div class="card-title">⭐ GitHub</div>
-      <div class="github-section">
-        <a class="github-button"
-           href="https://github.com/{{ site.github_owner }}/{{ site.github_repo }}"
-           data-icon="octicon-star"
-           data-size="large"
-           data-show-count="true">
-          Star
-        </a>
-      </div>
-    </div>
-  </aside>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  // 首頁專用的簡單 TOC 生成
-  const tocContainer = document.getElementById("toc");
-  if (tocContainer) {
-    const tocItems = [
-      { href: '#latest-posts', text: '🔥 熱門文章' },
-      { href: '#about-me', text: '👨‍💻 關於我' }
-    ];
-
-    tocItems.forEach(item => {
-      const link = document.createElement('a');
-      link.href = item.href;
-      link.textContent = item.text;
-      link.className = 'toc-link';
-      tocContainer.appendChild(link);
-    });
-
-    // 獲取所有 TOC 連結
-    const tocLinks = Array.from(tocContainer.querySelectorAll('.toc-link'));
-    let isScrolling = false;
-    
-    // 為每個連結添加點擊事件
-    tocItems.forEach((item, index) => {
-      const link = tocLinks[index];
-      if (link) {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          
-          // 暫停自動滾動檢測
-          isScrolling = true;
-          
-          // 移除所有 active 狀態
-          tocLinks.forEach(l => l.classList.remove('active'));
-          // 設置當前點擊的連結為 active
-          link.classList.add('active');
-          
-          const target = document.querySelector(item.href);
-          if (target) {
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
-            window.scrollTo({
-              top: targetPosition,
-              behavior: "smooth"
-            });
-            history.replaceState(null, "", item.href);
-            
-            // 滾動完成後恢復自動檢測
-            setTimeout(() => {
-              isScrolling = false;
-            }, 1500);
-          }
-        });
-      }
-    });
-
-    function updateActiveTOC() {
-      if (isScrolling) return; // 如果正在手動滾動，跳過
-      
-      let currentActive = null;
-      const scrollTop = window.pageYOffset + 120; // 考慮偏移量
-      
-      // 從後往前檢查，找到當前應該高亮的區域
-      for (let i = tocItems.length - 1; i >= 0; i--) {
-        const sectionId = tocItems[i].href.substring(1);
-        const section = document.getElementById(sectionId);
-        
-        if (section && section.offsetTop <= scrollTop) {
-          currentActive = tocLinks[i];
-          break;
-        }
-      }
-      
-      // 如果沒找到，默認第一個
-      if (!currentActive && tocLinks.length > 0) {
-        currentActive = tocLinks[0];
-      }
-      
-      // 更新高亮
-      tocLinks.forEach(link => link.classList.remove('active'));
-      if (currentActive) {
-        currentActive.classList.add('active');
-      }
-    }
-    
-    // 滾動事件監聽
-    let ticking = false;
-    function requestTick() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateActiveTOC();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }
-    
-    window.addEventListener('scroll', requestTick);
-    updateActiveTOC(); // 初始執行
-  }
 });
 </script>
