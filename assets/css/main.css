@@ -260,12 +260,13 @@ body {
 }
 
 .profile-avatar {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   margin-bottom: var(--spacing-md);
   border: 3px solid var(--border);
   transition: all var(--duration-normal) ease;
+  object-fit: cover;
 }
 
 .profile-avatar:hover {
@@ -418,44 +419,15 @@ body:not(.light-theme) .logo-image {
 
 .hero-section {
   position: relative;
-  min-height: 70vh;
+  min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--spacing-xxl);
+  margin-bottom: var(--spacing-3xl);
   background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
   border-radius: var(--radius-xl);
   overflow: hidden;
   width: 100%;
-}
-
-.hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.hero-bg-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.2;
-}
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(255, 43, 71, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(255, 165, 0, 0.1) 0%, transparent 50%);
-  z-index: 2;
 }
 
 .hero-container {
@@ -533,8 +505,8 @@ body:not(.light-theme) .logo-image {
 }
 
 .hero-avatar {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid var(--blood-red);
@@ -667,7 +639,13 @@ body:not(.light-theme) .logo-image {
    ==================================== */
 
 .content-section {
-  margin-bottom: var(--spacing-xxl);
+  margin-bottom: var(--spacing-3xl);
+  padding: var(--spacing-xl) 0;
+}
+
+.content-section:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: var(--spacing-3xl);
 }
 
 .content-divider {
@@ -693,6 +671,32 @@ body:not(.light-theme) .logo-image {
   font-size: 1.1rem;
   color: var(--text-secondary);
   margin: 0;
+}
+
+/* ====================================
+   🖼️ 區域裝飾圖片
+   ==================================== */
+
+.section-visual {
+  text-align: center;
+  margin: var(--spacing-xl) 0;
+}
+
+.section-banner {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  opacity: 0.8;
+  transition: all var(--duration-normal) ease;
+  border: 2px solid var(--border);
+}
+
+.section-banner:hover {
+  opacity: 1;
+  transform: scale(1.02);
+  border-color: var(--blood-red);
+  box-shadow: 0 10px 30px rgba(255, 43, 71, 0.2);
 }
 
 .section-footer {
@@ -1199,9 +1203,13 @@ body:not(.light-theme) .logo-image {
     align-items: center;
   }
   
+  .section-banner {
+    max-width: 300px;
+  }
+  
   .hero-avatar {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
   }
   
   .floating-elements {
