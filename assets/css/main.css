@@ -144,20 +144,16 @@ body {
 .three-column-layout {
   display: grid;
   grid-template-columns: 280px 1fr 280px;
-  gap: var(--spacing-lg);
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0;
+  gap: 0;
+  width: 100vw;
   min-height: 100vh;
+  position: relative;
 }
 
 /* 左側邊欄 */
 .left-sidebar {
-  position: fixed;
-  left: 0;
+  position: sticky;
   top: 0;
-  width: 280px;
   height: 100vh;
   background: var(--bg-secondary);
   border-right: 1px solid var(--border);
@@ -168,10 +164,8 @@ body {
 
 /* 右側邊欄 */
 .right-sidebar {
-  position: fixed;
-  right: 0;
+  position: sticky;
   top: 0;
-  width: 280px;
   height: 100vh;
   background: var(--bg-secondary);
   border-left: 1px solid var(--border);
@@ -182,10 +176,9 @@ body {
 
 /* 主要內容區 */
 .main-content {
-  margin-left: 280px;
-  margin-right: 280px;
   padding: var(--spacing-xl);
   min-width: 0;
+  background: var(--bg-primary);
 }
 
 /* ====================================
@@ -294,6 +287,7 @@ body {
   background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
   border-radius: var(--radius-xl);
   overflow: hidden;
+  width: 100%;
 }
 
 .hero-container {
@@ -919,9 +913,20 @@ body {
    📱 響應式設計
    ==================================== */
 
+@media (min-width: 1201px) {
+  .three-column-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr 280px;
+    gap: 0;
+    width: 100vw;
+    min-height: 100vh;
+  }
+}
+
 @media (max-width: 1200px) {
   .three-column-layout {
     display: block;
+    width: 100%;
   }
   
   .left-sidebar,
@@ -936,8 +941,6 @@ body {
   }
   
   .main-content {
-    margin-left: 0;
-    margin-right: 0;
     padding: var(--spacing-lg);
   }
   
@@ -1007,6 +1010,7 @@ body {
   transition: all var(--duration-normal) ease;
   overflow-x: hidden;
   position: relative;
+  width: 100vw;
 }
 
 /* 🌌 背景層 - 藍圖網格特效 */
