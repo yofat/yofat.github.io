@@ -1,34 +1,57 @@
-# 💀 YoFat 個人部落格
+# � YoFat 個人部落格
 
 [![Jekyll Build](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml/badge.svg)](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> � 網路安全 × 🤖 人工智能 × ⚔️ 紅藍對抗技術分享
+> 🔐 資訊安全 × 💻 程式開發 × 🤖 技術分享
 
-##  快速上手懶人包
+## 🚀 快速開始
 
-### 📝 創建文章
-```powershell
-.\tools\master-tool.ps1  # 統一管理工具（推薦）
-```
-
-### 🌐 訪問網站
+### 🌐 網站訪問
 - **部落格首頁**: https://yofat.github.io
 - **文章列表**: https://yofat.github.io/posts.html
 - **分類瀏覽**: https://yofat.github.io/categories.html
+- **搜尋功能**: https://yofat.github.io/search.html
 
-### 🗂️ 文章分類
-- 🤖 人工智能 | 💻 程式語言 | 🌐 網頁開發 | 🌱 生活分享
-- 📖 教學 | ⚙️ 功能項目 | 🛠️ 工具分享 | 💭 心得筆記
+### � 內容管理
+```powershell
+# 使用統一管理工具
+.\tools\master-tool.ps1
 
-## � 主要特色
-- 🎯 **邪氣污染風格**: 深黑藍底 + 血紅光暈設計
-- 🔍 **全文搜尋**: 快速找到所需內容
-- 📱 **響應式設計**: 完美適配所有裝置
-- ⚡ **高效工具**: PowerShell 腳本自動化管理
+# 快速創建文章
+.\tools\quick-post.ps1
 
-## 📚 詳細文檔
-更多功能說明請參考 [部落格完整使用指南](https://yofat.github.io/articles/功能項目/部落格完整使用指南/)
+# 批量處理文章
+.\tools\article-manager.ps1
+```
+
+## 🎨 設計特色
+
+### 視覺設計
+- **配色方案**: 黑紅科技風 + 藍色輔助色
+- **主題切換**: 亮色/暗色模式自動切換
+- **三欄布局**: 導航 + 內容 + 資訊
+- **響應式**: 完美適配各種裝置
+
+### 功能特色
+- ⚡ **動畫效果**: Hero 標題逐字淡入
+- 📖 **智能目錄**: 文章 TOC 自動生成
+- 🔍 **全文搜尋**: JSON 索引快速搜尋
+- � **瀏覽統計**: 文章閱讀次數追蹤
+
+## 📁 專案結構
+
+詳細的專案結構說明請參考 [STRUCTURE.md](./STRUCTURE.md)
+
+## 🛠️ 技術棧
+
+- **靜態生成**: Jekyll + GitHub Pages
+- **前端技術**: HTML5 + CSS Grid + Vanilla JS
+- **動畫庫**: Anime.js
+- **管理工具**: PowerShell 腳本
+- **版本控制**: Git + GitHub
+
+## 📚 內容分類
 | **quick-post.ps1** | 快速創建文章 | 單篇文章創建 |
 | **article-manager.ps1** | 批量處理工具 | 大量文章管理 |
 | **drop-article.ps1** | 拖放檔案處理 | 外部文章導入 |
