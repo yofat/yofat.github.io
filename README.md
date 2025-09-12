@@ -1,53 +1,34 @@
-# YoFat 個人部落格
+# 💀 YoFat 個人部落格
 
 [![Jekyll Build](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml/badge.svg)](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> 🚀 基於 Jekyll 的個人技術部落格，專注於網路安全、人工智能與技術分享
+> � 網路安全 × 🤖 人工智能 × ⚔️ 紅藍對抗技術分享
 
-## 🌟 特色功能
-
-- 📝 **雙重文章管理**: 支援 `_posts` 和 `_articles` 兩種管理方式
-- 🎯 **智慧分類系統**: 8大主題分類，精準內容組織
-- 🔍 **強大搜尋功能**: 全文搜尋、標籤篩選、分類瀏覽
-- 📱 **響應式設計**: 完美適配桌面、平板、手機
-- 🌙 **明暗主題**: 一鍵切換，保護眼睛
-- ⚡ **效能優化**: 懶載入、圖片優化、快速載入
-
-## 🚀 快速開始
+##  快速上手懶人包
 
 ### 📝 創建文章
-
 ```powershell
-# 快速創建
-.\tools\quick-post.ps1 -Title "我的文章" -Category "程式語言"
-
-# 使用主工具 (推薦)
-.\tools\master-tool.ps1
-
-# 批量管理
-.\tools\article-manager.ps1
+.\tools\master-tool.ps1  # 統一管理工具（推薦）
 ```
 
-### 🗂️ 分類結構
+### 🌐 訪問網站
+- **部落格首頁**: https://yofat.github.io
+- **文章列表**: https://yofat.github.io/posts.html
+- **分類瀏覽**: https://yofat.github.io/categories.html
 
-```
-_articles/
-├── 🤖 人工智能/    # AI、機器學習、深度學習
-├── 💻 程式語言/    # Python、JavaScript、C++等
-├── 🌐 網頁開發/    # 前端、後端、框架技術
-├── 🌱 生活分享/    # 日常生活、旅遊、美食
-├── 📖 教學/       # 教學文章、學習指南
-├── ⚙️ 功能項目/    # 網站功能、專案介紹
-├── 🛠️ 工具分享/    # 實用工具、軟體推薦
-└── 💭 心得筆記/    # 個人心得、學習筆記
-```
+### 🗂️ 文章分類
+- 🤖 人工智能 | 💻 程式語言 | 🌐 網頁開發 | 🌱 生活分享
+- 📖 教學 | ⚙️ 功能項目 | 🛠️ 工具分享 | 💭 心得筆記
 
-## 🛠️ 管理工具
+## � 主要特色
+- 🎯 **邪氣污染風格**: 深黑藍底 + 血紅光暈設計
+- 🔍 **全文搜尋**: 快速找到所需內容
+- 📱 **響應式設計**: 完美適配所有裝置
+- ⚡ **高效工具**: PowerShell 腳本自動化管理
 
-| 工具 | 功能 | 適用場景 |
-|------|------|----------|
-| **master-tool.ps1** | 統一管理入口 | 日常維護 (推薦) |
+## 📚 詳細文檔
+更多功能說明請參考 [部落格完整使用指南](https://yofat.github.io/articles/功能項目/部落格完整使用指南/)
 | **quick-post.ps1** | 快速創建文章 | 單篇文章創建 |
 | **article-manager.ps1** | 批量處理工具 | 大量文章管理 |
 | **drop-article.ps1** | 拖放檔案處理 | 外部文章導入 |

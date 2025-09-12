@@ -7,7 +7,7 @@ classes: home
 <div class="grid-3col content-root">
   <!-- 左欄：目錄 -->
   <aside class="toc">
-    <h3>大綱</h3>
+    <h3>🗺️ 快速導航</h3>
     <nav id="toc">
       <!-- JavaScript 會動態生成目錄 -->
     </nav>
@@ -15,7 +15,7 @@ classes: home
 
   <!-- 中欄：主要內容 -->
   <div class="maincol">
-    <!-- Hero 區域 - 整合 banner 和介紹 -->
+    <!-- Hero 區域 -->
     <section class="hero">
       <div class="hero-background">
         <img src="{{ '/assets/image/banner.png' | relative_url }}" 
@@ -31,22 +31,342 @@ classes: home
           <div class="hero-text">
             <h1 id="hero-title">
               <span class="hero-greeting">Hi, 我是</span>
-              <span class="hero-name">YoFat</span>
+              <span class="hero-name glow-blue rune-text">YOFAT</span>
             </h1>
-            <p class="hero-subtitle">🔐 網路安全 × 🤖 人工智能 × ⚙️ 系統工程</p>
-            <p class="hero-description">專注於資訊安全、AI 技術與系統架構的技術分享</p>
+            <p class="hero-subtitle glow-red">🔐 網路安全 × 🤖 人工智能 × ⚔️ 紅藍對抗</p>
+            <p class="hero-description">專注於資訊安全、AI 技術與攻防技術的邪氣分享</p>
             <div class="hero-buttons">
               <a href="{{ '/posts.html' | relative_url }}" class="btn primary">
                 <span class="btn-icon">📚</span>
                 瀏覽文章
               </a>
-              <a href="{{ '/categories.html' | relative_url }}" class="btn outline">
+              <a href="{{ '/categories.html' | relative_url }}" class="btn secondary">
                 <span class="btn-icon">📂</span>
                 看分類
               </a>
-              <a href="{{ '/search.html' | relative_url }}" class="btn outline">
+              <a href="{{ '/search.html' | relative_url }}" class="btn accent">
                 <span class="btn-icon">🔍</span>
                 搜尋文章
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- 最新文章區域 -->
+    <section id="latest-posts" class="section">
+      <div class="section-header">
+        <h2 class="glow-red">🔥 最新文章</h2>
+        <p class="section-description">探索最新的技術分享與學習心得</p>
+      </div>
+      
+      <div class="articles-grid">
+        {% for post in site.articles limit:6 %}
+          <article class="article-card glitch">
+            <div class="article-header">
+              <h3 class="article-title">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              </h3>
+              <div class="article-meta">
+                <span class="article-date">📅 {{ post.date | date: "%Y-%m-%d" }}</span>
+                {% if post.categories.size > 0 %}
+                  <span class="category">{{ post.categories | first }}</span>
+                {% endif %}
+              </div>
+            </div>
+            
+            <div class="article-excerpt">
+              {{ post.excerpt | strip_html | truncatewords: 20 }}
+            </div>
+            
+            <div class="article-footer">
+              <div class="article-tags">
+                {% for tag in post.tags limit:3 %}
+                  <span class="tag">{{ tag }}</span>
+                {% endfor %}
+              </div>
+              <a href="{{ post.url | relative_url }}" class="btn outline">閱讀更多</a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+      
+      <div class="section-footer">
+        <a href="{{ '/posts.html' | relative_url }}" class="btn primary">
+          查看所有文章 →
+        </a>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- 分類概覽 -->
+    <section id="categories-overview" class="section">
+      <div class="section-header">
+        <h2 class="glow-blue">📂 內容分類</h2>
+        <p class="section-description">按主題瀏覽不同類型的技術內容</p>
+      </div>
+      
+      <div class="categories-grid">
+        {% assign sorted_categories = site.data.categories %}
+        {% for category_data in sorted_categories %}
+          {% assign category_name = category_data[0] %}
+          {% assign category_info = category_data[1] %}
+          {% assign category_posts = site.articles | where_exp: "post", "post.categories contains category_name" %}
+          
+          <div class="category-card card">
+            <div class="category-icon">
+              {% case category_name %}
+                {% when '人工智能' %}🤖
+                {% when '程式語言' %}💻
+                {% when '網頁開發' %}🌐
+                {% when '生活分享' %}🌱
+                {% when '教學' %}📖
+                {% when '功能項目' %}⚙️
+                {% when '工具分享' %}🛠️
+                {% when '心得筆記' %}💭
+                {% else %}📄
+              {% endcase %}
+            </div>
+            <h3 class="category-title">{{ category_name }}</h3>
+            <p class="category-count">{{ category_posts.size }} 篇文章</p>
+            <div class="category-topics">
+              {% for topic in category_info limit:3 %}
+                <span class="topic-tag">{{ topic }}</span>
+              {% endfor %}
+            </div>
+            <a href="{{ '/categories.html' | relative_url }}#{{ category_name }}" class="btn outline">探索</a>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- 關於我區域 -->
+    <section id="about-me" class="section">
+      <div class="section-header">
+        <h2 class="glow-gold">💀 關於駭客</h2>
+        <p class="section-description">一個在網路安全與AI領域探索的邪氣學習者</p>
+      </div>
+      
+      <div class="about-content card">
+        <div class="about-text">
+          <p>🔥 我是 <strong class="glow-red rune-text">YOFAT</strong>，正在深入學習網路安全與人工智能技術。</p>
+          <p>⚔️ 專注於紅隊攻擊技術、藍隊防禦策略，以及AI在資安領域的應用。</p>
+          <p>💭 透過實戰經驗和技術研究，將學習成果記錄在這個被污染的數位空間中。</p>
+        </div>
+        
+        <div class="skills-showcase">
+          <h4 class="glow-blue">🛠️ 技術棧</h4>
+          <div class="skills-grid">
+            <span class="skill-tag python glow-blue">🐍 Python</span>
+            <span class="skill-tag js glow-gold">⚡ JavaScript</span>
+            <span class="skill-tag security glow-red">🔒 滲透測試</span>
+            <span class="skill-tag ai glow-blue">🤖 機器學習</span>
+            <span class="skill-tag web glow-gold">🌐 網頁開發</span>
+            <span class="skill-tag crypto glow-red">🔐 密碼學</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 右欄：工具與統計 -->
+  <aside class="sidebar">
+    <div class="card breathing-glow">
+      <h3>🎯 控制台</h3>
+      <div class="control-panel">
+        <a href="{{ '/posts.html' | relative_url }}" class="control-btn">
+          <span class="control-icon">📚</span>
+          <span class="control-text">文章庫</span>
+        </a>
+        <a href="{{ '/categories.html' | relative_url }}" class="control-btn">
+          <span class="control-icon">📂</span>
+          <span class="control-text">分類檢索</span>
+        </a>
+        <a href="{{ '/tags.html' | relative_url }}" class="control-btn">
+          <span class="control-icon">🏷️</span>
+          <span class="control-text">標籤雲</span>
+        </a>
+        <a href="{{ '/search.html' | relative_url }}" class="control-btn">
+          <span class="control-icon">🔍</span>
+          <span class="control-text">搜尋引擎</span>
+        </a>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>📊 系統狀態</h3>
+      <div class="stats-panel">
+        <div class="stat-item">
+          <span class="stat-icon glow-blue">📝</span>
+          <div class="stat-info">
+            <span class="stat-number">{{ site.articles.size }}</span>
+            <span class="stat-label">威脅情報</span>
+          </div>
+        </div>
+        
+        <div class="stat-item">
+          <span class="stat-icon glow-gold">📂</span>
+          <div class="stat-info">
+            <span class="stat-number">
+              {% assign categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq %}
+              {{ categories.size }}
+            </span>
+            <span class="stat-label">攻擊向量</span>
+          </div>
+        </div>
+        
+        <div class="stat-item">
+          <span class="stat-icon glow-red">🏷️</span>
+          <div class="stat-info">
+            <span class="stat-number">
+              {% assign tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq %}
+              {{ tags.size }}
+            </span>
+            <span class="stat-label">漏洞標籤</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>� 最新入侵</h3>
+      <div class="recent-posts">
+        {% for post in site.articles limit:5 %}
+          <article class="recent-post">
+            <a href="{{ post.url | relative_url }}" class="recent-post-link">
+              <h4 class="recent-post-title">{{ post.title | truncate: 30 }}</h4>
+              <div class="recent-post-meta">
+                <span class="recent-post-date">{{ post.date | date: "%m-%d" }}</span>
+                {% if post.categories.size > 0 %}
+                  <span class="recent-post-category">{{ post.categories | first }}</span>
+                {% endif %}
+              </div>
+            </a>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>⭐ 源碼庫</h3>
+      <div class="github-section">
+        <p class="github-description">這個被污染的數位堡壘的源碼</p>
+        <a class="btn secondary" 
+           href="https://github.com/{{ site.github_owner }}/{{ site.github_repo }}"
+           target="_blank"
+           rel="noopener">
+          <span class="btn-icon">⭐</span>
+          Star on GitHub
+        </a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // 首頁專用的 TOC 生成
+  const tocContainer = document.getElementById("toc");
+  if (tocContainer) {
+    const tocItems = [
+      { href: '#latest-posts', text: '🔥 最新文章' },
+      { href: '#categories-overview', text: '📂 內容分類' },
+      { href: '#about-me', text: '💀 關於駭客' }
+    ];
+
+    tocItems.forEach(item => {
+      const link = document.createElement('a');
+      link.href = item.href;
+      link.textContent = item.text;
+      link.className = 'toc-link';
+      tocContainer.appendChild(link);
+    });
+
+    // 獲取所有 TOC 連結
+    const tocLinks = Array.from(tocContainer.querySelectorAll('.toc-link'));
+    let isScrolling = false;
+    
+    // 為每個連結添加點擊事件
+    tocItems.forEach((item, index) => {
+      const link = tocLinks[index];
+      if (link) {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          // 暫停自動滾動檢測
+          isScrolling = true;
+          
+          // 移除所有 active 狀態
+          tocLinks.forEach(l => l.classList.remove('active'));
+          // 設置當前點擊的連結為 active
+          link.classList.add('active');
+          
+          const target = document.querySelector(item.href);
+          if (target) {
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 120;
+            window.scrollTo({
+              top: targetPosition,
+              behavior: "smooth"
+            });
+            history.replaceState(null, "", item.href);
+            
+            // 滾動完成後恢復自動檢測
+            setTimeout(() => {
+              isScrolling = false;
+            }, 1500);
+          }
+        });
+      }
+    });
+
+    function updateActiveTOC() {
+      if (isScrolling) return;
+      
+      let currentActive = null;
+      const scrollTop = window.pageYOffset + 150;
+      
+      for (let i = tocItems.length - 1; i >= 0; i--) {
+        const sectionId = tocItems[i].href.substring(1);
+        const section = document.getElementById(sectionId);
+        
+        if (section && section.offsetTop <= scrollTop) {
+          currentActive = tocLinks[i];
+          break;
+        }
+      }
+      
+      if (!currentActive && tocLinks.length > 0) {
+        currentActive = tocLinks[0];
+      }
+      
+      tocLinks.forEach(link => link.classList.remove('active'));
+      if (currentActive) {
+        currentActive.classList.add('active');
+      }
+    }
+    
+    let ticking = false;
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveTOC();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+    
+    window.addEventListener('scroll', requestTick);
+    updateActiveTOC();
+  }
+});
+</script>
               </a>
             </div>
           </div>

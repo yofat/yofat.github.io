@@ -1,32 +1,95 @@
-<header class="site-header">
-  <div class="container">
-    <a class="brand" href="{{ '/' | relative_url }}">
+<header>
+  <div class="header-container">
+    <a class="logo" href="{{ '/' | relative_url }}">
       <img src="{{ '/assets/image/logo_transparent.png' | relative_url }}" 
            alt="YoFat Logo" 
-           class="brand-logo light-logo"
+           class="logo-image"
            loading="lazy"
            decoding="async"
            width="40"
            height="40">
-      <img src="{{ '/assets/image/logo_inverted.png' | relative_url }}" 
-           alt="YoFat Logo" 
-           class="brand-logo dark-logo"
-           loading="lazy"
-           decoding="async"
-           width="40"
-           height="40">
-      <span class="brand-text">YoFat</span>
+      <span class="logo-text rune-text">YOFAT</span>
     </a>
-    <nav class="nav">
-      <a href="{{ '/' | relative_url }}">首頁</a>
-      <a href="{{ '/posts.html' | relative_url }}">所有文章</a>
-      <a href="{{ '/categories.html' | relative_url }}">分類</a>
-      <a href="{{ '/tags.html' | relative_url }}">標籤</a>
-      <a href="{{ '/search.html' | relative_url }}">搜尋</a>
-      <button id="theme-toggle" class="btn outline small">🌙</button>
+    
+    <nav class="nav-container">
+      <ul class="nav-menu" id="navMenu">
+        <li class="nav-item">
+          <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}">
+            🏠 首頁
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ '/posts.html' | relative_url }}" class="nav-link {% if page.url contains 'posts' %}active{% endif %}">
+            📚 文章
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ '/categories.html' | relative_url }}" class="nav-link {% if page.url contains 'categories' %}active{% endif %}">
+            📂 分類
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ '/tags.html' | relative_url }}" class="nav-link {% if page.url contains 'tags' %}active{% endif %}">
+            🏷️ 標籤
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ '/search.html' | relative_url }}" class="nav-link {% if page.url contains 'search' %}active{% endif %}">
+            🔍 搜尋
+          </a>
+        </li>
+      </ul>
       
-      <!-- 儀表板不顯示在導航（你可自行打開） -->
-      <!-- <a href="{{ '/dashboard.html' | relative_url }}">儀表板</a> -->
+      <div class="nav-actions">
+        <button id="theme-toggle" class="btn secondary">
+          <span id="theme-icon">🌙</span>
+        </button>
+        <button class="mobile-toggle" id="mobileToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </nav>
   </div>
+  
+  <!-- 閱讀進度條 -->
+  <div class="reading-progress" id="readingProgress"></div>
 </header>
+
+<script>
+  // 移動端導航切換
+  document.getElementById('mobileToggle').addEventListener('click', function() {
+    document.getElementById('navMenu').classList.toggle('active');
+  });
+  
+  // 閱讀進度條
+  window.addEventListener('scroll', function() {
+    const progress = document.getElementById('readingProgress');
+    if (progress) {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      progress.style.width = scrollPercent + '%';
+    }
+  });
+  
+  // 主題切換
+  document.getElementById('theme-toggle').addEventListener('click', function() {
+    document.body.classList.toggle('light-theme');
+    const icon = document.getElementById('theme-icon');
+    icon.textContent = document.body.classList.contains('light-theme') ? '☀️' : '🌙';
+    
+    // 保存主題偏好
+    localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+  });
+  
+  // 載入儲存的主題偏好
+  document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-theme');
+      document.getElementById('theme-icon').textContent = '☀️';
+    }
+  });
+</script>
