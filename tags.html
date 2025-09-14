@@ -2,19 +2,21 @@
 layout: default
 title: 標籤
 permalink: /tags.html
-classes: tags-page
+classes: tags-page three-column
 ---
 
-<div class="grid-3col content-root">
+<!-- 三欄式布局 -->
+<div class="three-column-layout with-border">
   <!-- 左欄：標籤導航 -->
-  <aside class="toc">
-    <h3>🗺️ 漏洞標籤導航</h3>
-    <div class="tags-navigation">
-      <div class="tags-filter">
-        <input type="text" id="tag-search" placeholder="搜尋標籤..." class="search-input">
-      </div>
-      
-      <nav id="tags-nav">
+  <aside class="left-sidebar">
+    <div class="sidebar-content">
+      <div class="nav-card">
+        <h3 class="sidebar-title">🗺️ 標籤導航</h3>
+        <div class="tags-filter">
+          <input type="text" id="tag-search" placeholder="搜尋標籤..." class="search-input">
+        </div>
+        
+        <nav id="tags-nav" class="toc-nav">
         {% assign all_tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
         {% for tag in all_tags %}
           {% unless tag == blank %}
@@ -26,15 +28,16 @@ classes: tags-page
           {% endunless %}
         {% endfor %}
       </nav>
+      </div>
     </div>
   </aside>
 
   <!-- 中欄：標籤雲與內容 -->
-  <div class="maincol">
+  <main class="main-content">
     <!-- 頁面標題 -->
-    <header class="page-title">
-      <h1 class="glow-red rune-text">🏷️ 漏洞標籤雲</h1>
-      <p class="page-description">按標籤分類的威脅情報與攻擊技術</p>
+    <header class="page-header">
+      <h1 class="page-title">🏷️ 文章標籤</h1>
+      <p class="page-description">按標籤分類的文章內容</p>
     </header>
 
     <!-- 標籤雲區域 -->
@@ -241,6 +244,39 @@ classes: tags-page
           <span class="jump-icon">📋</span>
           <span class="jump-text">完整列表</span>
         </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- 右欄：側邊欄資訊 -->
+  <aside class="right-sidebar">
+    <div class="sidebar-content">
+      <!-- 個人資訊卡片 -->
+      <div class="info-card security-researcher-card">
+        <div class="profile-section">
+          <img src="/assets/image/logo.jpg" alt="YoFat" class="profile-avatar">
+          <h3 class="profile-name">YoFat</h3>
+          <p class="profile-title">Security Researcher</p>
+          <p class="profile-description">專注於資訊安全研究與程式開發</p>
+        </div>
+      </div>
+
+      <!-- 標籤統計卡片 -->
+      <div class="info-card">
+        <h3 class="sidebar-title">🏷️ 標籤統計</h3>
+        <div class="stats-grid">
+          {% assign all_tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
+          {% assign tag_count = 0 %}
+          {% for tag in all_tags %}
+            {% unless tag == blank %}
+              {% assign tag_count = tag_count | plus: 1 %}
+            {% endunless %}
+          {% endfor %}
+          <div class="stat-item">
+            <span class="stat-label">標籤總數</span>
+            <span class="stat-value">{{ tag_count }} 個</span>
+          </div>
+        </div>
       </div>
     </div>
   </aside>

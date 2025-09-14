@@ -2,6 +2,19 @@
 layout: default
 title: 分類
 permalink: /categories.html
+classes: categories-page three-column
+---
+
+<!-- 三欄式布局 -->
+<div class="three-column-layout with-border">
+  <!-- 左欄：分類導航 -->
+  <aside class="left-sidebar">
+    <div class="sidebar-content">
+      <div class="nav-card">
+        <h3 class="sidebar-title">🗂️ 分類導航</h3>
+        <nav id="categories-nav" class="toc-nav"> default
+title: 分類
+permalink: /categories.html
 classes: categories-page
 ---
 
@@ -34,14 +47,16 @@ classes: categories-page
         {% endunless %}
       {% endfor %}
     </nav>
+      </div>
+    </div>
   </aside>
 
   <!-- 中欄：分類內容 -->
-  <div class="maincol">
+  <main class="main-content">
     <!-- 頁面標題 -->
-    <header class="page-title">
-      <h1 class="glow-gold rune-text">📂 攻擊向量分類</h1>
-      <p class="page-description">按技術領域分類的威脅情報與入侵記錄</p>
+    <header class="page-header">
+      <h1 class="page-title">📂 文章分類</h1>
+      <p class="page-description">按技術領域分類的文章內容</p>
     </header>
       
     {% assign all_categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
@@ -275,6 +290,38 @@ classes: categories-page
             </a>
           </article>
         {% endfor %}
+      </div>
+    </div>
+  </main>
+
+  <!-- 右欄：側邊欄資訊 -->
+  <aside class="right-sidebar">
+    <div class="sidebar-content">
+      <!-- 個人資訊卡片 -->
+      <div class="info-card security-researcher-card">
+        <div class="profile-section">
+          <img src="/assets/image/logo.jpg" alt="YoFat" class="profile-avatar">
+          <h3 class="profile-name">YoFat</h3>
+          <p class="profile-title">Security Researcher</p>
+          <p class="profile-description">專注於資訊安全研究與程式開發</p>
+        </div>
+      </div>
+
+      <!-- 分類統計卡片 -->
+      <div class="info-card">
+        <h3 class="sidebar-title">📊 分類統計</h3>
+        <div class="stats-grid">
+          {% assign all_categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
+          {% for category in all_categories %}
+            {% unless category == '' %}
+              {% assign posts_count = site.articles | where_exp: "post", "post.categories contains category" | size %}
+              <div class="stat-item">
+                <span class="stat-label">{{ category }}</span>
+                <span class="stat-value">{{ posts_count }} 篇</span>
+              </div>
+            {% endunless %}
+          {% endfor %}
+        </div>
       </div>
     </div>
   </aside>
