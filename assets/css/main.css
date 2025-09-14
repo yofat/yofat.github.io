@@ -410,14 +410,29 @@ body {
 
 /* 光明模式下的邊線 */
 html.light .profile-avatar {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 3px solid rgba(220, 38, 38, 0.3);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(37, 99, 235, 0.2);
+}
+
+html.light .profile-avatar:hover {
+  border-color: rgba(255, 165, 0, 0.8);
+  box-shadow: 
+    0 0 20px rgba(255, 165, 0, 0.4),
+    0 0 0 2px rgba(255, 215, 0, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
 }
 
 .profile-avatar:hover {
+  transform: scale(1.05);
+}
+
+/* 黑暗模式下的懸停效果 */
+html:not(.light) .profile-avatar:hover {
   border-color: var(--accent-color);
   box-shadow: 0 0 15px rgba(255, 43, 71, 0.3);
-  transform: scale(1.05);
 }
 
 .profile-name {
