@@ -1,0 +1,754 @@
+---
+layout: default
+title: 標籤
+permalink: /tags.html
+classes: tags-page three-column
+---
+
+<!-- 三欄式布局 -->
+<div class="three-column-layout with-border">
+  <!-- 左欄：標籤導航 -->
+  <aside class="left-sidebar">
+    <div class="sidebar-content">
+      <div class="nav-card">
+        <h3 class="sidebar-title">🗺️ 標籤導航</h3>
+        <div class="tags-filter">
+          <input type="text" id="tag-search" placeholder="搜尋標籤..." class="search-input">
+        </div>
+        
+        <nav id="tags-nav" class="toc-nav">
+        {% assign all_tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
+        {% for tag in all_tags %}
+          {% unless tag == blank %}
+            {% assign tag_posts = site.articles | where_exp: "doc", "doc.tags contains tag" %}
+            <a href="#{{ tag | slugify }}" class="tag-nav-link" data-count="{{ tag_posts.size }}">
+              <span class="tag-name">{{ tag }}</span>
+              <span class="tag-count">{{ tag_posts.size }}</span>
+            </a>
+          {% endunless %}
+        {% endfor %}
+      </nav>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 中欄：標籤雲與內容 -->
+  <main class="main-content">
+    <!-- 頁面標題 -->
+    <header class="page-header">
+      <h1 class="page-title">🏷️ 文章標籤</h1>
+      <p class="page-description">按標籤分類的文章內容</p>
+    </header>
+
+    <!-- 標籤雲區域 -->
+    <section class="tags-cloud-section card">
+      <h2 class="section-title glow-blue">🌐 標籤雲圖</h2>
+      <p class="section-description">點擊標籤查看相關威脅情報</p>
+      
+      <div class="tags-cloud-container">
+        {% for tag in all_tags %}
+          {% unless tag == blank %}
+            {% assign tag_posts = site.articles | where_exp: "doc", "doc.tags contains tag" %}
+            {% assign tag_size = tag_posts.size %}
+            {% if tag_size > 8 %}
+              {% assign size_class = 'tag-cloud-xxl' %}
+            {% elsif tag_size > 5 %}
+              {% assign size_class = 'tag-cloud-xl' %}
+            {% elsif tag_size > 3 %}
+              {% assign size_class = 'tag-cloud-lg' %}
+            {% elsif tag_size > 1 %}
+              {% assign size_class = 'tag-cloud-md' %}
+            {% else %}
+              {% assign size_class = 'tag-cloud-sm' %}
+            {% endif %}
+            <button class="tag-cloud-bubble {{ size_class }}" 
+                    data-tag="{{ tag | slugify }}" 
+                    data-name="{{ tag | escape }}"
+                    data-count="{{ tag_size }}"
+                    onclick="showTagPosts(this.dataset.tag, this.dataset.name, this.dataset.count)">
+              {{ tag }}
+              <span class="tag-bubble-count">({{ tag_size }})</span>
+            </button>
+          {% endunless %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- 標籤內容顯示區域 -->
+    <section id="tag-content-section" class="tag-content-section" style="display: none;">
+      <div class="tag-content-header card">
+        <div class="tag-content-title">
+          <h2 id="current-tag-title" class="glow-gold"></h2>
+          <span id="current-tag-count" class="tag-content-count"></span>
+        </div>
+        <button id="close-tag-content" class="btn outline">✕ 關閉</button>
+      </div>
+      
+      <div id="tag-posts-container" class="tag-posts-grid">
+        <!-- 動態生成的文章內容 -->
+      </div>
+    </section>
+
+    <!-- 所有標籤列表 -->
+    <section class="all-tags-section">
+      <h2 class="section-title glow-blue">📋 完整標籤列表</h2>
+      
+      <div class="tags-list-container">
+        {% for tag in all_tags %}
+          {% unless tag == blank %}
+            {% assign tag_posts = site.articles | where_exp: "doc", "doc.tags contains tag" %}
+            {% if tag_posts.size > 0 %}
+              <div class="tag-list-item card" id="{{ tag | slugify }}">
+                <div class="tag-list-header">
+                  <h3 class="tag-list-title">
+                    <span class="tag-list-icon">🏷️</span>
+                    {{ tag }}
+                  </h3>
+                  <span class="tag-list-count">{{ tag_posts.size }} 個威脅</span>
+                </div>
+                
+                <div class="tag-posts-preview">
+                  {% for article in tag_posts limit:3 %}
+                    <article class="tag-post-preview">
+                      <a href="{{ article.url | relative_url }}" class="tag-post-link">
+                        <h4 class="tag-post-title">{{ article.title }}</h4>
+                        <div class="tag-post-meta">
+                          <span class="tag-post-date">{{ article.date | date: "%Y-%m-%d" }}</span>
+                          {% if article.categories.size > 0 %}
+                            <span class="tag-post-category">{{ article.categories | first }}</span>
+                          {% endif %}
+                        </div>
+                      </a>
+                    </article>
+                  {% endfor %}
+                  
+                  {% if tag_posts.size > 3 %}
+                    <div class="tag-more-posts">
+                      <button class="btn outline" data-tag="{{ tag | slugify }}" data-name="{{ tag | escape }}" data-count="{{ tag_posts.size }}" onclick="showAllTagPosts(this.dataset.tag, this.dataset.name, this.dataset.count)">
+                        查看全部 {{ tag_posts.size }} 個威脅
+                      </button>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {% endunless %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <div class="navigation-footer">
+      <a href="{{ '/' | relative_url }}" class="btn outline">
+        <span class="btn-icon">🏠</span>
+        返回總部
+      </a>
+      <a href="{{ '/categories.html' | relative_url }}" class="btn secondary">
+        <span class="btn-icon">📂</span>
+        檢視分類
+      </a>
+      <a href="{{ '/posts.html' | relative_url }}" class="btn primary">
+        <span class="btn-icon">📚</span>
+        所有威脅
+      </a>
+    </div>
+  </div>
+
+  <!-- 右欄：標籤統計與工具 -->
+  <aside class="sidebar">
+    <div class="card breathing-glow">
+      <h3>📊 標籤統計</h3>
+      <div class="tags-stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon glow-red">🏷️</div>
+          <div class="stat-info">
+            <div class="stat-number">{{ all_tags.size }}</div>
+            <div class="stat-label">漏洞標籤</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon glow-blue">📝</div>
+          <div class="stat-info">
+            <div class="stat-number">{{ site.articles.size }}</div>
+            <div class="stat-label">威脅情報</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon glow-gold">📈</div>
+          <div class="stat-info">
+            <div class="stat-number">
+              {% assign avg_tags = site.articles.size | divided_by: all_tags.size %}
+              {{ avg_tags }}
+            </div>
+            <div class="stat-label">平均標籤數</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔥 熱門標籤</h3>
+      <div class="hot-tags-list">
+        {% assign tag_counts = '' | split: ',' %}
+        {% for tag in all_tags %}
+          {% unless tag == blank %}
+            {% assign tag_posts = site.articles | where_exp: "doc", "doc.tags contains tag" %}
+            {% assign tag_info = tag | append: '|' | append: tag_posts.size %}
+            {% assign tag_counts = tag_counts | push: tag_info %}
+          {% endunless %}
+        {% endfor %}
+        
+        {% assign sorted_tags = tag_counts | sort | reverse %}
+        
+        {% for tag_info in sorted_tags limit:8 %}
+          {% assign tag_parts = tag_info | split: '|' %}
+          {% assign tag = tag_parts[0] %}
+          {% assign count = tag_parts[1] %}
+          
+          <div class="hot-tag-item">
+            <button class="hot-tag-link" data-tag="{{ tag | slugify }}" data-name="{{ tag | escape }}" data-count="{{ count }}" onclick="showTagPosts(this.dataset.tag, this.dataset.name, this.dataset.count)">
+              <span class="hot-tag-name">{{ tag }}</span>
+              <span class="hot-tag-count">{{ count }}</span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 標籤搜尋</h3>
+      <div class="tag-search-tools">
+        <input type="text" id="main-tag-search" placeholder="搜尋標籤..." class="search-input">
+        <div class="search-results" id="search-results"></div>
+        
+        <div class="search-tips">
+          <h4>搜尋技巧：</h4>
+          <ul>
+            <li>輸入關鍵字快速定位</li>
+            <li>支援模糊搜尋</li>
+            <li>按標籤數量排序</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 快速跳轉</h3>
+      <div class="quick-jump">
+        <a href="#tags-cloud-section" class="jump-link">
+          <span class="jump-icon">🌐</span>
+          <span class="jump-text">標籤雲</span>
+        </a>
+        <a href="#all-tags-section" class="jump-link">
+          <span class="jump-icon">📋</span>
+          <span class="jump-text">完整列表</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- 右欄：側邊欄資訊 -->
+  <aside class="right-sidebar">
+    <div class="sidebar-content">
+      <!-- 個人資訊卡片 -->
+      <div class="info-card security-researcher-card">
+        <div class="profile-section">
+          <img src="/assets/image/logo.jpg" alt="YoFat" class="profile-avatar">
+          <h3 class="profile-name">YoFat</h3>
+          <p class="profile-title">Security Researcher</p>
+          <p class="profile-description">專注於資訊安全研究與程式開發</p>
+        </div>
+      </div>
+
+      <!-- 標籤統計卡片 -->
+      <div class="info-card">
+        <h3 class="sidebar-title">🏷️ 標籤統計</h3>
+        <div class="stats-grid">
+          {% assign all_tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
+          {% assign tag_count = 0 %}
+          {% for tag in all_tags %}
+            {% unless tag == blank %}
+              {% assign tag_count = tag_count | plus: 1 %}
+            {% endunless %}
+          {% endfor %}
+          <div class="stat-item">
+            <span class="stat-label">標籤總數</span>
+            <span class="stat-value">{{ tag_count }} 個</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- 隱藏的文章數據 -->
+<script type="application/json" id="articles-data">
+{
+  {% for tag in all_tags %}
+    {% unless tag == blank %}
+      {% assign tag_posts = site.articles | where_exp: "doc", "doc.tags contains tag" %}
+      "{{ tag | slugify }}": {
+        "name": "{{ tag }}",
+        "count": {{ tag_posts.size }},
+        "posts": [
+          {% for article in tag_posts %}
+            {
+              "title": "{{ article.title | escape }}",
+              "url": "{{ article.url | relative_url }}",
+              "date": "{{ article.date | date: '%Y-%m-%d' }}",
+              "excerpt": "{{ article.excerpt | strip_html | truncatewords: 20 | escape }}",
+              "categories": [{% for cat in article.categories %}"{{ cat }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+              "tags": [{% for t in article.tags %}"{{ t }}"{% unless forloop.last %},{% endunless %}{% endfor %}]
+            }{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        ]
+      }{% unless forloop.last %},{% endunless %}
+    {% endunless %}
+  {% endfor %}
+}
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // 載入文章數據
+  const articlesData = JSON.parse(document.getElementById('articles-data').textContent);
+  
+  // DOM 元素
+  const tagContentSection = document.getElementById('tag-content-section');
+  const currentTagTitle = document.getElementById('current-tag-title');
+  const currentTagCount = document.getElementById('current-tag-count');
+  const tagPostsContainer = document.getElementById('tag-posts-container');
+  const closeTagContent = document.getElementById('close-tag-content');
+  const tagSearch = document.getElementById('tag-search');
+  const mainTagSearch = document.getElementById('main-tag-search');
+  const searchResults = document.getElementById('search-results');
+
+  // 顯示標籤文章
+  window.showTagPosts = function(tagSlug, tagName, count) {
+    const tagData = articlesData[tagSlug];
+    if (!tagData) return;
+
+    currentTagTitle.textContent = `🏷️ ${tagName}`;
+    currentTagCount.textContent = `${count} 個威脅`;
+
+    // 生成文章列表
+    tagPostsContainer.innerHTML = '';
+    tagData.posts.forEach(post => {
+      const postElement = createPostElement(post);
+      tagPostsContainer.appendChild(postElement);
+    });
+
+    // 顯示區域
+    tagContentSection.style.display = 'block';
+    tagContentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // 顯示所有標籤文章
+  window.showAllTagPosts = function(tagSlug, tagName, count) {
+    showTagPosts(tagSlug, tagName, count);
+  };
+
+  // 創建文章元素
+  function createPostElement(post) {
+    const article = document.createElement('article');
+    article.className = 'tag-post-card card';
+    
+    article.innerHTML = `
+      <div class="tag-post-header">
+        <h3 class="tag-post-title">
+          <a href="${post.url}" class="glow-blue">${post.title}</a>
+        </h3>
+        <div class="tag-post-meta">
+          <span class="post-date">🕒 ${post.date}</span>
+          ${post.categories.length > 0 ? `<span class="post-category category">📂 ${post.categories[0]}</span>` : ''}
+        </div>
+      </div>
+      <div class="tag-post-content">
+        <p class="tag-post-excerpt">${post.excerpt}</p>
+        <div class="tag-post-tags">
+          ${post.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
+          ${post.tags.length > 3 ? `<span class="tag-more">+${post.tags.length - 3}</span>` : ''}
+        </div>
+      </div>
+      <div class="tag-post-footer">
+        <a href="${post.url}" class="btn secondary">
+          <span class="btn-icon">👁️</span>
+          檢視威脅
+        </a>
+      </div>
+    `;
+    
+    return article;
+  }
+
+  // 關閉標籤內容
+  closeTagContent.addEventListener('click', function() {
+    tagContentSection.style.display = 'none';
+  });
+
+  // 標籤搜尋功能
+  function filterTags(searchTerm) {
+    const tagNavLinks = document.querySelectorAll('#tags-nav .tag-nav-link');
+    const tagListItems = document.querySelectorAll('.tag-list-item');
+    
+    tagNavLinks.forEach(link => {
+      const tagName = link.querySelector('.tag-name').textContent.toLowerCase();
+      if (tagName.includes(searchTerm.toLowerCase())) {
+        link.style.display = 'flex';
+      } else {
+        link.style.display = 'none';
+      }
+    });
+
+    tagListItems.forEach(item => {
+      const tagTitle = item.querySelector('.tag-list-title').textContent.toLowerCase();
+      if (tagTitle.includes(searchTerm.toLowerCase())) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  // 搜尋事件監聽
+  if (tagSearch) {
+    tagSearch.addEventListener('input', function() {
+      filterTags(this.value);
+    });
+  }
+
+  if (mainTagSearch) {
+    mainTagSearch.addEventListener('input', function() {
+      filterTags(this.value);
+      
+      // 顯示搜尋結果
+      const searchTerm = this.value.toLowerCase();
+      if (searchTerm.length > 0) {
+        const results = Object.keys(articlesData).filter(tagSlug => {
+          return articlesData[tagSlug].name.toLowerCase().includes(searchTerm);
+        }).slice(0, 5);
+
+        searchResults.innerHTML = '';
+        results.forEach(tagSlug => {
+          const tagData = articlesData[tagSlug];
+          const resultElement = document.createElement('div');
+          resultElement.className = 'search-result-item';
+          resultElement.innerHTML = `
+            <button onclick="showTagPosts('${tagSlug}', '${tagData.name}', ${tagData.count})">
+              ${tagData.name} (${tagData.count})
+            </button>
+          `;
+          searchResults.appendChild(resultElement);
+        });
+        searchResults.style.display = 'block';
+      } else {
+        searchResults.style.display = 'none';
+      }
+    });
+  }
+
+  // 標籤導航滾動高亮
+  const tagNavLinks = document.querySelectorAll('#tags-nav .tag-nav-link');
+  const tagSections = document.querySelectorAll('.tag-list-item');
+
+  function updateActiveTag() {
+    let current = '';
+    const scrollTop = window.pageYOffset + 150;
+
+    tagSections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      
+      if (scrollTop >= sectionTop && scrollTop < sectionTop + sectionHeight) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    tagNavLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  // 平滑滾動
+  tagNavLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href').substring(1);
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 100;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // 滾動事件監聽
+  let ticking = false;
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateActiveTag();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', requestTick);
+  updateActiveTag();
+});
+</script>
+            <div class="stat-number">{{ site.posts.size }}</div>
+          <div class="stat-label">總文章數</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ all_tags.size }}</div>
+          <div class="stat-label">標籤數量</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 熱門標籤 -->
+    <div class="card">
+      <h3>🏷️ 熱門標籤</h3>
+      <div class="popular-tags">
+        <!-- JavaScript 將動態計算並顯示熱門標籤 -->
+      </div>
+    </div>
+
+    <!-- 快速導航 -->
+    <div class="card">
+      <h3>📝 快速跳轉</h3>
+      <div class="nav-links">
+        <a href="{{ '/categories.html' | relative_url }}" class="nav-link">📂 分類瀏覽</a>
+        <a href="{{ '/posts.html' | relative_url }}" class="nav-link">📰 全部文章</a>
+        <a href="{{ '/search.html' | relative_url }}" class="nav-link">🔍 搜尋文章</a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // 標籤頁面的 TOC 生成和統計數據
+  const tocContainer = document.getElementById("toc");
+  if (tocContainer) {
+    const sections = document.querySelectorAll('h1[id], h2[id], h3[id]');
+    const tocLinks = [];
+    
+    sections.forEach(section => {
+      const link = document.createElement('a');
+      link.href = '#' + section.id;
+      link.textContent = section.textContent;
+      link.className = 'toc-link';
+      
+      // 根據標題層級設置樣式
+      if (section.tagName === 'H1') {
+        link.style.fontWeight = 'bold';
+      } else if (section.tagName === 'H2') {
+        link.style.paddingLeft = '1rem';
+      } else if (section.tagName === 'H3') {
+        link.style.paddingLeft = '2rem';
+        link.style.fontSize = '0.9em';
+        link.style.opacity = '0.8';
+      }
+      
+      tocContainer.appendChild(link);
+      tocLinks.push(link);
+    });
+
+    // TOC 點擊事件和高亮邏輯
+    let isScrolling = false;
+    
+    tocLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        isScrolling = true;
+        
+        // 移除所有 active 狀態
+        tocLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth"
+          });
+          history.replaceState(null, "", link.getAttribute('href'));
+          
+          setTimeout(() => {
+            isScrolling = false;
+          }, 1500);
+        }
+      });
+    });
+
+    function updateActiveTOC() {
+      if (isScrolling) return;
+      
+      let currentActive = null;
+      const scrollTop = window.pageYOffset + 120;
+      
+      // 從後往前檢查，找到當前應該高亮的區域
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section.offsetTop <= scrollTop) {
+          currentActive = tocLinks[i];
+          break;
+        }
+      }
+      
+      // 如果沒有找到，根據滾動位置決定
+      if (!currentActive) {
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // 如果接近頁面底部，高亮最後一個
+        if (scrollTop + windowHeight >= documentHeight - 200) {
+          currentActive = tocLinks[tocLinks.length - 1];
+        } else {
+          // 否則高亮第一個
+          currentActive = tocLinks[0];
+        }
+      }
+      
+      // 更新高亮
+      tocLinks.forEach(link => link.classList.remove('active'));
+      if (currentActive) {
+        currentActive.classList.add('active');
+        
+        // 確保活動項目在TOC中可見
+        const tocContainer = document.getElementById('toc');
+        if (tocContainer && currentActive) {
+          const containerRect = tocContainer.getBoundingClientRect();
+          const activeRect = currentActive.getBoundingClientRect();
+          
+          if (activeRect.bottom > containerRect.bottom || activeRect.top < containerRect.top) {
+            currentActive.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center',
+              inline: 'nearest' 
+            });
+          }
+        }
+      }
+    }
+    
+    let ticking = false;
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveTOC();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+    
+    window.addEventListener('scroll', requestTick);
+    updateActiveTOC();
+  }
+
+  // 統計數據更新 - 從實際文章數據計算
+  const allArticles = document.querySelectorAll('.article-card');
+  const totalArticles = allArticles.length;
+  
+  const tagCount = new Map();
+  allArticles.forEach(article => {
+    const tagsContainer = article.querySelector('.article-tags');
+    if (tagsContainer) {
+      const tags = tagsContainer.querySelectorAll('.tag');
+      tags.forEach(tagElement => {
+        const tag = tagElement.textContent.trim();
+        tagCount.set(tag, (tagCount.get(tag) || 0) + 1);
+      });
+    }
+  });
+  
+  // 更新右欄統計數據
+  const statsElement = document.querySelector('.stats-grid .stat-number');
+  if (statsElement) {
+    statsElement.textContent = totalArticles;
+  }
+  
+  const tagsStatElement = document.querySelectorAll('.stats-grid .stat-number')[1];
+  if (tagsStatElement) {
+    tagsStatElement.textContent = tagCount.size;
+  }
+  
+  // 更新熱門標籤
+  const popularTagsContainer = document.querySelector('.popular-tags');
+  if (popularTagsContainer) {
+    // 清空現有內容
+    popularTagsContainer.innerHTML = '';
+    
+    // 將標籤按使用次數排序
+    const sortedTags = Array.from(tagCount.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8); // 只顯示前8個
+    
+    sortedTags.forEach(([tag, count]) => {
+      const tagLink = document.createElement('a');
+      tagLink.href = '#' + tag.toLowerCase().replace(/\s+/g, '-');
+      tagLink.className = 'tag-link';
+      tagLink.innerHTML = `${tag} <span class="count">(${count})</span>`;
+      popularTagsContainer.appendChild(tagLink);
+    });
+  }
+});
+
+// TOC 收起/展開功能 (全域函式)
+function toggleTOC() {
+  const toc = document.getElementById('post-toc');
+  const icon = document.getElementById('toc-icon');
+  
+  if (!toc || !icon) return;
+  
+  if (toc.classList.contains('collapsed')) {
+    toc.classList.remove('collapsed');
+    icon.textContent = '☰';
+  } else {
+    toc.classList.add('collapsed');
+    icon.textContent = '▶';
+  }
+}
+
+// 響應式檢查
+function checkScreenWidth() {
+  const toc = document.getElementById('post-toc');
+  if (window.innerWidth < 1024 && toc) {
+    toc.classList.add('collapsed');
+    const icon = document.getElementById('toc-icon');
+    if (icon) icon.textContent = '▶';
+  }
+}
+
+// 初始化
+document.addEventListener('DOMContentLoaded', function() {
+  checkScreenWidth();
+  window.addEventListener('resize', checkScreenWidth);
+  
+  // 標籤導航點擊平滑滾動
+  document.querySelectorAll('.tag-nav-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+});
+</script>
