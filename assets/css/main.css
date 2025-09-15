@@ -2002,9 +2002,9 @@ html.light .security-researcher-card:hover {
 @media (min-width: 1201px) {
   .three-column-layout {
     display: grid;
-    grid-template-columns: 280px 1fr 280px;
+    grid-template-columns: 300px 1fr 250px;
     gap: 0;
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
   }
 }
@@ -2023,7 +2023,9 @@ html.light .security-researcher-card:hover {
 
 @media (max-width: 900px) {
   .three-column-layout {
-    display: block;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
     width: 100%;
     max-width: 100%;
   }
