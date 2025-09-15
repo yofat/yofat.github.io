@@ -150,6 +150,20 @@ classes: tags-page three-column
         </div>
       </div>
 
+      <!-- 熱門標籤 -->
+      <div class="info-card">
+        <h3 class="sidebar-title">🔥 熱門標籤</h3>
+        <div class="tag-cloud">
+          {% assign sorted_tags = site.tags | sort: 'last' | reverse %}
+          {% for tag in sorted_tags limit:8 %}
+            <a href="#{{ tag[0] | slugify }}" class="tag-link">
+              {{ tag[0] }}
+              <span class="tag-count">{{ tag[1].size }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+
       <!-- 快速跳轉 -->
       <div class="info-card">
         <h3 class="sidebar-title">🔗 快速跳轉</h3>

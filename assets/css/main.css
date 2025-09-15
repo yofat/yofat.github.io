@@ -195,28 +195,22 @@ body.three-column .three-column-layout {
 
 /* 左側邊欄 */
 .left-sidebar {
-  position: sticky;
-  top: 0;
-  max-height: calc(100vh - 80px);
   background: var(--bg-secondary);
   border-right: 1px solid var(--border-color);
   padding: var(--spacing-md) var(--spacing-sm);
-  overflow-y: auto;
   z-index: 100;
   margin: 0;
+  min-height: fit-content;
 }
 
 /* 右側邊欄 */
 .right-sidebar {
-  position: sticky;
-  top: 0;
-  max-height: calc(100vh - 80px);
   background: var(--bg-secondary);
   border-left: 1px solid var(--border-color);
   padding: var(--spacing-sm);
-  overflow-y: auto;
   z-index: 100;
   margin: 0;
+  min-height: fit-content;
 }
 
 /* 主要內容區 */
@@ -3480,4 +3474,92 @@ header {
   margin: 0;
   color: var(--text-secondary);
   font-size: 0.9rem;
+}
+
+/* ====================================
+   📊 右欄統計與標籤雲樣式
+   ==================================== */
+
+/* 分類統計 */
+.category-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm);
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  background: var(--bg-secondary);
+  border-color: var(--corrupt-blue);
+  transform: translateX(3px);
+}
+
+.stat-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.stat-count {
+  background: linear-gradient(45deg, var(--corrupt-blue), var(--accent-color));
+  color: white;
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* 熱門標籤雲 */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.tag-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.tag-link:hover {
+  background: var(--corrupt-blue);
+  color: white;
+  border-color: var(--corrupt-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+.tag-count {
+  background: var(--accent-color);
+  color: white;
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 18px;
+  text-align: center;
+}
+
+.tag-link:hover .tag-count {
+  background: rgba(255, 255, 255, 0.2);
 }
