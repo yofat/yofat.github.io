@@ -201,7 +201,7 @@ body.three-column .three-column-layout {
   z-index: 100;
   margin: 0;
   min-height: fit-content;
-  position: static;
+  position: static !important;
 }
 
 /* 右側邊欄 */
@@ -212,7 +212,7 @@ body.three-column .three-column-layout {
   z-index: 100;
   margin: 0;
   min-height: fit-content;
-  position: static;
+  position: static !important;
 }
 
 /* 主要內容區 */
@@ -2521,7 +2521,7 @@ header {
   border-bottom: 2px solid var(--corrupt-blue);
   box-shadow: var(--shadow-lg);
   padding: 1rem 0;
-  position: static;
+  position: static !important;
   z-index: 1000;
   backdrop-filter: blur(10px);
 }
