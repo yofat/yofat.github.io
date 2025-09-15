@@ -204,6 +204,7 @@ body.three-column .three-column-layout {
   min-height: auto;
   max-height: none;
   overflow: visible;
+  position: static;
 }
 
 /* 右側邊欄 */
@@ -217,6 +218,7 @@ body.three-column .three-column-layout {
   min-height: auto;
   max-height: none;
   overflow: visible;
+  position: static;
 }
 
 /* 主要內容區 */
@@ -2169,15 +2171,6 @@ html.light .security-researcher-card:hover {
     font-size: 2rem;
   }
 }
-  .right-sidebar {
-    position: static;
-    width: 100%;
-    height: auto;
-    border: none;
-    background: var(--bg-tertiary);
-    margin-bottom: var(--spacing-lg);
-    border-radius: var(--radius-lg);
-  }
   
   .main-content {
     padding: var(--spacing-lg);
