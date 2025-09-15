@@ -201,6 +201,7 @@ body.three-column .three-column-layout {
   z-index: 100;
   margin: 0;
   min-height: fit-content;
+  position: static;
 }
 
 /* 右側邊欄 */
@@ -211,6 +212,7 @@ body.three-column .three-column-layout {
   z-index: 100;
   margin: 0;
   min-height: fit-content;
+  position: static;
 }
 
 /* 主要內容區 */
@@ -2519,8 +2521,7 @@ header {
   border-bottom: 2px solid var(--corrupt-blue);
   box-shadow: var(--shadow-lg);
   padding: 1rem 0;
-  position: sticky;
-  top: 0;
+  position: static;
   z-index: 1000;
   backdrop-filter: blur(10px);
 }
@@ -2743,7 +2744,8 @@ header {
 }
 
 /* 側邊欄樣式 */
-.toc {
+/* TOC 目錄（僅在文章頁面使用） */
+.post-layout .toc {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -2828,8 +2830,8 @@ header {
   padding: 0;
 }
 
-/* 右側邊欄 */
-.sidebar {
+/* 右側邊欄（僅在文章頁面使用） */
+.post-layout .sidebar {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
