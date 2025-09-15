@@ -1999,13 +1999,24 @@ html.light .security-researcher-card:hover {
    📱 響應式設計
    ==================================== */
 
+/* 桌面大螢幕 */
 @media (min-width: 1201px) {
   .three-column-layout {
-    display: grid;
-    grid-template-columns: 300px 1fr 250px;
+    display: grid !important;
+    grid-template-columns: 300px 1fr 250px !important;
     gap: 0;
     width: 100%;
     min-height: 100vh;
+  }
+}
+
+/* 一般桌面螢幕 */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .three-column-layout {
+    display: grid !important;
+    grid-template-columns: 280px 1fr 220px !important;
+    gap: 0;
+    width: 100%;
   }
 }
 
