@@ -2020,18 +2020,6 @@ html.light .security-researcher-card:hover {
   }
 }
 
-@media (max-width: 1024px) {
-  .three-column-layout {
-    grid-template-columns: 240px 1fr 180px;
-    max-width: 100%;
-  }
-  
-  .left-sidebar,
-  .right-sidebar {
-    padding: var(--spacing-md);
-  }
-}
-
 @media (max-width: 900px) {
   .three-column-layout {
     display: grid;
@@ -2102,11 +2090,7 @@ html.light .security-researcher-card:hover {
   
   .main-content {
     order: -1;
-  }
-}
-  
-  .floating-elements {
-    display: none;
+    padding: var(--spacing-lg);
   }
   
   .articles-grid {
