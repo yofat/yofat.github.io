@@ -163,16 +163,29 @@ body {
    🏗️ 三欄式布局
    ==================================== */
 
+/* 三欄式頁面的 body 樣式 */
+body.three-column {
+  margin: 0;
+  padding: 0;
+}
+
+body.three-column .three-column-layout {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
 .three-column-layout {
   display: grid;
   grid-template-columns: 260px 1fr 200px;
   gap: 0;
-  width: 100%;
-  max-width: 100%;
+  width: 100vw;
+  max-width: none;
   min-height: calc(100vh - 120px);
   position: relative;
   z-index: 1;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 .three-column-layout.with-border {
@@ -190,6 +203,7 @@ body {
   padding: var(--spacing-md) var(--spacing-sm);
   overflow-y: auto;
   z-index: 100;
+  margin: 0;
 }
 
 /* 右側邊欄 */
@@ -202,6 +216,7 @@ body {
   padding: var(--spacing-sm);
   overflow-y: auto;
   z-index: 100;
+  margin: 0;
 }
 
 /* 主要內容區 */
@@ -210,6 +225,7 @@ body {
   min-width: 0;
   background: var(--bg-primary);
   overflow-x: hidden;
+  margin: 0;
 }
 
 /* ====================================
@@ -2006,7 +2022,7 @@ html.light .security-researcher-card:hover {
     display: grid !important;
     grid-template-columns: 280px 1fr 220px !important;
     gap: 0;
-    width: 100%;
+    width: 100vw;
     min-height: 100vh;
   }
 }
@@ -2017,7 +2033,7 @@ html.light .security-researcher-card:hover {
     display: grid !important;
     grid-template-columns: 260px 1fr 200px !important;
     gap: 0;
-    width: 100%;
+    width: 100vw;
   }
 }
 
