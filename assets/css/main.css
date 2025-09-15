@@ -119,7 +119,7 @@ body {
   flex-direction: column;
   overflow-x: hidden;
   width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
 }
 
 /* ====================================
@@ -168,7 +168,7 @@ body {
   grid-template-columns: 280px 1fr 220px;
   gap: 0;
   width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
   min-height: calc(100vh - 120px);
   position: relative;
   z-index: 1;

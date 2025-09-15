@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>{% include head.html %}</head>
+<body{% if page.classes %} class="{{ page.classes }}"{% elsif page.body_class %} class="{{ page.body_class }}"{% endif %}>
+  {% include header.html %}
+
+  {{ content }}
+
+  {% include footer.html %}
+</body>
+</html>
