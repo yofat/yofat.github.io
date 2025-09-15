@@ -200,7 +200,10 @@ body.three-column .three-column-layout {
   padding: var(--spacing-md) var(--spacing-sm);
   z-index: 100;
   margin: 0;
-  min-height: fit-content;
+  height: auto;
+  min-height: auto;
+  max-height: none;
+  overflow: visible;
 }
 
 /* 右側邊欄 */
@@ -210,7 +213,10 @@ body.three-column .three-column-layout {
   padding: var(--spacing-sm);
   z-index: 100;
   margin: 0;
-  min-height: fit-content;
+  height: auto;
+  min-height: auto;
+  max-height: none;
+  overflow: visible;
 }
 
 /* 主要內容區 */
@@ -1925,7 +1931,9 @@ html.light .security-researcher-card:hover {
 .sidebar-content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
+  height: auto;
+  max-height: none;
 }
 
 .stats-compact {

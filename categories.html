@@ -152,20 +152,6 @@ classes: categories-page three-column
         </div>
       </div>
 
-      <!-- 分類統計 -->
-      <div class="info-card">
-        <h3 class="sidebar-title">📊 分類統計</h3>
-        <div class="category-stats">
-          {% assign sorted_categories = site.categories | sort %}
-          {% for category in sorted_categories limit:5 %}
-            <div class="stat-item">
-              <span class="stat-name">{{ category[0] }}</span>
-              <span class="stat-count">{{ category[1].size }}</span>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-
       <!-- 快速跳轉 -->
       <div class="info-card">
         <h3 class="sidebar-title">🔗 快速跳轉</h3>
