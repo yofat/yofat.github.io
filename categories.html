@@ -149,24 +149,6 @@ classes: categories-page three-column
           <img src="/assets/image/logo.jpg" alt="YoFat" class="profile-avatar">
           <h3 class="profile-name">YoFat</h3>
           <p class="profile-title">Security Researcher</p>
-          <p class="profile-description">專注於資訊安全研究與程式開發</p>
-        </div>
-      </div>
-
-      <!-- 分類統計卡片 -->
-      <div class="info-card">
-        <h3 class="sidebar-title">📊 分類統計</h3>
-        <div class="stats-grid">
-          {% assign all_categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
-          {% for category in all_categories %}
-            {% unless category == '' %}
-              {% assign posts_count = site.articles | where_exp: "post", "post.categories contains category" | size %}
-              <div class="stat-item">
-                <span class="stat-label">{{ category }}</span>
-                <span class="stat-value">{{ posts_count }} 篇</span>
-              </div>
-            {% endunless %}
-          {% endfor %}
         </div>
       </div>
 

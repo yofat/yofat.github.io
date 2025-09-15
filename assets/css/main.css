@@ -165,7 +165,7 @@ body {
 
 .three-column-layout {
   display: grid;
-  grid-template-columns: 280px 1fr 220px;
+  grid-template-columns: 260px 1fr 200px;
   gap: 0;
   width: 100%;
   max-width: 100%;
@@ -184,10 +184,10 @@ body {
 .left-sidebar {
   position: sticky;
   top: 0;
-  height: 100vh;
+  max-height: calc(100vh - 80px);
   background: var(--bg-secondary);
   border-right: 1px solid var(--border-color);
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-sm);
   overflow-y: auto;
   z-index: 100;
 }
@@ -196,10 +196,10 @@ body {
 .right-sidebar {
   position: sticky;
   top: 0;
-  height: 100vh;
+  max-height: calc(100vh - 80px);
   background: var(--bg-secondary);
   border-left: 1px solid var(--border-color);
-  padding: var(--spacing-lg);
+  padding: var(--spacing-sm);
   overflow-y: auto;
   z-index: 100;
 }
@@ -221,10 +221,10 @@ body {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   transition: all var(--duration-normal) ease;
   box-shadow: var(--shadow-sm);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 .welcome-card {
@@ -363,17 +363,18 @@ body {
 .toc-nav {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: 2px;
 }
 
 .toc-link {
   display: block;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: 8px 12px;
   color: var(--text-secondary);
   text-decoration: none;
   border-radius: var(--radius-sm);
   transition: all var(--duration-fast) ease;
   border-left: 3px solid transparent;
+  font-size: 0.9rem;
 }
 
 .toc-link:hover {
@@ -2003,7 +2004,7 @@ html.light .security-researcher-card:hover {
 @media (min-width: 1201px) {
   .three-column-layout {
     display: grid !important;
-    grid-template-columns: 300px 1fr 250px !important;
+    grid-template-columns: 280px 1fr 220px !important;
     gap: 0;
     width: 100%;
     min-height: 100vh;
@@ -2014,7 +2015,7 @@ html.light .security-researcher-card:hover {
 @media (min-width: 901px) and (max-width: 1200px) {
   .three-column-layout {
     display: grid !important;
-    grid-template-columns: 280px 1fr 220px !important;
+    grid-template-columns: 260px 1fr 200px !important;
     gap: 0;
     width: 100%;
   }

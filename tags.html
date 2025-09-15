@@ -147,48 +147,6 @@ classes: tags-page three-column
           <img src="/assets/image/logo.jpg" alt="YoFat" class="profile-avatar">
           <h3 class="profile-name">YoFat</h3>
           <p class="profile-title">Security Researcher</p>
-          <p class="profile-description">專注於資訊安全研究與程式開發</p>
-        </div>
-      </div>
-
-      <!-- 標籤統計卡片 -->
-      <div class="info-card">
-        <h3 class="sidebar-title">🏷️ 標籤統計</h3>
-        <div class="stats-grid">
-          {% assign all_tags = site.articles | map: 'tags' | join: ',' | split: ',' | uniq | sort %}
-          {% assign tag_count = 0 %}
-          {% for tag in all_tags %}
-            {% unless tag == blank %}
-              {% assign tag_count = tag_count | plus: 1 %}
-            {% endunless %}
-          {% endfor %}
-          <div class="stat-item">
-            <span class="stat-label">標籤總數</span>
-            <span class="stat-value">{{ tag_count }} 個</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">文章總數</span>
-            <span class="stat-value">{{ site.articles.size }} 篇</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 熱門標籤 -->
-      <div class="info-card">
-        <h3 class="sidebar-title">🔥 熱門標籤</h3>
-        <div class="popular-tags">
-          {% assign sorted_tags = all_tags | sort %}
-          {% for tag in sorted_tags limit: 8 %}
-            {% unless tag == blank %}
-              {% assign tag_posts = site.articles | where_exp: "doc", "doc.tags contains tag" %}
-              {% if tag_posts.size > 1 %}
-                <a href="#{{ tag | slugify }}" class="popular-tag">
-                  <span class="tag-name">{{ tag }}</span>
-                  <span class="tag-count">{{ tag_posts.size }}</span>
-                </a>
-              {% endif %}
-            {% endunless %}
-          {% endfor %}
         </div>
       </div>
 
@@ -197,6 +155,21 @@ classes: tags-page three-column
         <h3 class="sidebar-title">🔗 快速跳轉</h3>
         <div class="quick-nav">
           <a href="/" class="nav-link">
+            <span>🏠</span>
+            <span>首頁</span>
+          </a>
+          <a href="/categories.html" class="nav-link">
+            <span>📂</span>
+            <span>分類</span>
+          </a>
+          <a href="/search.html" class="nav-link">
+            <span>🔍</span>
+            <span>搜尋</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </aside>
             <span>🏠</span>
             <span>首頁</span>
           </a>
