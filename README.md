@@ -1,5 +1,4 @@
-# 🎯 YoFat 個人部落格# 🎯 YoFat 個人部落格
-
+# 🎯 YoFat 個人部落格
 
 
 [![Jekyll Build](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml/badge.svg)](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml)[![Jekyll Build](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml/badge.svg)](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml)
@@ -238,4 +237,5 @@ bundle installbundle install
 bundle install
 .\start.ps1
 # 打開 http://localhost:4000
+
 ```
