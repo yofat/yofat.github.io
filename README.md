@@ -10,75 +10,64 @@
 
 
 
-## 🚀 快速開始（3 步驟）## 🚀 快速開始（3 步驟）
+## 🚀 快速開始（3 步驟）
 
 
 
-```powershell```powershell
+```powershell
 
-# 1. 安裝依賴# 1. 安裝依賴
+# 1. 安裝依賴
 
 bundle installbundle install
 
 
 
-# 2. 啟動開發伺服器# 2. 啟動開發伺服器
+# 2. 啟動開發伺服器
 
 .\start.ps1.\start-dev.ps1
 
 
 
-# 3. 瀏覽器打開 http://localhost:4000# 3. 瀏覽器打開 http://localhost:4000
+# 3. 瀏覽器打開 http://localhost:4000
 
-``````
-
-
-
-## 📝 寫文章## 📝 寫文章
+```
 
 
 
-```powershell```powershell
-
-# 統一管理工具（推薦）# 快速建立文章
-
-.\tools\master-tool.ps1.\tools\quick-post.ps1 -Title "文章標題" -Category "分類"
+## 📝 寫文章
 
 
 
-# 快速建立文章# 統一管理工具
+```powershell
 
-.\tools\quick-post.ps1 -Title "文章標題" -Category "教學".\tools\master-tool.ps1
+# 統一管理工具（推薦
+.\tools\master-tool.ps1
 
-``````
+# 快速建立文章
+
+.\tools\quick-post.ps1 -Title "文章標題" -Category "教學"
+
+```
 
 
 
-## 🌐 線上訪問## 🌐 線上訪問
+## 🌐 線上訪問
 
-
-
-- **首頁**: https://yofat.github.io- **首頁**: https://yofat.github.io
-
-- **所有文章**: https://yofat.github.io/posts.html- **所有文章**: https://yofat.github.io/posts.html
-
-- **分類瀏覽**: https://yofat.github.io/categories.html- **分類瀏覽**: https://yofat.github.io/categories.html
-
-- **標籤瀏覽**: https://yofat.github.io/tags.html- **搜尋**: https://yofat.github.io/search.html
-
+- **首頁**: https://yofat.github.io
+- **所有文章**: https://yofat.github.io/posts.html
+- **分類瀏覽**: https://yofat.github.io/categories.html
+- **標籤瀏覽**: https://yofat.github.io/tags.html
 - **搜尋**: https://yofat.github.io/search.html
-
-- **探索頁面**: https://yofat.github.io/explore.html## 📚 詳細說明
-
+- **探索頁面**: https://yofat.github.io/explore.html
 
 
 ## 🛠️ 管理工具完整的開發指南請參考部落格文章：
 
 - [YoFat 部落格完整使用指南](https://yofat.github.io/教學/Yofat部落格完整使用指南/)
 
-| 工具 | 功能描述 | 使用方式 |- [Jekyll 部落格環境安裝指南](https://yofat.github.io/教學/Jekyll部落格環境安裝指南/)
+| 工具 | 功能描述 | 使用方式 |
 
-|------|----------|----------|- [Jekyll 部落格完整開發指南](https://yofat.github.io/教學/Jekyll部落格完整開發指南/)
+|------|----------|----------|
 
 | `master-tool.ps1` | 🎯 統一管理介面 | `.\tools\master-tool.ps1` |
 
@@ -238,4 +227,5 @@ bundle install
 # 打開 http://localhost:4000
 
 ```
+
 
