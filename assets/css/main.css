@@ -4709,7 +4709,7 @@ header {
   padding: 1px 8px 1px 20px; /* 進一步減少內邊距 */
   border-radius: 3px; /* 稍微圓角 */
   transition: all 0.15s ease; /* 稍微快一點的動畫 */
-  font-size: 0.7rem; /* 進一步縮小字體 */
+  font-size: 1.15rem; /* 放大字體，提升可讀性 */
   font-weight: 500; /* 統一字重 */
   line-height: 1.2; /* 更緊湊的行高 */
   position: relative;
