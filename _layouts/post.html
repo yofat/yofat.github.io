@@ -1,672 +1,184 @@
----
+﻿---
 layout: default
-classes: post-page
 ---
 
-{% assign words = page.content | strip_html | normalize_whitespace | split: ' ' %}
-{% assign reading_time = words.size | divided_by: 200 | ceil %}
-
-<div class="post-layout">
-  <!-- 文章主體 -->
-  <div class="post-container">
-    <!-- 左側目錄 -->
-    <aside class="post-toc">
-      <div class="toc-wrapper">
-        <button class="toc-toggle" onclick="toggleTOC()" id="toc-toggle">
-          <span id="toc-icon">📋</span>
-          <span class="toc-text">目錄</span>
-        </button>
-        <nav id="toc-nav" class="toc-nav">
-          <!-- JavaScript 自動生成 -->
-        </nav>
-      </div>
-    </aside>
-
-    <!-- 中間內容區 -->
-    <main class="post-main">
-      <article class="post-article">
-        <!-- 文章標題區 -->
-        <header class="post-header">
-          <div class="post-breadcrumb">
-            <a href="{{ '/' | relative_url }}" class="breadcrumb-link">🏠 首頁</a>
-            <span class="breadcrumb-separator">›</span>
-            {% if page.categories.size > 0 %}
-              <a href="{{ '/categories.html#' | append: page.categories.first | slugify | relative_url }}" class="breadcrumb-link">
-                📂 {{ page.categories.first }}
-              </a>
-              <span class="breadcrumb-separator">›</span>
-            {% endif %}
-            <span class="breadcrumb-current">{{ page.title | truncate: 30 }}</span>
-          </div>
-
-          <h1 class="post-title glow-red rune-text">{{ page.title }}</h1>
-          
-          {% if page.description %}
-          <p class="post-description">{{ page.description }}</p>
-          {% endif %}
-
-          <div class="post-meta">
-            <div class="meta-primary">
-              <div class="meta-item">
-                <span class="meta-icon">📅</span>
-                <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y年%m月%d日" }}</time>
-              </div>
-              
-              <div class="meta-item">
-                <span class="meta-icon">⏱️</span>
-                <span>約 {{ reading_time }} 分鐘閱讀</span>
-              </div>
-              
-              <div class="meta-item">
-                <span class="meta-icon">👁️</span>
-                <span id="view-count">載入中...</span>
-              </div>
-
-              {% if page.updated %}
-              <div class="meta-item">
-                <span class="meta-icon">🔄</span>
-                <span>更新於 {{ page.updated | date: "%Y/%m/%d" }}</span>
-              </div>
-              {% endif %}
-            </div>
-            
-            {% if page.categories.size > 0 or page.tags.size > 0 %}
-            <div class="meta-secondary">
-              {% if page.categories.size > 0 %}
-              <div class="meta-group">
-                <span class="meta-label">� 分類</span>
-                <div class="meta-tags">
-                  {% for category in page.categories %}
-                    <a href="{{ '/categories.html#' | append: category | slugify | relative_url }}" class="meta-tag category-tag">{{ category }}</a>
-                  {% endfor %}
-                </div>
-              </div>
-              {% endif %}
-              
-              {% if page.tags.size > 0 %}
-              <div class="meta-group">
-                <span class="meta-label">🏷️ 標籤</span>
-                <div class="meta-tags">
-                  {% for tag in page.tags %}
-                    <a href="{{ '/tags.html#' | append: tag | slugify | relative_url }}" class="meta-tag tag-tag">{{ tag }}</a>
-                  {% endfor %}
-                </div>
-              </div>
-              {% endif %}
-            </div>
-            {% endif %}
-          </div>
-        </header>
-
-        <!-- 文章內容 -->
-        <div class="post-content">
-          {{ content }}
-        </div>
-
-        <!-- 文章結尾 -->
-        <footer class="post-footer">
-          <div class="post-end-divider"></div>
-          
-          <div class="post-actions">
-            <button class="action-btn primary" onclick="copyToClipboard()" id="copy-btn">
-              <span class="btn-icon">🔗</span>
-              <span class="btn-text">複製連結</span>
-            </button>
-            
-            <button class="action-btn secondary" onclick="window.print()">
-              <span class="btn-icon">🖨️</span>
-              <span class="btn-text">列印文章</span>
-            </button>
-            
-            <button class="action-btn outline" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-              <span class="btn-icon">⬆️</span>
-              <span class="btn-text">回到頂部</span>
-            </button>
-          </div>
-
-          <div class="post-navigation">
-            {% if page.previous %}
-            <div class="nav-prev">
-              <span class="nav-label">← 上一篇</span>
-              <a href="{{ page.previous.url | relative_url }}" class="nav-link">{{ page.previous.title }}</a>
-            </div>
-            {% endif %}
-            
-            {% if page.next %}
-            <div class="nav-next">
-              <span class="nav-label">下一篇 →</span>
-              <a href="{{ page.next.url | relative_url }}" class="nav-link">{{ page.next.title }}</a>
-            </div>
-            {% endif %}
-          </div>
-        </footer>
-      </article>
-    </main>
-
-    <!-- 右側工具欄 -->
-    <aside class="post-sidebar">
-      <!-- 閱讀進度 -->
-      <div class="sidebar-card">
-        <h3 class="card-title">📊 閱讀進度</h3>
-        <div class="progress-container">
-          <div class="progress-track">
-            <div class="progress-bar" id="reading-progress"></div>
-          </div>
-          <span class="progress-text" id="progress-text">0%</span>
-        </div>
-      </div>
-      
-      <!-- 快速動作 -->
-      <div class="sidebar-card">
-        <h3 class="card-title">⚡ 快速動作</h3>
-        <div class="quick-actions">
-          <button class="quick-btn" onclick="copyToClipboard()" title="複製文章連結">
-            <span class="quick-icon">🔗</span>
-          </button>
-          <button class="quick-btn" onclick="window.print()" title="列印文章">
-            <span class="quick-icon">🖨️</span>
-          </button>
-          <button class="quick-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="回到頂部">
-            <span class="quick-icon">⬆️</span>
-          </button>
-          <button class="quick-btn" onclick="toggleTheme()" title="切換主題">
-            <span class="quick-icon">🌙</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- 相關文章 -->
-      {% if page.categories.size > 0 %}
-        {% assign category = page.categories.first %}
-        {% assign related_posts = "" | split: "," %}
-        {% for article in site.articles %}
-          {% if article.categories contains category and article.url != page.url and related_posts.size < 5 %}
-            {% assign related_posts = related_posts | push: article %}
-          {% endif %}
-        {% endfor %}
-        {% if related_posts.size > 0 %}
-        <div class="sidebar-card">
-          <h3 class="card-title">📂 相關威脅</h3>
-          <div class="related-posts">
-            {% for article in related_posts %}
-              <article class="related-post">
-                <a href="{{ article.url | relative_url }}" class="related-link">
-                  <h4 class="related-title">{{ article.title | truncate: 40 }}</h4>
-                  <div class="related-meta">
-                    <span class="related-date">{{ article.date | date: "%m/%d" }}</span>
-                    {% if article.tags.size > 0 %}
-                      <span class="related-tag">{{ article.tags.first }}</span>
-                    {% endif %}
-                  </div>
-                </a>
-              </article>
-            {% endfor %}
-          </div>
-        </div>
-        {% endif %}
-      {% endif %}
-
-      <!-- 文章統計 -->
-      <div class="sidebar-card">
-        <h3 class="card-title">📈 文章統計</h3>
-        <div class="article-stats">
-          <div class="stat-item">
-            <span class="stat-value">{{ words.size }}</span>
-            <span class="stat-label">字數</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value">{{ reading_time }}</span>
-            <span class="stat-label">分鐘</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value" id="view-count-sidebar">-</span>
-            <span class="stat-label">瀏覽</span>
-          </div>
-          {% if page.tags.size > 0 %}
-          <div class="stat-item">
-            <span class="stat-value">{{ page.tags.size }}</span>
-            <span class="stat-label">標籤</span>
-          </div>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- 導航快捷 -->
-      <div class="sidebar-card">
-        <h3 class="card-title">🧭 站內導航</h3>
-        <div class="nav-shortcuts">
-          <a href="{{ '/' | relative_url }}" class="nav-shortcut">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-text">首頁</span>
-          </a>
-          <a href="{{ '/posts.html' | relative_url }}" class="nav-shortcut">
-            <span class="nav-icon">📚</span>
-            <span class="nav-text">所有威脅</span>
-          </a>
-          <a href="{{ '/categories.html' | relative_url }}" class="nav-shortcut">
-            <span class="nav-icon">📂</span>
-            <span class="nav-text">分類</span>
-          </a>
-          <a href="{{ '/tags.html' | relative_url }}" class="nav-shortcut">
-            <span class="nav-icon">🏷️</span>
-            <span class="nav-text">標籤</span>
-          </a>
-        </div>
-      </div>
-    </aside>
-  </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  
-  // TOC 自動生成
-  function generateTOC() {
-    const tocNav = document.getElementById('toc-nav');
-    if (!tocNav) return;
-    
-    const headings = document.querySelectorAll('.post-content h1, .post-content h2, .post-content h3, .post-content h4, .post-content h5, .post-content h6');
-    if (headings.length === 0) {
-      document.querySelector('.post-toc').style.display = 'none';
-      return;
-    }
-    
-    const tocItems = [];
-    
-    headings.forEach((heading, index) => {
-      // 為標題添加 ID
-      if (!heading.id) {
-        heading.id = 'heading-' + index;
-      }
-      
-      const level = parseInt(heading.tagName.substring(1));
-      const link = document.createElement('a');
-      link.href = '#' + heading.id;
-      link.textContent = heading.textContent.trim();
-      link.className = `toc-link toc-level-${level}`;
-      link.dataset.level = level;
-      
-      tocNav.appendChild(link);
-      tocItems.push({ link, heading });
-    });
-    
-    // TOC 點擊事件
-    let isScrolling = false;
-    
-    tocItems.forEach(({ link, heading }) => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        isScrolling = true;
-        
-        // 更新活動狀態
-        tocItems.forEach(({ link: l }) => l.classList.remove('active'));
-        link.classList.add('active');
-        
-        // 平滑滾動
-        const targetPosition = heading.getBoundingClientRect().top + window.pageYOffset - 100;
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-        
-        // 更新 URL
-        history.replaceState(null, null, link.getAttribute('href'));
-        
-        setTimeout(() => { isScrolling = false; }, 1000);
-      });
-    });
-
-    // 滾動時更新活動項目
-    function updateActiveTOC() {
-      if (isScrolling) return;
-      
-      let activeItem = null;
-      const scrollTop = window.pageYOffset + 150;
-      
-      for (let i = headings.length - 1; i >= 0; i--) {
-        if (headings[i].offsetTop <= scrollTop) {
-          activeItem = tocItems[i];
-          break;
-        }
-      }
-      
-      tocItems.forEach(({ link }) => link.classList.remove('active'));
-      if (activeItem) {
-        activeItem.link.classList.add('active');
-      }
-    }
-    
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateActiveTOC();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
-    
-    updateActiveTOC();
-  }
-  
-  // TOC 收起展開
-  window.toggleTOC = function() {
-    const tocWrapper = document.querySelector('.toc-wrapper');
-    const tocIcon = document.getElementById('toc-icon');
-    
-    tocWrapper.classList.toggle('collapsed');
-    tocIcon.textContent = tocWrapper.classList.contains('collapsed') ? '📋' : '📋';
-  };
-  
-  // 複製連結功能
-  window.copyToClipboard = function() {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-      const btn = document.getElementById('copy-btn');
-      const originalText = btn.querySelector('.btn-text').textContent;
-      btn.querySelector('.btn-text').textContent = '已複製！';
-      btn.classList.add('success');
-      
-      setTimeout(() => {
-        btn.querySelector('.btn-text').textContent = originalText;
-        btn.classList.remove('success');
-      }, 2000);
-    }).catch(err => {
-      console.error('複製失敗:', err);
-    });
-  };
-  
-  // 閱讀進度條
-  function initReadingProgress() {
-    const progressBar = document.getElementById('reading-progress');
-    const progressText = document.getElementById('progress-text');
-    
-    if (!progressBar) return;
-    
-    function updateProgress() {
-      const scrollTop = window.pageYOffset;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = Math.min(Math.round((scrollTop / docHeight) * 100), 100);
-      
-      progressBar.style.width = scrollPercent + '%';
-      if (progressText) {
-        progressText.textContent = scrollPercent + '%';
-      }
-    }
-    
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress);
-    updateProgress();
-  }
-  
-  // 響應式 TOC
-  function handleResponsive() {
-    const tocWrapper = document.querySelector('.toc-wrapper');
-    if (window.innerWidth < 1200 && tocWrapper) {
-      tocWrapper.classList.add('collapsed');
-    }
-  }
-  
-  // 初始化
-  generateTOC();
-  initReadingProgress();
-  handleResponsive();
-  
-  window.addEventListener('resize', handleResponsive);
-});
-</script>
-
-<!-- 代碼塊增強功能 -->
-<script src="{{ '/assets/js/code-blocks.js' | relative_url }}"></script>
-        </div>
-      </footer>
-    </article>
-  </div>
-
-  <!-- 右欄：互動工具 -->
-  <aside class="siderail">
-    <!-- 閱讀進度 -->
-    <div class="card">
-      <div class="card-title">📊 閱讀進度</div>
-      <div class="progress-container">
-        <div class="progress-bar" id="reading-progress"></div>
-        <span class="progress-text" id="progress-text">0%</span>
-      </div>
-    </div>
-    
-    <!-- 快速動作 -->
-    <div class="card">
-      <div class="card-title">⚡ 快速動作</div>
-      <div class="action-buttons">
-        <button class="action-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆️ 回頂部</button>
-        <button class="action-btn" onclick="copyToClipboard()">🔗 複製連結</button>
-        <button class="action-btn" onclick="window.print()">🖨️ 列印</button>
-      </div>
-    </div>
-
-    <!-- 相關文章（如果有分類） -->
-    {% if page.categories %}
-      {% assign category = page.categories.first %}
-      {% assign related_posts = site.categories[category] | where_exp: "post", "post.url != page.url" | slice: 0, 3 %}
-      {% if related_posts.size > 0 %}
-      <div class="card">
-        <div class="card-title">📂 {{ category }}相關</div>
-        {% for post in related_posts %}
-          <div class="related-post">
-            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-            <small class="post-date muted">📅 {{ post.date | date: "%m月%d日" }}</small>
-          </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-    {% endif %}
-
-    <!-- 導航連結 -->
-    <div class="card">
-      <div class="card-title">🧭 站內導航</div>
-      <div class="pill-group">
-        <a class="pill" href="{{ '/' | relative_url }}">🏠 首頁</a>
-        <a class="pill" href="{{ '/categories.html' | relative_url }}">📂 分類</a>
-        <a class="pill" href="{{ '/tags.html' | relative_url }}">🏷️ 標籤</a>
-        <a class="pill" href="{{ '/search.html' | relative_url }}">🔍 搜尋</a>
-      </div>
+<!-- 文章專用兩欄布局 -->
+<div class="article-layout">
+  <!-- 左欄：階層式目錄 -->
+  <aside class="article-sidebar">
+    <div class="sidebar-content">
+      <!-- 文章導航 -->
+      <nav class="toc-nav" id="toc-nav">
+        <!-- 目錄將通過 JavaScript 動態生成 -->
+      </nav>
     </div>
   </aside>
+
+  <!-- 右欄：主要文章內容 -->
+  <main class="article-main">
+    <article class="post-article">
+      <header class="post-header">
+        <h1 class="post-title">{{ page.title }}</h1>
+
+        <div class="post-meta">
+          <div class="meta-item">
+            <span class="meta-icon">📅</span>
+            <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y年%m月%d日" }}</time>
+          </div>
+
+          {% if page.categories.size > 0 %}
+          <div class="meta-item">
+            <span class="meta-icon">📂</span>
+            <div class="meta-categories">
+              {% for category in page.categories %}
+                <span class="category-badge">{{ category }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          {% if page.tags.size > 0 %}
+          <div class="meta-item">
+            <span class="meta-icon">🏷️</span>
+            <div class="meta-tags">
+              {% for tag in page.tags %}
+                <span class="tag-badge">{{ tag }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </header>
+
+      <div class="post-content">
+        {{ content }}
+      </div>
+    </article>
+  </main>
 </div>
 
+<!-- 文章頁面專用腳本 -->
 <script>
-// 文章頁面功能
+// 目錄生成和導航功能
 document.addEventListener('DOMContentLoaded', function() {
-  
-  // TOC 生成功能
-  function generateTOC() {
-    const tocContainer = document.getElementById('toc');
-    if (!tocContainer) return;
-    
-    const headings = document.querySelectorAll('.article-content h1, .article-content h2, .article-content h3, .article-content h4');
-    if (headings.length === 0) {
-      // 如果沒有標題，隱藏TOC
-      const tocAside = document.getElementById('post-toc');
-      if (tocAside) tocAside.style.display = 'none';
-      return;
-    }
-    
-    const tocLinks = [];
-    
-    headings.forEach((heading, index) => {
-      // 為標題添加ID（如果沒有）
-      if (!heading.id) {
-        heading.id = 'heading-' + index;
-      }
-      
-      const link = document.createElement('a');
-      link.href = '#' + heading.id;
-      link.textContent = heading.textContent;
-      link.className = 'toc-link';
-      
-      // 根據標題層級設置樣式
-      const level = parseInt(heading.tagName.substring(1));
-      if (level > 1) {
-        link.style.paddingLeft = ((level - 1) * 1) + 'rem';
-        if (level > 2) {
-          link.style.fontSize = '0.85em';
-          link.style.opacity = '0.8';
-        }
-      }
-      
-      tocContainer.appendChild(link);
-      tocLinks.push(link);
-    });
-    
-    // TOC 點擊事件和高亮邏輯
-    let isScrolling = false;
-    
-    tocLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        isScrolling = true;
-        
-        // 移除所有 active 狀態
-        tocLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-        
-        const target = document.querySelector(link.getAttribute('href'));
-        if (target) {
-          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
-          window.scrollTo({
-            top: targetPosition,
-            behavior: "smooth"
-          });
-          history.replaceState(null, "", link.getAttribute('href'));
-          
-          setTimeout(() => {
-            isScrolling = false;
-          }, 1500);
-        }
-      });
-    });
-
-    // 滾動時更新活動TOC項目
-    function updateActiveTOC() {
-      if (isScrolling) return;
-      
-      let currentActive = null;
-      const scrollTop = window.pageYOffset + 120;
-      
-      // 從後往前檢查，找到當前應該高亮的區域
-      for (let i = headings.length - 1; i >= 0; i--) {
-        const heading = headings[i];
-        if (heading.offsetTop <= scrollTop) {
-          currentActive = tocLinks[i];
-          break;
-        }
-      }
-      
-      // 如果沒有找到，根據滾動位置決定
-      if (!currentActive) {
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        
-        // 如果接近頁面底部，高亮最後一個
-        if (scrollTop + windowHeight >= documentHeight - 200) {
-          currentActive = tocLinks[tocLinks.length - 1];
-        } else {
-          // 否則高亮第一個
-          currentActive = tocLinks[0];
-        }
-      }
-      
-      // 更新高亮
-      tocLinks.forEach(link => link.classList.remove('active'));
-      if (currentActive) {
-        currentActive.classList.add('active');
-      }
-    }
-    
-    let ticking = false;
-    function requestTick() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateActiveTOC();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }
-    
-    window.addEventListener('scroll', requestTick);
-    updateActiveTOC();
-  }
-  
-  // TOC 收起/展開功能
-  window.toggleTOC = function() {
-    const toc = document.getElementById('post-toc');
-    const icon = document.getElementById('toc-icon');
-    
-    if (!toc || !icon) return;
-    
-    if (toc.classList.contains('collapsed')) {
-      toc.classList.remove('collapsed');
-      icon.textContent = '☰';
-    } else {
-      toc.classList.add('collapsed');
-      icon.textContent = '▶';
-    }
-  };
-  
-  // 響應式檢查
-  function checkScreenWidth() {
-    const toc = document.getElementById('post-toc');
-    if (window.innerWidth < 1024 && toc) {
-      toc.classList.add('collapsed');
-      const icon = document.getElementById('toc-icon');
-      if (icon) icon.textContent = '▶';
-    }
-  }
-  
-  // 複製連結功能
-  window.copyToClipboard = function() {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      // 簡單的提示效果
-      const btn = event.target;
-      const originalText = btn.textContent;
-      btn.textContent = '✅ 已複製';
-      setTimeout(() => btn.textContent = originalText, 2000);
-    });
-  };
-  
-  // 初始化閱讀進度條
-  function initReadingProgress() {
-    const progressBar = document.getElementById('reading-progress');
-    const progressText = document.getElementById('progress-text');
-    
-    if (!progressBar) return;
-    
-    function updateProgress() {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = Math.min(Math.round((scrollTop / docHeight) * 100), 100);
-      
-      progressBar.style.width = scrollPercent + '%';
-      if (progressText) progressText.textContent = scrollPercent + '%';
-    }
-    
-    // 初始化和事件監聽
-    updateProgress();
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress);
-  }
-  
-  // 初始化所有功能
   generateTOC();
-  checkScreenWidth();
-  window.addEventListener('resize', checkScreenWidth);
-  
-  // 延遲初始化避免布局問題
-  setTimeout(initReadingProgress, 100);
+  setupScrollSpy();
+  setupSmoothScroll();
 });
-</script>
 
-<!-- 代碼塊增強功能 -->
-<script src="{{ '/assets/js/code-blocks.js' | relative_url }}"></script>
+// 生成目錄
+function generateTOC() {
+  const content = document.querySelector('.post-article .post-content');
+  const tocNav = document.getElementById('toc-nav');
+
+  if (!content || !tocNav) return;
+
+  const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  if (headings.length === 0) {
+    tocNav.innerHTML = '<p class="no-toc">本文沒有目錄</p>';
+    return;
+  }
+
+  let tocHTML = '<ul class="toc-list">';
+  let currentLevel = 1;
+  let sectionCount = 0;
+
+  headings.forEach((heading, index) => {
+    const level = parseInt(heading.tagName.charAt(1));
+    const text = heading.textContent.trim();
+    const id = `section-${index + 1}`;
+
+    // 為標題添加 ID
+    heading.id = id;
+
+    // 處理層級結構
+    if (level > currentLevel) {
+      for (let i = currentLevel; i < level; i++) {
+        tocHTML += '<ul class="toc-sublist">';
+      }
+    } else if (level < currentLevel) {
+      for (let i = currentLevel; i > level; i--) {
+        tocHTML += '</ul>';
+      }
+    }
+
+    tocHTML += `<li class="toc-item toc-level-${level}">
+      <a href="#${id}" class="toc-link" data-target="${id}">
+        <span class="toc-text">${text}</span>
+      </a>
+    </li>`;
+
+    currentLevel = level;
+    sectionCount++;
+  });
+
+  // 關閉所有未閉合的列表
+  for (let i = 1; i < currentLevel; i++) {
+    tocHTML += '</ul>';
+  }
+
+  tocHTML += '</ul>';
+  tocNav.innerHTML = tocHTML;
+}
+
+// 滾動監聽和高亮當前章節
+function setupScrollSpy() {
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const headings = document.querySelectorAll('.post-article .post-content h1, .post-article .post-content h2, .post-article .post-content h3, .post-article .post-content h4, .post-article .post-content h5, .post-article .post-content h6');
+
+  if (tocLinks.length === 0 || headings.length === 0) return;
+
+  let currentActive = null;
+
+  window.addEventListener('scroll', function() {
+    const scrollPosition = window.scrollY + 100;
+
+    headings.forEach((heading, index) => {
+      const headingTop = heading.offsetTop;
+      const headingBottom = headingTop + heading.offsetHeight;
+
+      if (scrollPosition >= headingTop && scrollPosition < headingBottom) {
+        const targetId = heading.id;
+
+        // 移除之前的活躍狀態
+        if (currentActive) {
+          currentActive.classList.remove('active');
+        }
+
+        // 添加新的活躍狀態
+        const activeLink = document.querySelector(`.toc-link[data-target="${targetId}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+          currentActive = activeLink;
+        }
+      }
+    });
+  });
+}
+
+// 平滑滾動
+function setupSmoothScroll() {
+  document.querySelectorAll('.toc-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const targetId = this.getAttribute('data-target');
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        const headerOffset = 80;
+        const elementPosition = targetElement.offsetTop;
+        const offsetPosition = elementPosition - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+
+        // 更新 URL 但不觸發頁面重新載入
+        history.pushState(null, null, `#${targetId}`);
+      }
+    });
+  });
+}
+</script>

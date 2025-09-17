@@ -1,20 +1,20 @@
----
+﻿---
 layout: default
-title: 探索內容
+title: ?�索?�容
 classes: explore
 ---
 
 <div class="container">
   <div class="page-header">
-    <h1 class="page-title">🔍 探索內容</h1>
-    <p class="page-description">深入了解網站內容和作者背景</p>
+    <h1 class="page-title">?? ?�索?�容</h1>
+    <p class="page-description">深入了解網�??�容?��??��???/p>
   </div>
 
-  <!-- 分類概覽 -->
+  <!-- ?��?概覽 -->
   <section id="categories-overview" class="content-section">
     <div class="section-header">
-      <h2 class="section-title">📂 內容分類</h2>
-      <p class="section-description">按主題瀏覽不同類型的技術內容</p>
+      <h2 class="section-title">?? ?�容?��?</h2>
+      <p class="section-description">?�主題瀏覽不�?類�??��?術內�?/p>
     </div>
     
     <div class="categories-grid">
@@ -22,30 +22,30 @@ classes: explore
       {% for category_data in sorted_categories %}
         {% assign category_name = category_data[0] %}
         {% assign category_info = category_data[1] %}
-        {% assign category_posts = site.articles | where_exp: "post", "post.categories contains category_name" %}
+        {% assign category_posts = site.posts | where_exp: "post", "post.categories contains category_name" %}
         
         <div class="category-card">
           <div class="category-icon">
             {% case category_name %}
-              {% when '人工智能' %}🤖
-              {% when '程式語言' %}💻
-              {% when '網頁開發' %}🌐
-              {% when '生活分享' %}🌱
-              {% when '教學' %}📖
-              {% when '功能項目' %}⚙️
-              {% when '工具分享' %}🛠️
-              {% when '心得筆記' %}💭
-              {% else %}📄
+              {% when '人工?�能' %}??
+              {% when '程�?語�?' %}?��
+              {% when '網�??�發' %}??
+              {% when '?�活?�享' %}?��
+              {% when '?�學' %}??
+              {% when '?�能?�目' %}?��?
+              {% when '工具?�享' %}??�?
+              {% when '心�?筆�?' %}?��
+              {% else %}??
             {% endcase %}
           </div>
           <h3 class="category-title">{{ category_name }}</h3>
-          <p class="category-count">{{ category_posts.size }} 篇文章</p>
+          <p class="category-count">{{ category_posts.size }} 篇�?�?/p>
           <div class="category-topics">
             {% for topic in category_info limit:3 %}
               <span class="category-topic">{{ topic }}</span>
             {% endfor %}
           </div>
-          <a href="{{ '/categories.html' | relative_url }}#{{ category_name }}" class="btn btn-outline">探索</a>
+          <a href="{{ '/categories.html' | relative_url }}#{{ category_name }}" class="btn btn-outline">?�索</a>
         </div>
       {% endfor %}
     </div>
@@ -53,60 +53,60 @@ classes: explore
 
   <div class="content-divider"></div>
 
-  <!-- 關於我區域 -->
+  <!-- ?�於?��???-->
   <section id="about-me" class="content-section">
     <div class="section-header">
-      <h2 class="section-title">💀 關於駭客</h2>
-      <p class="section-description">一個在網路安全與AI領域探索的邪氣學習者</p>
+      <h2 class="section-title">?? ?�於駭客</h2>
+      <p class="section-description">一?�在網路安全?�AI?��??�索?�邪�?��習�?/p>
     </div>
     
     <div class="about-content">
       <div class="about-text">
-        <p>🔥 我是 <strong class="highlight-text">YOFAT</strong>，正在深入學習網路安全與人工智能技術。</p>
-        <p>⚔️ 專注於紅隊攻擊技術、藍隊防禦策略，以及AI在資安領域的應用。</p>
-        <p>💭 透過實戰經驗和技術研究，將學習成果記錄在這個被污染的數位空間中。</p>
+        <p>?�� ?�是 <strong class="highlight-text">YOFAT</strong>，正?�深?�學習網路�??��?人工?�能?�術�?/p>
+        <p>?��? 專注?��??�攻?��?術、�??�防禦�??��?以�?AI?��?安�??��??�用??/p>
+        <p>?�� ?��?實戰經�??��?術�?究�?將學習�??��??�在?�個被污�??�數位空?�中??/p>
       </div>
       
       <div class="skills-showcase">
-        <h4 class="skills-title">🛠️ 技術棧</h4>
+        <h4 class="skills-title">??�??�術棧</h4>
         <div class="skills-grid">
-          <span class="skill-tag python">🐍 Python</span>
-          <span class="skill-tag js">⚡ JavaScript</span>
-          <span class="skill-tag security">🔒 滲透測試</span>
-          <span class="skill-tag ai">🤖 機器學習</span>
-          <span class="skill-tag web">🌐 網頁開發</span>
-          <span class="skill-tag crypto">🔐 密碼學</span>
+          <span class="skill-tag python">?? Python</span>
+          <span class="skill-tag js">??JavaScript</span>
+          <span class="skill-tag security">?? 滲透測�?/span>
+          <span class="skill-tag ai">?? 機器學�?</span>
+          <span class="skill-tag web">?? 網�??�發</span>
+          <span class="skill-tag crypto">?? 密碼�?/span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 聯絡方式 -->
+  <!-- ?�絡?��? -->
   <section class="contact-section">
     <div class="section-header">
-      <h2 class="section-title">📬 聯絡方式</h2>
+      <h2 class="section-title">?�� ?�絡?��?</h2>
     </div>
     
     <div class="contact-grid">
       <div class="contact-card">
-        <div class="contact-icon">📧</div>
+        <div class="contact-icon">?��</div>
         <h3>Email</h3>
-        <p>技術交流與合作洽談</p>
-        <a href="mailto:contact@yofat.dev" class="btn btn-outline">發送郵件</a>
+        <p>?�術交流�??��?洽�?</p>
+        <a href="mailto:contact@yofat.dev" class="btn btn-outline">?�送郵�?/a>
       </div>
       
       <div class="contact-card">
-        <div class="contact-icon">💻</div>
+        <div class="contact-icon">?��</div>
         <h3>GitHub</h3>
-        <p>查看開源項目與代碼</p>
-        <a href="https://github.com/yofat" class="btn btn-outline" target="_blank">訪問 GitHub</a>
+        <p>?��??��??�目?�代�?/p>
+        <a href="https://github.com/yofat" class="btn btn-outline" target="_blank">訪�? GitHub</a>
       </div>
       
       <div class="contact-card">
-        <div class="contact-icon">🐦</div>
+        <div class="contact-icon">?��</div>
         <h3>Twitter</h3>
-        <p>分享學習心得與技術動態</p>
-        <a href="https://twitter.com/yofat_dev" class="btn btn-outline" target="_blank">關注我</a>
+        <p>?�享學�?心�??��?術�???/p>
+        <a href="https://twitter.com/yofat_dev" class="btn btn-outline" target="_blank">?�注??/a>
       </div>
     </div>
   </section>
@@ -172,3 +172,4 @@ classes: explore
   margin: 0 0 var(--spacing-lg) 0;
 }
 </style>
+

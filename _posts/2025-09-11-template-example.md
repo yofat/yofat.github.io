@@ -5,6 +5,7 @@ description: "展示新的文章模板系統，讓您只需專注於內容創作
 categories: [技術, 前端]
 tags: [Jekyll, 模板, 設計]
 updated: 2025-09-11
+body_class: post-page
 ---
 
 # 簡化的文章創作流程

@@ -6,7 +6,7 @@ param(
     [string]$Title,
     
     [Parameter(Mandatory=$false)]
-    [ValidateSet("人工智能", "程式語言", "網頁開發", "生活分享", "教學", "功能項目", "工具分享", "心得筆記")]
+    [ValidateSet("人工智能", "程式語言", "網頁開發", "生活分享", "教學", "工具分享", "心得筆記")]
     [string]$Category,
     
     [Parameter(Mandatory=$false)]
@@ -50,9 +50,8 @@ try {
         Write-Host "3. 網頁開發"
         Write-Host "4. 生活分享"
         Write-Host "5. 教學"
-        Write-Host "6. 功能項目"
-        Write-Host "7. 工具分享"
-        Write-Host "8. 心得筆記"
+        Write-Host "6. 工具分享"
+        Write-Host "7. 心得筆記"
         
         $choice = Read-Host "請選擇分類 (1-8)"
         switch ($choice) {
@@ -61,9 +60,8 @@ try {
             "3" { $Category = "網頁開發" }
             "4" { $Category = "生活分享" }
             "5" { $Category = "教學" }
-            "6" { $Category = "功能項目" }
-            "7" { $Category = "工具分享" }
-            "8" { $Category = "心得筆記" }
+            "6" { $Category = "工具分享" }
+            "7" { $Category = "心得筆記" }
             default { 
                 Write-Host "無效選擇，預設使用 '生活分享'" -ForegroundColor Yellow
                 $Category = "生活分享"
@@ -85,7 +83,7 @@ try {
     $Date = Get-Date -Format "yyyy-MM-dd"
     $FullFileName = "$Date-$FileName.md"
 
-    $TargetDir = "_articles\$Category"
+    $TargetDir = "_posts"
     $FilePath = "$TargetDir\$FullFileName"
 
     if (-not (Test-Path $TargetDir)) {

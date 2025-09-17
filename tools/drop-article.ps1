@@ -27,7 +27,7 @@ if (-not $Files -or $Files.Length -eq 0) {
     exit 0
 }
 
-$categories = @("人工智能", "程式語言", "網頁開發", "生活分享", "教學", "功能項目", "工具分享", "心得筆記")
+$categories = @("人工智能", "程式語言", "網頁開發", "生活分享", "教學", "工具分享", "心得筆記")
 
 foreach ($file in $Files) {
     if (-not (Test-Path $file)) {
@@ -112,7 +112,7 @@ excerpt:
     }
 
     # 生成目標路徑
-    $targetDir = "_articles\$category"
+    $targetDir = "_posts"
     $targetPath = "$targetDir\$fileName.md"
     
     # 檢查目標目錄
@@ -143,7 +143,7 @@ excerpt:
 Write-Host ""
 Write-Host "🎉 處理完成！" -ForegroundColor $Colors.Green
 Write-Host "🚀 下一步："
-Write-Host "  1. 檢查檔案: dir _articles\*\*.md"
+Write-Host "  1. 檢查檔案: dir _posts\*.md"
 Write-Host "  2. 啟動預覽: bundle exec jekyll serve"
 Write-Host "  3. 查看結果: http://localhost:4000/posts.html"
 Write-Host ""

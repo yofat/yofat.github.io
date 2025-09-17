@@ -55,8 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
       targets: heroSpans,
       opacity: [0, 1],
       translateY: [30, 0],
-      delay: anime.stagger(200),
-      duration: 1000,
+      delay: anime.stagger(300), // 增加延遲讓每個部分更明顯
+      duration: 1200,
       easing: "easeOutExpo"
     });
   }
@@ -72,228 +72,276 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // === TOC 生成（只在文章頁面） ===
-  const tocRoot = document.getElementById("toc");
-  const isPostPage = document.body.classList.contains('post-page') || document.querySelector('article.post-content') || document.body.classList.contains('layout-post');
-  
+  // === TOC 生成（HackMD 風格） ===
+  const tocRoot = document.getElementById("toc-nav");
+  const scope = document.querySelector(".post-content");
+  const isPostPage = document.body.classList.contains('post-page') || document.querySelector('article.post-article') || document.body.classList.contains('layout-post');
+
   // 首頁不顯示 TOC
   if (tocRoot && !isPostPage) {
-    // TOC 區域由 HTML 直接處理，不需要 JavaScript
     return;
   }
-  
+
   if (tocRoot && scope && isPostPage) {
-    const headings = scope.querySelectorAll("article h1, article h2, article h3, .post-content h1, .post-content h2, .post-content h3");
-    
+    const headings = scope.querySelectorAll("h1, h2, h3");
+
     if (headings.length === 0) {
       tocRoot.innerHTML = '<p class="toc-empty">本文暂无目录</p>';
       return;
     }
 
-    // 為標題添加 ID
+    // 清除現有內容
+    tocRoot.innerHTML = '';
+
+    // 創建控制按鈕區域 - 文字形式
+    const tocControls = document.createElement("div");
+    tocControls.className = "toc-controls";
+
+    // 全部展開文字鏈接
+    const expandAllLink = document.createElement("a");
+    expandAllLink.className = "toc-control-btn";
+    expandAllLink.textContent = "展開全部";
+    expandAllLink.href = "#";
+    expandAllLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      toggleAllItems(true);
+      updateControlButtons();
+    });
+
+    // 全部收起文字鏈接
+    const collapseAllLink = document.createElement("a");
+    collapseAllLink.className = "toc-control-btn";
+    collapseAllLink.textContent = "收起全部";
+    collapseAllLink.href = "#";
+    collapseAllLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      toggleAllItems(false);
+      updateControlButtons();
+    });
+
+    // 回到頂部文字鏈接
+    const backToTopLink = document.createElement("a");
+    backToTopLink.className = "toc-control-btn";
+    backToTopLink.textContent = "回到頂部";
+    backToTopLink.href = "#";
+    backToTopLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    tocControls.appendChild(expandAllLink);
+    tocControls.appendChild(collapseAllLink);
+    tocControls.appendChild(backToTopLink);
+
+    // 創建 TOC 列表容器
+    const tocList = document.createElement("ul");
+    tocList.className = "toc-list";
+
+    // 存儲所有 TOC 項目以便控制
+    const tocItems = [];
+    let currentH1Item = null;
+
     headings.forEach((heading, index) => {
-      if (!heading.id) {
-        heading.id = `heading-${index}`;
-      }
-    });
+      const headingText = heading.textContent.trim();
+      const headingLevel = parseInt(heading.tagName.charAt(1));
 
-    // 創建 TOC 標題
-    const tocHeader = document.createElement("div");
-    tocHeader.className = "toc-header";
-    tocHeader.innerHTML = '<h4 class="toc-title">📖 文章目錄</h4>';
-    
-    // 全部展開/收縮按鈕
-    const toggleAll = document.createElement("span");
-    toggleAll.className = "toc-toggle";
-    toggleAll.textContent = "全部展開";
-    toggleAll.addEventListener("click", () => {
-      const isExpanded = toggleAll.textContent === "全部收縮";
-      const allChildren = tocRoot.querySelectorAll(".toc-children");
-      const allIcons = tocRoot.querySelectorAll(".toc-h1-icon");
-      
-      allChildren.forEach(child => {
-        if (isExpanded) {
-          child.classList.remove("expanded");
-        } else {
-          child.classList.add("expanded");
-        }
-      });
-      
-      allIcons.forEach(icon => {
-        if (isExpanded) {
-          icon.classList.remove("expanded");
-        } else {
-          icon.classList.add("expanded");
-        }
-      });
-      
-      toggleAll.textContent = isExpanded ? "全部展開" : "全部收縮";
-    });
-    tocHeader.appendChild(toggleAll);
-    tocRoot.appendChild(tocHeader);
+      // 總是重新生成 ID，使用標題文字而不是 Jekyll 生成的 ID
+      // 將標題文字轉換為 URL 友好的格式
+      let slug = headingText
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '') // 移除特殊字符
+        .replace(/\s+/g, '-') // 將空格轉為連字符
+        .replace(/-+/g, '-') // 移除多餘的連字符
+        .replace(/^-|-$/g, ''); // 移除開頭和結尾的連字符
 
-    // 生成層級結構
-    const structure = [];
-    let currentH1 = null;
-    
-    headings.forEach(h => {
-      if (h.tagName === "H1") {
-        currentH1 = { heading: h, children: [] };
-        structure.push(currentH1);
-      } else if (currentH1) {
-        currentH1.children.push(h);
+      // 如果 slug 為空，使用默認格式
+      if (!slug) {
+        slug = `heading-${index}`;
       }
-    });
-    
-    // 建立 DOM 結構
-    structure.forEach(item => {
-      const h1Item = document.createElement("div");
-      h1Item.className = "toc-h1-item";
-      
-      // H1 切換按鈕
-      const toggle = document.createElement("div");
-      toggle.className = "toc-h1-toggle";
-      
-      const icon = document.createElement("span");
-      icon.className = "toc-h1-icon";
-      icon.innerHTML = "▶";
-      
-      const text = document.createElement("span");
-      text.className = "toc-h1-text";
-      text.textContent = item.heading.textContent;
-      
-      toggle.appendChild(icon);
-      toggle.appendChild(text);
-      
-      // H1 點擊事件
-      toggle.addEventListener("click", (e) => {
+
+      // 確保唯一性
+      let uniqueSlug = slug;
+      let counter = 1;
+      const existingIds = Array.from(document.querySelectorAll('[id]')).map(el => el.id);
+      while (existingIds.includes(uniqueSlug)) {
+        uniqueSlug = `${slug}-${counter}`;
+        counter++;
+      }
+
+      heading.id = uniqueSlug;
+
+      // 創建列表項目
+      const listItem = document.createElement("li");
+      listItem.className = `toc-item toc-level-${headingLevel}`;
+
+      // 創建鏈接
+      const link = document.createElement("a");
+      link.href = `#${heading.id}`;
+      link.className = "toc-link";
+      link.textContent = headingText;
+      link.setAttribute("data-level", headingLevel);
+
+      // HackMD 風格的字體大小
+      if (headingLevel === 1) {
+        link.style.fontSize = "14px";
+        link.style.fontWeight = "600";
+        link.style.paddingLeft = "24px";
+      } else if (headingLevel === 2) {
+        link.style.fontSize = "13px";
+        link.style.fontWeight = "500";
+        link.style.paddingLeft = "48px";
+      } else if (headingLevel === 3) {
+        link.style.fontSize = "12px";
+        link.style.fontWeight = "400";
+        link.style.paddingLeft = "72px";
+        link.style.color = "var(--text-tertiary)";
+      }
+
+      // 點擊事件
+      link.addEventListener("click", (e) => {
         e.preventDefault();
-        
-        const targetPosition = item.heading.getBoundingClientRect().top + window.pageYOffset - 80;
+        const targetPosition = heading.getBoundingClientRect().top + window.pageYOffset - 80;
+
         window.scrollTo({
           top: targetPosition,
           behavior: "smooth"
         });
-        
-        history.replaceState(null, "", `#${item.heading.id}`);
-        
-        // 切換折疊狀態
-        const children = h1Item.querySelector(".toc-children");
-        const isExpanded = children && children.classList.contains("expanded");
-        
-        if (children) {
-          children.classList.toggle("expanded");
-          icon.classList.toggle("expanded");
-        }
+
+        history.replaceState(null, "", `#${heading.id}`);
       });
-      
-      h1Item.appendChild(toggle);
-      
-      // 子項目容器
-      if (item.children.length > 0) {
-        const childrenContainer = document.createElement("div");
-        childrenContainer.className = "toc-children";
-        
-        item.children.forEach(child => {
-          const link = document.createElement("a");
-          link.href = `#${child.id}`;
-          link.textContent = child.textContent;
-          link.className = "toc-link";
-          link.setAttribute("data-level", child.tagName.toLowerCase().slice(1));
-          
-          link.addEventListener("click", (e) => {
-            e.preventDefault();
-            const targetPosition = child.getBoundingClientRect().top + window.pageYOffset - 80;
-            
-            window.scrollTo({
-              top: targetPosition,
-              behavior: "smooth"
-            });
-            
-            history.replaceState(null, "", `#${child.id}`);
-          });
-          
-          childrenContainer.appendChild(link);
-        });
-        
-        h1Item.appendChild(childrenContainer);
+
+      listItem.appendChild(link);
+
+      // 處理階層結構
+      if (headingLevel === 1) {
+        // H1 作為頂級項目
+        tocList.appendChild(listItem);
+        currentH1Item = { element: listItem, level: 1, children: [] };
+        tocItems.push(currentH1Item);
+      } else {
+        // H2/H3 作為子項目
+        if (currentH1Item) {
+          if (!currentH1Item.childrenContainer) {
+            currentH1Item.childrenContainer = document.createElement("ul");
+            currentH1Item.childrenContainer.className = "toc-children";
+            currentH1Item.element.appendChild(currentH1Item.childrenContainer);
+          }
+          currentH1Item.childrenContainer.appendChild(listItem);
+          currentH1Item.children.push({ element: listItem, level: headingLevel });
+        } else {
+          // 如果沒有父級 H1，直接添加到主列表
+          tocList.appendChild(listItem);
+        }
       }
-      
-      tocRoot.appendChild(h1Item);
     });
 
-    // Scrollspy：高亮目前章節
-    const allLinks = tocRoot.querySelectorAll("a, .toc-h1-toggle");
-    const linkMap = new Map();
-    
-    // 建立 ID 到元素的映射
-    headings.forEach(h => {
-      if (h.tagName === "H1") {
-        const toggle = Array.from(allLinks).find(el => 
-          el.classList.contains("toc-h1-toggle") && 
-          el.querySelector(".toc-h1-text").textContent === h.textContent
-        );
-        if (toggle) linkMap.set(h.id, toggle);
-      } else {
-        const link = Array.from(allLinks).find(el => 
-          el.getAttribute && el.getAttribute("href") === `#${h.id}`
-        );
-        if (link) linkMap.set(h.id, link);
-      }
-    });
-    
+    // 先添加列表，然後添加控制按鈕在底部
+    tocRoot.appendChild(tocList);
+    tocRoot.appendChild(tocControls);
+
+    // 控制按鈕狀態更新函數
+    function updateControlButtons() {
+      const hasExpanded = tocRoot.querySelector('.toc-children.expanded') !== null;
+      const hasCollapsed = tocRoot.querySelector('.toc-children:not(.expanded)') !== null;
+
+      // 更新文字鏈接的樣式
+      expandAllLink.style.opacity = hasExpanded ? "0.5" : "1";
+      collapseAllLink.style.opacity = hasCollapsed ? "1" : "0.5";
+    }
+
+    // 全部展開/收起功能
+    function toggleAllItems(expand) {
+      const childrenContainers = tocRoot.querySelectorAll('.toc-children');
+      childrenContainers.forEach(container => {
+        if (expand) {
+          container.classList.add('expanded');
+        } else {
+          container.classList.remove('expanded');
+        }
+      });
+    }
+
+    // 初始化控制按鈕狀態
+    updateControlButtons();
+
+    // Scrollspy：高亮目前章節並自動展開/收起
+    const allLinks = tocRoot.querySelectorAll(".toc-link");
+    let currentActiveH1 = null; // 追蹤當前活躍的 H1
+
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(en => {
-        if (en.isIntersecting) {
-          const link = linkMap.get(en.target.id);
-          if (link) {
-            // 移除所有活動狀態
-            allLinks.forEach(l => l.classList.remove("active"));
-            // 添加當前活動狀態
-            link.classList.add("active");
-            
-            // 如果是 H2/H3，自動展開父級 H1
-            if (en.target.tagName !== "H1") {
-              const parentH1 = Array.from(headings).find(h => 
-                h.tagName === "H1" && h.compareDocumentPosition(en.target) & Node.DOCUMENT_POSITION_FOLLOWING
-              );
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // 移除所有活動狀態
+          allLinks.forEach(link => link.classList.remove("active"));
+
+          // 找到對應的鏈接並高亮
+          const targetLink = Array.from(allLinks).find(link =>
+            link.getAttribute("href") === `#${entry.target.id}`
+          );
+
+          if (targetLink) {
+            targetLink.classList.add("active");
+
+            // 處理階層展開/收起邏輯
+            const currentLevel = parseInt(targetLink.getAttribute("data-level"));
+            const tocItem = targetLink.closest('.toc-item');
+
+            if (currentLevel === 1) {
+              // 如果是新的 H1，收起之前活躍的 H1
+              if (currentActiveH1 && currentActiveH1 !== tocItem) {
+                const prevChildren = currentActiveH1.querySelector('.toc-children');
+                if (prevChildren && prevChildren.classList.contains('expanded')) {
+                  prevChildren.classList.remove('expanded');
+                }
+              }
+
+              // 設置新的活躍 H1
+              currentActiveH1 = tocItem;
+
+              // 展開當前 H1 的所有子項目
+              const childrenContainer = tocItem.querySelector('.toc-children');
+              if (childrenContainer && !childrenContainer.classList.contains('expanded')) {
+                childrenContainer.classList.add('expanded');
+                updateControlButtons();
+              }
+            } else if (currentLevel === 2) {
+              // 如果是 H2，確保其父級 H1 已展開
+              const parentH1 = tocItem.closest('.toc-list > .toc-item');
               if (parentH1) {
-                const parentToggle = linkMap.get(parentH1.id);
-                if (parentToggle) {
-                  const parentItem = parentToggle.closest(".toc-h1-item");
-                  const children = parentItem.querySelector(".toc-children");
-                  const icon = parentToggle.querySelector(".toc-h1-icon");
-                  
-                  if (children && !children.classList.contains("expanded")) {
-                    children.classList.add("expanded");
-                    icon.classList.add("expanded");
+                // 如果父級 H1 不是當前活躍的，切換到這個 H1
+                if (currentActiveH1 !== parentH1) {
+                  // 收起之前活躍的 H1
+                  if (currentActiveH1) {
+                    const prevChildren = currentActiveH1.querySelector('.toc-children');
+                    if (prevChildren && prevChildren.classList.contains('expanded')) {
+                      prevChildren.classList.remove('expanded');
+                    }
                   }
+
+                  // 設置新的活躍 H1
+                  currentActiveH1 = parentH1;
+                }
+
+                // 展開當前 H1 的子項目
+                const parentChildren = parentH1.querySelector('.toc-children');
+                if (parentChildren && !parentChildren.classList.contains('expanded')) {
+                  parentChildren.classList.add('expanded');
+                  updateControlButtons();
                 }
               }
             }
+            // H3 不需要特殊處理，因為其父級已經展開
           }
         }
       });
-    }, { rootMargin: "0px 0px -70% 0px", threshold: 0.1 });
-    
+    }, {
+      rootMargin: "0px 0px -70% 0px",
+      threshold: 0.1
+    });
+
     headings.forEach(h => observer.observe(h));
   }
 
-  // === 主題切換 ===
-  const toggleBtn = document.getElementById("theme-toggle");
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      document.documentElement.classList.toggle("light");
-      toggleBtn.textContent = document.documentElement.classList.contains("light") ? "☀️" : "🌙";
-      
-      // 切換右欄頭像
-      updateProfileAvatar();
-    });
-  }
-  
-  // 初始化時設置正確的頭像
-  updateProfileAvatar();
-  
   // === 滾動進度條 ===
   const scrollProgressTop = document.getElementById('scroll-progress-top');
   const scrollProgressBottom = document.getElementById('scroll-progress-bottom');
@@ -316,13 +364,54 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// === 主題切換 ===
+// 因為 defer 腳本在 DOMContentLoaded 之後執行，所以不使用 DOMContentLoaded 事件
+const toggleBtn = document.getElementById("theme-toggle");
+const themeIcon = document.getElementById("theme-icon");
+
+if (toggleBtn) {
+  toggleBtn.addEventListener("click", () => {
+    document.documentElement.classList.toggle("light");
+    
+    // 更新圖標
+    if (themeIcon) {
+      themeIcon.textContent = document.documentElement.classList.contains("light") ? "☀️" : "🌙";
+    } else {
+      toggleBtn.textContent = document.documentElement.classList.contains("light") ? "☀️" : "🌙";
+    }
+    
+    // 保存主題偏好到 localStorage
+    const currentTheme = document.documentElement.classList.contains("light") ? "light" : "dark";
+    localStorage.setItem("theme", currentTheme);
+    
+    // 切換右欄頭像
+    updateProfileAvatar();
+  });
+}
+
+// 載入儲存的主題偏好
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "light") {
+  document.documentElement.classList.add("light");
+}
+
+// 初始化時設置正確的圖標
+if (themeIcon) {
+  themeIcon.textContent = document.documentElement.classList.contains("light") ? "☀️" : "🌙";
+} else if (toggleBtn) {
+  toggleBtn.textContent = document.documentElement.classList.contains("light") ? "☀️" : "🌙";
+}
+
+// 初始化時設置正確的頭像
+updateProfileAvatar();
+
 // === 更新個人頭像根據主題 ===
 function updateProfileAvatar() {
-  const profileAvatar = document.getElementById("profile-avatar");
+  const profileAvatar = document.querySelector(".profile-avatar");
   if (profileAvatar) {
     const isLightTheme = document.documentElement.classList.contains("light");
     profileAvatar.src = isLightTheme 
-      ? "/assets/image/logo_transparent.png" 
+      ? "/assets/image/banner.png" 
       : "/assets/image/logo_inverted.png";
   }
 }

@@ -3,6 +3,11 @@
 <title>{{ page.title | default: site.title }}</title>
 <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | truncatewords: 50 }}" />
 
+<!-- 字體載入 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Fira+Code:wght@300;400;500&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
 <!-- SEO 標籤 -->
 {% seo %}
 
@@ -14,6 +19,7 @@
 
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 <link rel="icon" type="image/png" href="{{ '/assets/image/icon.png' | relative_url }}">
+<link rel="shortcut icon" href="{{ '/favicon.ico' | relative_url }}">
 <link rel="apple-touch-icon" href="{{ '/assets/image/logo.png' | relative_url }}">
 
 <!-- anime.js for cool effects -->
@@ -29,3 +35,4 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 <script defer src="{{ '/assets/js/main.js' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M' }}"></script>
+<script defer src="{{ '/assets/js/code-blocks.js' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M' }}"></script>

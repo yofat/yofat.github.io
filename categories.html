@@ -6,36 +6,47 @@ classes: categories-page three-column
 ---
 
 <!-- 三欄式布局 -->
-<div class="three-column-layout with-border">
+<div class="three-column-container">
   <!-- 左欄：分類導航 -->
   <aside class="left-sidebar">
     <div class="sidebar-content">
       <div class="nav-card">
-        <h3 class="sidebar-title">🗂️ 分類導航</h3>
+        <h3 class="sidebar-title">🗺️ 分類導航</h3>
         <nav id="categories-nav" class="toc-nav">
-          {% assign all_categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
+          {% assign all_categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
+          {% assign sorted_categories = '' | split: ',' %}
           {% for category in all_categories %}
             {% unless category == '' %}
-              {% assign posts_count = site.articles | where_exp: "post", "post.categories contains category" | size %}
-              <a href="#{{ category | slugify }}" class="toc-link" data-count="{{ posts_count }}">
+              {% assign posts_count = site.posts | where_exp: "post", "post.categories contains category" | size %}
+              {% assign category_with_count = category | append: '|' | append: posts_count %}
+              {% assign sorted_categories = sorted_categories | push: category_with_count %}
+            {% endunless %}
+          {% endfor %}
+          {% assign top_categories = sorted_categories | limit: 15 %}
+          {% for category_data in top_categories %}
+            {% assign category_parts = category_data | split: '|' %}
+            {% assign category = category_parts[0] %}
+            {% assign posts_count = category_parts[1] %}
+            <a href="#{{ category | slugify }}" class="toc-link" data-count="{{ posts_count }}">
                 <span class="category-icon">
                   {% case category %}
                     {% when '人工智能' %}🤖
                     {% when '程式語言' %}💻
                     {% when '網頁開發' %}🌐
-                    {% when '生活分享' %}🌱
-                    {% when '教學' %}📖
-                    {% when '功能項目' %}⚙️
-                    {% when '工具分享' %}🛠️
-                    {% when '心得筆記' %}💭
+                    {% when '生活分享' %}📝
+                    {% when '教學' %}📚
+                    {% when '智能項目' %}🚀
+                    {% when '工具分享' %}🔧
+                    {% when '心得筆記' %}📖
+                    {% when '技術' %}⚙️
+                    {% when '編程' %}👨‍💻
                     {% else %}📄
                   {% endcase %}
                 </span>
                 <span class="category-name">{{ category }}</span>
                 <span class="category-count">{{ posts_count }}</span>
               </a>
-            {% endunless %}
-          {% endfor %}
+            {% endfor %}
         </nav>
       </div>
     </div>
@@ -49,10 +60,10 @@ classes: categories-page three-column
       <p class="page-description">按技術領域分類的文章內容</p>
     </header>
       
-    {% assign all_categories = site.articles | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
+    {% assign all_categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
     {% for category in all_categories %}
       {% unless category == '' %}
-        {% assign category_posts = site.articles | where_exp: "post", "post.categories contains category" | sort: 'date' | reverse %}
+        {% assign category_posts = site.posts | where_exp: "post", "post.categories contains category" | sort: 'date' | reverse %}
         {% if category_posts.size > 0 %}
           <div class="category-section" id="{{ category | slugify }}">
             <div class="category-header">
@@ -61,11 +72,13 @@ classes: categories-page three-column
                   {% when '人工智能' %}🤖
                   {% when '程式語言' %}💻
                   {% when '網頁開發' %}🌐
-                  {% when '生活分享' %}🌱
-                  {% when '教學' %}📖
-                  {% when '功能項目' %}⚙️
-                  {% when '工具分享' %}🛠️
-                  {% when '心得筆記' %}💭
+                  {% when '生活分享' %}📝
+                  {% when '教學' %}📚
+                  {% when '智能項目' %}🚀
+                  {% when '工具分享' %}🔧
+                  {% when '心得筆記' %}📖
+                  {% when '技術' %}⚙️
+                  {% when '編程' %}👨‍💻
                   {% else %}📄
                 {% endcase %}
                 {{ category }}
@@ -73,13 +86,15 @@ classes: categories-page three-column
               <p class="category-description">
                 {% case category %}
                   {% when '人工智能' %}AI 技術、機器學習、深度學習相關文章
-                  {% when '程式語言' %}程式語言學習、開發技巧與最佳實踐
-                  {% when '網頁開發' %}前端、後端、全端開發技術分享
-                  {% when '生活分享' %}日常生活、心得感想與經驗分享
-                  {% when '教學' %}技術教學、學習指南與實作範例
-                  {% when '功能項目' %}專案開發、功能實作與技術解決方案
-                  {% when '工具分享' %}開發工具、實用軟體與效率提升
+                  {% when '程式語言' %}程式語言學習與開發技巧和最佳實踐
+                  {% when '網頁開發' %}前端後端、全端開發技術分享
+                  {% when '生活分享' %}日常生活心得與個人經驗分享
+                  {% when '教學' %}技術教學、學習資源和實用範例
+                  {% when '智能項目' %}專案開發與實作、技術解決方案
+                  {% when '工具分享' %}開發工具、實用軟體與技術資源
                   {% when '心得筆記' %}學習心得、技術筆記與思考記錄
+                  {% when '技術' %}各種技術相關內容
+                  {% when '編程' %}編程實踐與開發經驗
                   {% else %}其他相關技術文章
                 {% endcase %}
               </p>
@@ -146,7 +161,7 @@ classes: categories-page three-column
       <!-- 個人資訊卡片 -->
       <div class="info-card security-researcher-card">
         <div class="profile-section">
-          <img src="/assets/image/logo.jpg" alt="YoFat" class="profile-avatar">
+          <img src="/assets/image/logo_inverted.png" alt="YoFat" class="profile-avatar">
           <h3 class="profile-name">YoFat</h3>
           <p class="profile-title">Security Researcher</p>
         </div>
@@ -154,11 +169,15 @@ classes: categories-page three-column
 
       <!-- 快速跳轉 -->
       <div class="info-card">
-        <h3 class="sidebar-title">🔗 快速跳轉</h3>
+        <h3 class="sidebar-title">🚀 快速導航</h3>
         <div class="quick-nav">
           <a href="/" class="nav-link">
             <span>🏠</span>
             <span>首頁</span>
+          </a>
+          <a href="/posts.html" class="nav-link">
+            <span>📰</span>
+            <span>全部文章</span>
           </a>
           <a href="/tags.html" class="nav-link">
             <span>🏷️</span>
@@ -215,8 +234,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.show-more-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       const category = this.getAttribute('data-category');
-      // 這裡可以實現顯示更多文章的邏輯
-      alert(`顯示更多 ${category} 分類的文章功能待實現`);
+      // 這裡可以實現顯示更多文章的功能
+      alert(`顯示更多 ${category} 分類文章功能待實現`);
     });
   });
 });

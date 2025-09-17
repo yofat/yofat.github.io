@@ -5,6 +5,7 @@ date: 2025-01-16
 categories: ["編程", "前端"]
 tags: ["javascript", "前端開發", "最佳實踐", "ES6"]
 excerpt: "深入探討 JavaScript 的進階技巧，包括閉包、非同步程式設計、模組化開發等核心概念與最佳實踐。"
+body_class: post-page
 ---
 
 # JavaScript 進階技巧與最佳實踐

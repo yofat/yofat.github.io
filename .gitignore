@@ -1,0 +1,36 @@
+# Jekyll 建置輸出
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Ruby/Bundler 檔案
+Gemfile.lock
+vendor/
+
+# 備份檔案
+*.backup
+*_backup.*
+*_new.*
+*~
+
+# Windows 系統檔案
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# IDE/編輯器檔案
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 日誌和臨時檔案
+*.log
+*.tmp
+
+# 工具腳本產生的檔案
+tools/temp/
+
+# 圖示檔案（保留 favicon.ico，只忽略重複的 favicon.png）
+favicon.png

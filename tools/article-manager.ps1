@@ -28,7 +28,7 @@ function Quick-Create {
     $title = Read-Host "📝 文章標題"
     if (-not $title) { return }
     
-    $categories = @("人工智能", "程式語言", "網頁開發", "生活分享", "教學", "功能項目", "工具分享", "心得筆記")
+    $categories = @("人工智能", "程式語言", "網頁開發", "生活分享", "教學", "工具分享", "心得筆記")
     Write-Host "📂 選擇分類:"
     for ($i = 0; $i -lt $categories.Length; $i++) {
         Write-Host "  [$($i+1)] $($categories[$i])"
@@ -69,7 +69,7 @@ function Process-PostsFolder {
         Write-Host "  • $($post.Name)" -ForegroundColor $Colors.Cyan
     }
     
-    $confirm = Read-Host "是否將這些文章移動到 _articles？(y/N)"
+    $confirm = Read-Host "是否將這些文章移動到 _posts？(y/N)"
     if ($confirm -ne 'y' -and $confirm -ne 'Y') { return }
     
     foreach ($post in $posts) {
@@ -113,7 +113,7 @@ function Search-Articles {
     Write-Host "搜尋結果:" -ForegroundColor $Colors.Yellow
     
     $found = $false
-    Get-ChildItem "_articles\*\*.md" -Recurse | ForEach-Object {
+    Get-ChildItem "_posts\*.md" | ForEach-Object {
         $content = Get-Content $_.FullName -Raw
         if ($content -match $keyword -or $_.BaseName -match $keyword) {
             $category = $_.Directory.Name

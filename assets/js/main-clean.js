@@ -53,11 +53,31 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 為標題添加 ID
+    // 總是重新生成 ID，使用標題文字而不是 Jekyll 生成的 ID
     headings.forEach((heading, index) => {
-      if (!heading.id) {
-        heading.id = `heading-${index}`;
+      // 將標題文字轉換為 URL 友好的格式
+      let slug = heading.textContent.trim()
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '') // 移除特殊字符
+        .replace(/\s+/g, '-') // 將空格轉為連字符
+        .replace(/-+/g, '-') // 移除多餘的連字符
+        .replace(/^-|-$/g, ''); // 移除開頭和結尾的連字符
+
+      // 如果 slug 為空，使用默認格式
+      if (!slug) {
+        slug = `heading-${index}`;
       }
+
+      // 確保唯一性
+      let uniqueSlug = slug;
+      let counter = 1;
+      const existingIds = Array.from(document.querySelectorAll('[id]')).map(el => el.id);
+      while (existingIds.includes(uniqueSlug)) {
+        uniqueSlug = `${slug}-${counter}`;
+        counter++;
+      }
+
+      heading.id = uniqueSlug;
     });
 
     // 創建 TOC 標題
@@ -260,11 +280,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // === 更新個人頭像根據主題 ===
 function updateProfileAvatar() {
-  const profileAvatar = document.getElementById("profile-avatar");
+  const profileAvatar = document.querySelector(".profile-avatar");
   if (profileAvatar) {
     const isLightTheme = document.documentElement.classList.contains("light");
     profileAvatar.src = isLightTheme 
-      ? "/assets/image/logo_transparent.png" 
+      ? "/assets/image/banner.png" 
       : "/assets/image/logo_inverted.png";
   }
 }

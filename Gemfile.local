@@ -1,0 +1,28 @@
+# 這個 Gemfile 是為了在本地開發時使用更多插件
+# 如果要推送到 GitHub Pages，請使用上面的 GitHub Actions 工作流程
+
+source "https://rubygems.org"
+
+# Jekyll 版本
+gem "jekyll", "~> 3.10.0"
+
+# Windows 時區資料支援
+gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# 所有你想要的 Jekyll 插件
+group :jekyll_plugins do
+  gem "jekyll-feed"
+  gem "jekyll-sitemap"
+  gem "jekyll-seo-tag"
+  gem "jekyll-paginate"  # 在 GitHub Actions 中可以使用
+  gem "kramdown-parser-gfm"
+  # 你可以添加更多插件：
+  # gem "jekyll-archives"
+  # gem "jekyll-minifier"
+  # gem "jekyll-sitemap"
+end
+
+# 開發依賴
+group :development do
+  gem "webrick"  # Ruby 3.0+ 需要這個
+end

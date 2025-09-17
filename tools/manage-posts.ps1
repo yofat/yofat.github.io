@@ -5,7 +5,7 @@ Write-Host ""
 
 # 顯示選項
 Write-Host "請選擇操作："
-echo "1. 創建新文章 (_articles 資料夾)"
+echo "1. 創建新文章 (_posts 資料夾)"
 Write-Host "2. 創建新文章 (_posts 資料夾)" 
 Write-Host "3. 列出所有文章"
 Write-Host "4. 檢查文章格式"

@@ -73,23 +73,4 @@
       progress.style.width = scrollPercent + '%';
     }
   });
-  
-  // 主題切換
-  document.getElementById('theme-toggle').addEventListener('click', function() {
-    document.body.classList.toggle('light-theme');
-    const icon = document.getElementById('theme-icon');
-    icon.textContent = document.body.classList.contains('light-theme') ? '☀️' : '🌙';
-    
-    // 保存主題偏好
-    localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
-  });
-  
-  // 載入儲存的主題偏好
-  document.addEventListener('DOMContentLoaded', function() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-      document.body.classList.add('light-theme');
-      document.getElementById('theme-icon').textContent = '☀️';
-    }
-  });
 </script>

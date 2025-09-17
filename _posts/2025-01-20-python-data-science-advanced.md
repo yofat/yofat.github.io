@@ -3,6 +3,7 @@ layout: post
 title: Python 資料科學入門：從 NumPy 到 Pandas
 categories: [人工智能, 深度學習]
 tags: [程式語言, Python]
+body_class: post-page
 ---
 
 # Python 資料科學入門：從 NumPy 到 Pandas

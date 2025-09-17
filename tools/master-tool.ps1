@@ -10,7 +10,7 @@ param(
     [string]$Title,
     
     [Parameter(Mandatory=$false)]
-    [ValidateSet("人工智能", "程式語言", "網頁開發", "生活分享", "教學", "功能項目", "工具分享", "心得筆記")]
+    [ValidateSet("人工智能", "程式語言", "網頁開發", "生活分享", "教學", "工具分享", "心得筆記")]
     [string]$Category,
     
     [Parameter(Mandatory=$false)]
@@ -61,10 +61,10 @@ function Quick-CreateArticle {
     if (-not $Category) {
         Write-Host "可用分類：" -ForegroundColor $Colors.Yellow
         Write-Host "1. 人工智能    2. 程式語言    3. 網頁開發    4. 生活分享"
-        Write-Host "5. 教學        6. 功能項目    7. 工具分享    8. 心得筆記"
+        Write-Host "5. 教學        6. 工具分享    7. 心得筆記"
         
         $categoryChoice = Read-Host "請選擇分類 (1-8)"
-        $categories = @("人工智能", "程式語言", "網頁開發", "生活分享", "教學", "功能項目", "工具分享", "心得筆記")
+        $categories = @("人工智能", "程式語言", "網頁開發", "生活分享", "教學", "工具分享", "心得筆記")
         $Category = $categories[[int]$categoryChoice - 1]
     }
     
@@ -98,7 +98,7 @@ function Search-Articles {
     $keyword = Read-Host "請輸入搜尋關鍵字"
     Write-Host "🔍 搜尋包含 '$keyword' 的文章..." -ForegroundColor $Colors.Yellow
     
-    Get-ChildItem -Path "_articles" -Recurse -Filter "*.md" | ForEach-Object {
+    Get-ChildItem -Path "_posts" -Filter "*.md" | ForEach-Object {
         $content = Get-Content $_.FullName -Raw -Encoding UTF8
         if ($content -match $keyword) {
             Write-Host "📄 $($_.Name)" -ForegroundColor $Colors.Green
@@ -114,16 +114,10 @@ function Show-Statistics {
     Write-Host "📊 部落格統計資訊" -ForegroundColor $Colors.Blue
     Write-Host "=" * 40
     
-    $categories = Get-ChildItem -Path "_articles" -Directory
-    $totalArticles = 0
+    $articles = Get-ChildItem -Path "_posts" -Filter "*.md"
+    $totalArticles = $articles.Count
     
-    foreach ($category in $categories) {
-        $articles = Get-ChildItem -Path $category.FullName -Filter "*.md"
-        $count = $articles.Count
-        $totalArticles += $count
-        
-        Write-Host "📁 $($category.Name): $count 篇" -ForegroundColor $Colors.Green
-    }
+    Write-Host "📁 總文章數: $totalArticles 篇" -ForegroundColor $Colors.Green
     
     Write-Host ""
     Write-Host "📝 總計: $totalArticles 篇文章" -ForegroundColor $Colors.Yellow
@@ -135,15 +129,10 @@ function List-AllArticles {
     Write-Host "📋 所有文章列表" -ForegroundColor $Colors.Blue
     Write-Host "=" * 50
     
-    Get-ChildItem -Path "_articles" -Directory | ForEach-Object {
-        $categoryName = $_.Name
-        Write-Host "📁 $categoryName" -ForegroundColor $Colors.Green
-        
-        Get-ChildItem -Path $_.FullName -Filter "*.md" | ForEach-Object {
-            Write-Host "  📄 $($_.Name)" -ForegroundColor $Colors.Cyan
-        }
-        Write-Host ""
+    Get-ChildItem -Path "_posts" -Filter "*.md" | ForEach-Object {
+        Write-Host "  📄 $($_.Name)" -ForegroundColor $Colors.Cyan
     }
+    Write-Host ""
 }
 
 # 清理空檔案
@@ -192,10 +181,10 @@ function Check-FileStatus {
     
     # 檢查資料夾結構
     Write-Host "檢查資料夾結構..." -ForegroundColor $Colors.Cyan
-    if (Test-Path "_articles") {
-        Write-Host "✅ _articles 資料夾存在" -ForegroundColor $Colors.Green
+    if (Test-Path "_posts") {
+        Write-Host "✅ _posts 資料夾存在" -ForegroundColor $Colors.Green
     } else {
-        Write-Host "❌ _articles 資料夾不存在" -ForegroundColor $Colors.Red
+        Write-Host "❌ _posts 資料夾不存在" -ForegroundColor $Colors.Red
     }
 }
 
