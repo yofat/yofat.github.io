@@ -1,10 +1,9 @@
 # 🎯 YoFat 個人部落格
 
 
-[![Jekyll Build](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml/badge.svg)](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml)[![Jekyll Build](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml/badge.svg)](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml)
+[![Jekyll Build](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml/badge.svg)](https://github.com/yofat/yofat.github.io/actions/workflows/pages.yml)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
 > 🔐 網路安全 × 🤖 人工智能 × 💻 技術筆記> 🔐 資訊安全 × 💻 程式開發 × 🤖 技術分享
@@ -239,3 +238,4 @@ bundle install
 # 打開 http://localhost:4000
 
 ```
+
