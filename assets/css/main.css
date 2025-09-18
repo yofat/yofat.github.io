@@ -2033,13 +2033,11 @@ html.light .security-researcher-card:hover {
 .article-content {
   position: relative;
   z-index: 2;
-  padding: calc(var(--spacing-xl) * 0.95); /* 內縮 5% */
+  padding: var(--spacing-xl);
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  word-wrap: break-word;
-  overflow-wrap: break-word;
 }
 
 .article-header {
@@ -2093,10 +2091,12 @@ html.light .security-researcher-card:hover {
   color: var(--text-secondary);
   font-size: 1.1rem;
   line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   flex: 1;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
 }
 
 .article-footer {
@@ -2133,10 +2133,12 @@ html.light .security-researcher-card:hover {
 .article-excerpt {
   color: var(--text-secondary);
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   flex: 1;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
 }
 
 /* ====================================
@@ -3028,8 +3030,10 @@ pre {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 1rem;
-  overflow-x: auto;
+  overflow-x: auto; /* 允許水平滾動 */
   margin: 1.5rem 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 pre code {
@@ -3060,11 +3064,13 @@ pre code {
   padding: 0; /* 移除所有外部 padding */
   background: var(--card);
   border: none;
-  overflow-x: auto;
+  overflow-x: auto; /* 允許水平滾動 */
   font-family: var(--font-mono);
   font-size: 0.9rem;
   line-height: 1.5;
   color: var(--text-primary);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .highlight code {
@@ -4639,13 +4645,14 @@ header {
 
 .article-layout {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: var(--spacing-xl);
+  grid-template-columns: 260px 1fr; /* 稍微減少左欄寬度以適應 container */
+  gap: var(--spacing-lg); /* 稍微減少間距 */
   width: 100%;
-  max-width: 1280px;
+  max-width: none; /* 移除全寬限制，讓外層 container 控制寬度 */
   margin: 0 auto;
-  padding: 0 var(--spacing-xl);
+  padding: 0; /* 移除內部 padding，讓外層 container 控制 */
   min-height: calc(100vh - 200px);
+  box-sizing: border-box;
 }
 
 /* 左欄：文章側邊欄 - 移除垂直滾動 */
@@ -4945,17 +4952,43 @@ header {
 /* 右欄：主要文章內容 */
 .article-main {
   min-height: calc(100vh - 200px);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 var(--spacing-sm); /* 添加適當的內邊距 */
 }
 
-.post-article {
+/* 響應式設計 - 小螢幕優化 */
+@media (max-width: 768px) {
+  .article-layout {
+    grid-template-columns: 1fr; /* 小螢幕改為單欄 */
+    gap: var(--spacing-md);
+    padding: 0; /* 小螢幕也移除 padding */
+  }
+  
+  .article-sidebar {
+    order: 2; /* 目錄移到下方 */
+  }
+  
+  .article-main {
+    order: 1; /* 內容移到上方 */
+  }
+  
+  /* 小螢幕下調整左欄寬度 */
+  .article-sidebar {
+    width: 100%; /* 小螢幕下占滿寬度 */
+  }
+}.post-article {
   background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
   border: 2px solid transparent;
   border-radius: var(--radius-xl);
   padding: var(--spacing-xl);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   min-height: 100%;
-  max-width: 100%;
+  max-width: 100%; /* 充分利用寬度 */
   overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box; /* 確保 padding 不會超出寬度 */
 }
 
 /* 文章標題 */
@@ -5023,10 +5056,29 @@ header {
   color: var(--text-primary);
   line-height: 1.8;
   font-size: 1.1rem;
-  max-width: 95%;
+  max-width: 100%; /* 允許充分利用寬度 */
   overflow-wrap: break-word;
   word-wrap: break-word;
-  width: 95%;
+  word-break: break-word; /* 確保長單詞也能換行 */
+  hyphens: auto; /* 自動斷字 */
+  width: 100%;
+  box-sizing: border-box; /* 確保不會超出容器 */
+}
+
+/* 確保文章內的所有元素都不會超出寬度 */
+.post-content * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 圖片和媒體元素的安全設置 */
+.post-content img,
+.post-content video,
+.post-content iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1rem auto;
 }
 
 .post-content h1,
