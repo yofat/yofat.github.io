@@ -3,7 +3,7 @@ layout: post
 title: Bypass WAF 學習筆記
 categories: [紅隊學習]
 tags: ["red team", "web", "bypass waf"]
-date: 2022-12-31
+date: 2023-01-14
 excerpt: "Bypass WAF 學習筆記。"
 body_class: post-page
 ---
