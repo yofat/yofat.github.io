@@ -221,10 +221,11 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         // H2/H3 作為子項目
         if (currentH1Item) {
-          if (!currentH1Item.childrenContainer) {
-            currentH1Item.childrenContainer = document.createElement("ul");
-            currentH1Item.childrenContainer.className = "toc-children";
-            currentH1Item.element.appendChild(currentH1Item.childrenContainer);
+      if (!currentH1Item.childrenContainer) {
+        currentH1Item.childrenContainer = document.createElement("ul");
+        // Initialize as collapsed by default; JS will expand when needed
+        currentH1Item.childrenContainer.className = "toc-children collapsed";
+        currentH1Item.element.appendChild(currentH1Item.childrenContainer);
           }
           currentH1Item.childrenContainer.appendChild(listItem);
           currentH1Item.children.push({ element: listItem, level: headingLevel });
@@ -242,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 控制按鈕狀態更新函數
     function updateControlButtons() {
       const hasExpanded = tocRoot.querySelector('.toc-children.expanded') !== null;
-      const hasCollapsed = tocRoot.querySelector('.toc-children:not(.expanded)') !== null;
+      const hasCollapsed = tocRoot.querySelector('.toc-children.collapsed') !== null;
 
       // 更新文字鏈接的樣式
       expandAllLink.style.opacity = hasExpanded ? "0.5" : "1";
@@ -255,8 +256,10 @@ document.addEventListener("DOMContentLoaded", () => {
       childrenContainers.forEach(container => {
         if (expand) {
           container.classList.add('expanded');
+          container.classList.remove('collapsed');
         } else {
           container.classList.remove('expanded');
+          container.classList.add('collapsed');
         }
       });
     }
@@ -292,6 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const prevChildren = currentActiveH1.querySelector('.toc-children');
                 if (prevChildren && prevChildren.classList.contains('expanded')) {
                   prevChildren.classList.remove('expanded');
+                  prevChildren.classList.add('collapsed');
                 }
               }
 
@@ -302,8 +306,126 @@ document.addEventListener("DOMContentLoaded", () => {
               const childrenContainer = tocItem.querySelector('.toc-children');
               if (childrenContainer && !childrenContainer.classList.contains('expanded')) {
                 childrenContainer.classList.add('expanded');
+                childrenContainer.classList.remove('collapsed');
                 updateControlButtons();
               }
+
+              // --- Mobile hamburger/menu toggle: ensure the header's mobile button works robustly ---
+              (function setupMobileToggle(){
+                const mobileBtn = document.getElementById('mobileToggle');
+                const navMenu = document.getElementById('navMenu');
+                if (!mobileBtn || !navMenu) return;
+
+                const mq = window.matchMedia('(max-width: 768px)');
+
+                // Initialize ARIA
+                mobileBtn.setAttribute('aria-expanded', 'false');
+                mobileBtn.setAttribute('aria-controls', 'navMenu');
+
+                function isMobile() {
+                  return mq.matches;
+                }
+
+                function closeMenu() {
+                  navMenu.classList.remove('active');
+                  mobileBtn.setAttribute('aria-expanded', 'false');
+                  document.body.classList.remove('nav-open');
+                }
+
+                function toggleMenu(e){
+                  // Only toggle via this handler when in mobile width to avoid affecting desktop
+                  if (!isMobile()) return;
+                  e && e.preventDefault();
+                  const isOpen = navMenu.classList.toggle('active');
+                  mobileBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                  document.body.classList.toggle('nav-open', isOpen);
+
+                  // Inline-style fallback: ensure navMenu gets correct position and height
+                  try {
+                    const headerEl = document.querySelector('header');
+                    const headerRect = headerEl ? headerEl.getBoundingClientRect() : null;
+                    const headerH = headerRect ? Math.round(headerRect.height) : (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 56);
+
+                    if (isOpen) {
+                      navMenu.style.position = 'fixed';
+                      navMenu.style.top = headerH + 'px';
+                      navMenu.style.left = '0';
+                      navMenu.style.right = '0';
+                      navMenu.style.bottom = '0';
+                      navMenu.style.maxHeight = (window.innerHeight - headerH) + 'px';
+                      // also set explicit height to avoid other CSS overrides
+                      navMenu.style.height = (window.innerHeight - headerH) + 'px';
+                      navMenu.style.overflowY = 'auto';
+                      navMenu.style.boxSizing = 'border-box';
+                    } else {
+                      // remove inline fallbacks when closed
+                      navMenu.style.position = '';
+                      navMenu.style.top = '';
+                      navMenu.style.left = '';
+                      navMenu.style.right = '';
+                      navMenu.style.bottom = '';
+                      navMenu.style.maxHeight = '';
+                      navMenu.style.height = '';
+                      navMenu.style.overflowY = '';
+                      navMenu.style.boxSizing = '';
+                    }
+                  } catch (err) {
+                    // non-fatal fallback
+                    console.warn('mobileToggle inline-style fallback error', err);
+                  }
+                }
+
+                mobileBtn.addEventListener('click', toggleMenu);
+                mobileBtn.addEventListener('keydown', (e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    toggleMenu(e);
+                  }
+                });
+
+                // close menu when clicking outside on small screens
+                document.addEventListener('click', (ev) => {
+                  if (!isMobile()) return;
+                  if (!document.body.classList.contains('nav-open')) return;
+                  const target = ev.target;
+                  if (!navMenu.contains(target) && !mobileBtn.contains(target)) {
+                    closeMenu();
+                  }
+                });
+
+                // Fallback: capture clicks at document level to ensure button clicks are handled
+                document.addEventListener('click', (ev) => {
+                  try {
+                    const target = ev.target;
+                    const clickedToggle = target.closest && target.closest('#mobileToggle');
+                    if (clickedToggle) {
+                      // Quick visual feedback for debugging: flash the button
+                      mobileBtn.classList.add('mobile-toggle-flash');
+                      setTimeout(() => mobileBtn.classList.remove('mobile-toggle-flash'), 220);
+                      // Call toggle handler explicitly
+                      toggleMenu(ev);
+                    }
+                  } catch (err) {
+                    console.warn('mobileToggle fallback handler error', err);
+                  }
+                }, true); // capture phase to catch early
+
+                // When resizing to desktop, ensure menu is closed and body class removed
+                mq.addEventListener && mq.addEventListener('change', (e) => {
+                  if (!e.matches) {
+                    closeMenu();
+                  }
+                });
+                // Fallback for older browsers: listen resize
+                window.addEventListener('resize', () => {
+                  if (!isMobile()) closeMenu();
+                  // Update inline maxHeight if menu is open
+                  if (isMobile() && document.body.classList.contains('nav-open') && navMenu.classList.contains('active')) {
+                    const headerEl = document.querySelector('header');
+                    const headerH = headerEl ? Math.round(headerEl.getBoundingClientRect().height) : (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 56);
+                    navMenu.style.maxHeight = (window.innerHeight - headerH) + 'px';
+                  }
+                });
+              })();
             } else if (currentLevel === 2) {
               // 如果是 H2，確保其父級 H1 已展開
               const parentH1 = tocItem.closest('.toc-list > .toc-item');
@@ -315,6 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const prevChildren = currentActiveH1.querySelector('.toc-children');
                     if (prevChildren && prevChildren.classList.contains('expanded')) {
                       prevChildren.classList.remove('expanded');
+                      prevChildren.classList.add('collapsed');
                     }
                   }
 
@@ -326,6 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const parentChildren = parentH1.querySelector('.toc-children');
                 if (parentChildren && !parentChildren.classList.contains('expanded')) {
                   parentChildren.classList.add('expanded');
+                  parentChildren.classList.remove('collapsed');
                   updateControlButtons();
                 }
               }
@@ -338,6 +462,36 @@ document.addEventListener("DOMContentLoaded", () => {
       rootMargin: "0px 0px -70% 0px",
       threshold: 0.1
     });
+
+    // Initialize: only expand the H1 that is currently in view (if any), keep others collapsed
+    (function initTocState(){
+      // collapse all first
+      const allChildren = tocRoot.querySelectorAll('.toc-children');
+      allChildren.forEach(c => {
+        if (!c.classList.contains('expanded')) {
+          c.classList.add('collapsed');
+        }
+      });
+
+      // find first heading currently in viewport and expand its H1 parent
+      let found = false;
+      headings.forEach(h => {
+        const rect = h.getBoundingClientRect();
+        if (!found && rect.top >= 0 && rect.top < window.innerHeight) {
+          const link = tocRoot.querySelector(`.toc-link[href="#${h.id}"]`);
+          if (link) {
+            const item = link.closest('.toc-item');
+            const container = item && item.querySelector('.toc-children');
+            if (container) {
+              container.classList.add('expanded');
+              container.classList.remove('collapsed');
+              currentActiveH1 = item;
+              found = true;
+            }
+          }
+        }
+      });
+    })();
 
     headings.forEach(h => observer.observe(h));
   }

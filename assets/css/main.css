@@ -324,6 +324,25 @@ body.three-column .three-column-layout {
   overflow: hidden;
 }
 
+/* Make sure page header does not overlay navigation menus.
+   Force a low stacking order for page header and ensure header/nav are above it. */
+.page-header {
+  z-index: 0 !important;
+}
+
+/* Ensure global header and nav menu are stacked above page header */
+header .header-container,
+.mobile-toggle {
+  z-index: 11001 !important;
+  position: relative !important;
+}
+
+.nav-menu,
+.nav-menu.active,
+body.nav-open .nav-menu {
+  z-index: 11002 !important;
+}
+
 .page-header::before {
   content: '';
   position: absolute;
@@ -4489,6 +4508,20 @@ header {
   
   .nav-menu.active {
     display: flex;
+    /* Make expanded menu fill available viewport space under header and be scrollable */
+    position: fixed !important;
+    top: var(--header-height, 56px) !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    /* Use explicit height as stronger fallback when other rules override max-height */
+    height: calc(100vh - var(--header-height, 56px)) !important;
+    max-height: calc(100vh - var(--header-height, 56px)) !important;
+    min-height: 150px !important; /* prevent extremely small render */
+    overflow-y: auto !important;
+    z-index: 20000 !important;
+    border-radius: 0 !important; /* make full-width feel natural */
+    padding: 1rem !important;
   }
   
   .category-grid, .tag-grid {
@@ -4841,18 +4874,30 @@ header {
   transform: scale(0.95);
 }
 
-/* 子項目容器（展開/收起功能）- 添加長度限制 */
+/* 子項目容器（展開/收起功能）- 使用更穩定的 collapsed/expanded 狀態
+   note: 使用 `max-height` 與有限值可以讓過渡動畫正常工作；
+   不要使用全域性的 `.toc-children { max-height:0 }`，以免被其他規則覆蓋導致展開後仍為 0 */
 .toc-children {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
+  /* default to visible in case JS didn't run; collapsed state is explicit */
+  max-height: 100vh;
+  overflow: visible;
+  transition: max-height 0.3s ease, opacity 0.2s ease;
   margin-left: 0;
   padding-left: 0;
 }
 
+.toc-children.collapsed {
+  /* collapsed (explicit) state used by JS when folding) */
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
 .toc-children.expanded {
-  max-height: none; /* 移除高度限制，完全展開 */
-  overflow: visible; /* 允許內容完全顯示 */
+  /* expanded uses a large but finite max-height so CSS transitions work */
+  max-height: 80vh; /* allow plenty of room on mobile */
+  overflow: auto;
+  opacity: 1;
 }
 
 /* 子項目連接線 */
@@ -4952,6 +4997,17 @@ header {
     padding: 0 1rem !important;
   }
 
+  /* Hide left/right sidebars completely on mobile to simplify layout */
+  .three-column-layout .left-sidebar,
+  .three-column-layout .right-sidebar,
+  .left-sidebar,
+  .right-sidebar,
+  .sidebar {
+    display: none !important;
+    visibility: hidden !important;
+    width: auto !important; /* keep layout flow safe */
+  }
+
   /* Sidebar / TOC becomes static in document flow and placed before content (order handled in HTML) */
   .article-sidebar,
   .post-toc,
@@ -4982,6 +5038,98 @@ header {
   .toc-overlay,
   .toc-fullscreen {
     display: none !important;
+  }
+
+  /* When the mobile nav is opened, prevent body scroll and ensure nav is on top */
+  body.nav-open {
+    overflow: hidden !important;
+  }
+
+  body.nav-open .nav-menu {
+    display: flex !important;
+    position: fixed !important;
+    /* use header height variable to avoid mismatches */
+    top: var(--header-height, 56px) !important; /* below header */
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 99999 !important;
+    background: var(--bg-secondary) !important;
+    padding: 1rem !important;
+    overflow-y: auto !important;
+    /* explicit max-height prevents other rules from collapsing the menu to 0 */
+    max-height: calc(100vh - var(--header-height, 56px)) !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Ensure header mobile toggle and container are above any lingering sidebars */
+  .mobile-toggle {
+    z-index: 10005 !important;
+    position: relative !important;
+  }
+
+  header .header-container {
+    z-index: 10004 !important;
+    position: relative !important;
+  }
+
+  /* Strongly force hide any sidebar variants on mobile and free up the main column */
+  .three-column-container,
+  .three-column-layout {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .three-column-container .left-sidebar,
+  .three-column-container .right-sidebar,
+  .three-column-layout .left-sidebar,
+  .three-column-layout .right-sidebar,
+  .left-sidebar,
+  .right-sidebar,
+  .sidebar {
+    display: none !important;
+    visibility: hidden !important;
+    position: static !important;
+    width: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .three-column-container .main-content,
+  .main-content,
+  .article-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: var(--spacing-sm) !important;
+    padding-right: var(--spacing-sm) !important;
+    margin: 0 auto !important;
+    display: block !important;
+    flex: none !important;
+  }
+
+  /* Extra-safety rules: target home/three-column pages specifically to remove any overlaying sidebars */
+  body.home.three-column .right-sidebar,
+  body.home.three-column .left-sidebar,
+  body.three-column.home .right-sidebar,
+  body.three-column.home .left-sidebar,
+  body.three-column .right-sidebar,
+  body.home .right-sidebar {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /* Ensure the mobile toggle button accepts clicks */
+  #mobileToggle,
+  .mobile-toggle {
+    pointer-events: auto !important;
+    z-index: 20000 !important;
+  }
+
+  /* Debug visual feedback when mobile toggle is clicked (temporary) */
+  .mobile-toggle.mobile-toggle-flash span {
+    background: var(--accent-color) !important;
+    transition: background 0.15s ease;
   }
 }
 
@@ -5165,6 +5313,133 @@ header {
 /* 最後一道保護：避免子元素推寬父容器導致整個頁面溢出 */
 .post-article {
   overflow-x: hidden; /* 隱藏因極端內容造成的橫向溢出 */
+}
+
+/* Desktop-only: For article pages, remove left-sidebar internal vertical scroll
+   so the page scrollbar handles vertical scrolling instead. This targets only
+   article/post templates to avoid changing other pages. */
+@media (min-width: 769px) {
+  body.post-page .left-sidebar,
+  body.layout-post .left-sidebar,
+  article.post-article .left-sidebar {
+    max-height: none !important;
+    overflow-y: visible !important;
+    /* remove any fixed viewport-height and sticky positioning so the sidebar
+       grows with the page and does not create an internal scrollbar */
+    height: auto !important;
+    position: static !important;
+    top: auto !important;
+  }
+
+  /* Also ensure TOC / article-sidebar containers inside posts don't force internal scrolling */
+  body.post-page .post-toc,
+  body.layout-post .post-toc,
+  article.post-article .post-toc,
+  body.post-page .toc-wrapper,
+  body.layout-post .toc-wrapper,
+  article.post-article .toc-wrapper,
+  body.post-page .toc-nav,
+  body.layout-post .toc-nav,
+  article.post-article .toc-nav {
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    position: static !important;
+  }
+}
+
+/* Hide any internal scrollbar for TOC/left-sidebar on article pages (desktop)
+   — keeps page scrollbar intact but removes the small scrollbar inside the sidebar */
+@media (min-width: 769px) {
+  body.post-page .toc-wrapper,
+  body.layout-post .toc-wrapper,
+  article.post-article .toc-wrapper,
+  body.post-page .toc-nav,
+  body.layout-post .toc-nav,
+  article.post-article .toc-nav,
+  body.post-page .left-sidebar,
+  body.layout-post .left-sidebar,
+  article.post-article .left-sidebar {
+    /* ensure no internal scrolling */
+    overflow-y: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    /* hide scrollbars cross-browser */
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE 10+ */
+  }
+
+  /* WebKit browsers */
+  body.post-page .toc-wrapper::-webkit-scrollbar,
+  body.layout-post .toc-wrapper::-webkit-scrollbar,
+  article.post-article .toc-wrapper::-webkit-scrollbar,
+  body.post-page .toc-nav::-webkit-scrollbar,
+  body.layout-post .toc-nav::-webkit-scrollbar,
+  article.post-article .toc-nav::-webkit-scrollbar,
+  body.post-page .left-sidebar::-webkit-scrollbar,
+  body.layout-post .left-sidebar::-webkit-scrollbar,
+  article.post-article .left-sidebar::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+  }
+
+  /* Extra strong: force all descendants to be visible (no internal scroll) */
+  body.post-page .toc-wrapper *,
+  body.layout-post .toc-wrapper *,
+  article.post-article .toc-wrapper *,
+  body.post-page .left-sidebar *,
+  body.layout-post .left-sidebar *,
+  article.post-article .left-sidebar * {
+    overflow: visible !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+}
+
+/* Extra, very-specific overrides to catch remaining scrollbar cases (direct children, lists, navs)
+   Keep this near the other TOC overrides so specificity/order remains strong. */
+@media (min-width: 769px) {
+  body.post-page article.post-article .toc-wrapper,
+  body.post-page article.post-article .toc-nav,
+  body.post-page article.post-article .left-sidebar,
+  body.layout-post article.post-article .toc-wrapper,
+  body.layout-post article.post-article .toc-nav,
+  body.layout-post article.post-article .left-sidebar {
+    overflow: visible !important;
+    overflow-y: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    position: static !important;
+  }
+
+  /* Direct children / common inner containers */
+  body.post-page .toc-wrapper > *,
+  body.post-page .toc-nav > *,
+  body.post-page .left-sidebar > *,
+  body.layout-post .toc-wrapper > *,
+  body.layout-post .toc-nav > *,
+  body.layout-post .left-sidebar > *,
+  article.post-article .toc-wrapper > *,
+  article.post-article .toc-nav > *,
+  article.post-article .left-sidebar > * {
+    overflow: visible !important;
+    overflow-y: visible !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  /* Specific for the TOC list items that sometimes set max-height/overflow */
+  body.post-page .toc-list,
+  body.post-page .toc-item,
+  body.layout-post .toc-list,
+  body.layout-post .toc-item,
+  article.post-article .toc-list,
+  article.post-article .toc-item {
+    overflow: visible !important;
+    max-height: none !important;
+    height: auto !important;
+  }
 }
 
 .post-content h1,

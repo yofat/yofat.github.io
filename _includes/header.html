@@ -54,23 +54,75 @@
   </div>
   
   <!-- 閱讀進度條 -->
-  <div class="reading-progress" id="readingProgress"></div>
-</header>
+    <div class="reading-progress" id="readingProgress"></div>
+  </header>
 
-<script>
-  // 移動端導航切換
-  document.getElementById('mobileToggle').addEventListener('click', function() {
-    document.getElementById('navMenu').classList.toggle('active');
-  });
-  
-  // 閱讀進度條
-  window.addEventListener('scroll', function() {
-    const progress = document.getElementById('readingProgress');
-    if (progress) {
-      const scrollTop = window.pageYOffset;
-      const docHeight = document.body.scrollHeight - window.innerHeight;
-      const scrollPercent = (scrollTop / docHeight) * 100;
-      progress.style.width = scrollPercent + '%';
-    }
-  });
-</script>
+  <script>
+    // Emergency/robust handler: ensure mobile toggle and reading progress are bound after DOM ready.
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        // Mobile toggle emergency binding (won't override existing handlers but ensures functionality)
+        const mobileBtn = document.getElementById('mobileToggle');
+        const navMenu = document.getElementById('navMenu');
+        if (mobileBtn && navMenu) {
+          mobileBtn.setAttribute('aria-controls', 'navMenu');
+          if (!mobileBtn.hasAttribute('aria-expanded')) mobileBtn.setAttribute('aria-expanded', 'false');
+
+          mobileBtn.addEventListener('click', function(e) {
+            e && e.preventDefault();
+            const isOpen = navMenu.classList.toggle('active');
+            mobileBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            document.body.classList.toggle('nav-open', isOpen);
+            // inline style fallback to avoid collapsed menu due to CSS specificity issues
+            try {
+              const headerEl = document.querySelector('header');
+              const headerH = headerEl ? Math.round(headerEl.getBoundingClientRect().height) : (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 56);
+              if (isOpen) {
+                navMenu.style.position = 'fixed';
+                navMenu.style.top = headerH + 'px';
+                navMenu.style.left = '0';
+                navMenu.style.right = '0';
+                navMenu.style.bottom = '0';
+                navMenu.style.maxHeight = (window.innerHeight - headerH) + 'px';
+                navMenu.style.height = (window.innerHeight - headerH) + 'px';
+                navMenu.style.overflowY = 'auto';
+                navMenu.style.boxSizing = 'border-box';
+              } else {
+                navMenu.style.position = '';
+                navMenu.style.top = '';
+                navMenu.style.left = '';
+                navMenu.style.right = '';
+                navMenu.style.bottom = '';
+                navMenu.style.maxHeight = '';
+                navMenu.style.height = '';
+                navMenu.style.overflowY = '';
+                navMenu.style.boxSizing = '';
+              }
+            } catch (err) {
+              console.warn('mobileToggle emergency inline-style fallback error', err);
+            }
+            console.log('mobileToggle emergency handler toggled:', isOpen);
+          }, { passive: false });
+
+          // For debugging: log presence
+          console.log('mobileToggle emergency bound', !!mobileBtn, !!navMenu);
+        } else {
+          console.warn('mobileToggle or navMenu not found in DOM', !!mobileBtn, !!navMenu);
+        }
+
+        // Reading progress bar
+        const progress = document.getElementById('readingProgress');
+        function updateReadingProgress(){
+          if (!progress) return;
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          progress.style.width = scrollPercent + '%';
+        }
+        window.addEventListener('scroll', updateReadingProgress, { passive: true });
+        updateReadingProgress();
+      } catch (err) {
+        console.error('Header emergency script error', err);
+      }
+    });
+  </script>
