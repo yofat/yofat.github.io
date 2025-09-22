@@ -43,7 +43,7 @@ if (Test-Path "_site") {
 
 # Prepare Jekyll arguments
 $jekyllArgs = @("exec", "jekyll", "serve")
-$jekyllArgs += "--host", "0.0.0.0"
+$jekyllArgs += "--host", "127.0.0.1"
 $jekyllArgs += "--port", $Port.ToString()
 $jekyllArgs += "--livereload"
 
