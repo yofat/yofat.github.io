@@ -4934,8 +4934,55 @@ header {
   color: var(--text-tertiary);
   font-style: italic;
   text-align: center;
-  padding: var(--spacing-md);
-  margin: 0;
+}
+ 
+/* ==========================
+   Mobile TOC / Article fixes
+   - Ensure TOC does not overlay the main content on small screens
+   - Stack article layout into one column and put TOC above content
+   - Disable sticky positioning and high z-index for TOC/sidebar on mobile
+   - Make sure post-article is rendered above any lingering sidebar backgrounds
+   ========================== */
+
+@media (max-width: 768px) {
+  /* Force article layout to a single column and keep normal flow */
+  .article-layout {
+    display: block !important;
+    grid-template-columns: none !important;
+    padding: 0 1rem !important;
+  }
+
+  /* Sidebar / TOC becomes static in document flow and placed before content (order handled in HTML) */
+  .article-sidebar,
+  .post-toc,
+  .toc-wrapper,
+  .toc-nav {
+    position: static !important;
+    top: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    width: auto !important;
+    flex: none !important;
+    order: -1 !important; /* place TOC above article content when stacked */
+    z-index: 1 !important; /* ensure it's not above the article content */
+    background: transparent !important; /* avoid covering visual backgrounds */
+    box-shadow: none !important;
+  }
+
+  /* Ensure the main article is visually on top (so clickable links and content aren't blocked) */
+  .post-article,
+  .article-main,
+  .post-main {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* Reduce potential full-screen nav/menu interference */
+  .nav-menu,
+  .toc-overlay,
+  .toc-fullscreen {
+    display: none !important;
+  }
 }
 
 /* 移除重複的 .toc-level-2 和 .toc-level-3 定義，避免覆蓋 HackMD 風格 */
@@ -5396,6 +5443,42 @@ html:not(.light) .post-article {
   background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* === Emergency mobile visibility overrides === */
+@media (max-width: 768px) {
+  /* 強制顯示文章相關容器，避免其他樣式（或第三方樣式）在手機上隱藏它們 */
+  .article-layout,
+  .article-main,
+  .post-article,
+  .post-content,
+  .post-header,
+  .post-title {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 2 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    pointer-events: auto !important;
+  }
+
+  /* 確保 post-content 的子元素可見，避免被 collapse/hidden 覆蓋 */
+  .post-content * {
+    display: revert !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* 如果有 .posts-view 被切換為 hidden，保證單篇文章頁面仍可見 */
+  .posts-view {
+    display: block !important;
+    visibility: visible !important;
+  }
 }
 
 html:not(.light) .toc-link:hover,

@@ -110,7 +110,7 @@ echo '?>' >> shell.php.png
 
 然後要去這裡
 > Newsletter –> Newsletter Templates -> Add New Template
-> {{block type='core/template' template='../../../../../../media/catalog/category/shell.php.png'}}  <- 這串在前面的參考資料有說
+> {% raw %}{{block type='core/template' template='../../../../../../media/catalog/category/shell.php.png'}}{% endraw %}  <- 這串在前面的參考資料有說
 > Preview Template
 
 圖1：
