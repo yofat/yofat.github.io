@@ -1,7 +1,11 @@
 ---
+layout: post
 title: HTB-tracks Linux Privilege Escalation 101
+categories: [HTB, Linux , tracks]
 tags: [HTB, medium, easy, insane, hard, linux]
-
+date: 2024-05-20
+excerpt: "有 11 台 Linux 靶機的 tracks。"
+body_class: post-page
 ---
 
 # Linux Privilege Escalation 101
