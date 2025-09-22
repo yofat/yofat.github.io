@@ -5073,12 +5073,51 @@ header {
 
 /* 圖片和媒體元素的安全設置 */
 .post-content img,
+.post-content picture,
+.post-content figure,
 .post-content video,
 .post-content iframe {
-  max-width: 100%;
-  height: auto;
+  max-width: 100%; /* 不會超出容器 */
+  height: auto;    /* 保持長寬比 */
   display: block;
   margin: 1rem auto;
+  /* 不使用 object-fit 依賴寬高，僅保護性設置 */
+}
+
+/* 覆蓋可能的內嵌寬高屬性或 style，避免打破排版 */
+.post-content img[width],
+.post-content img[height],
+.post-content img[style] {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* 限制過高的圖片，避免佔用整個視窗高度 */
+.post-content img {
+  /* 保護性圖片規則：不會強制擴張父容器 */
+  width: auto;           /* 保持圖片本身比例與縮放彈性 */
+  max-width: 100%;       /* 永遠不超過可用寬度 */
+  max-width: 720px;      /* 在大螢幕上限制最大寬度（可調） */
+  height: auto;
+  max-height: 80vh;      /* 限制過高圖片，避免推垮頁面 */
+  border-radius: var(--radius-md);
+  margin: var(--spacing-lg) auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  display: block;
+}
+
+/* 確保 flex / grid 的子元素可縮小，不會因內容擴張父容器 */
+.post-main,
+.post-article,
+.post-container,
+.article-main {
+  min-width: 0; /* 允許在 flex/grid 內被壓縮，避免溢出 */
+}
+
+/* 最後一道保護：避免子元素推寬父容器導致整個頁面溢出 */
+.post-article {
+  overflow-x: hidden; /* 隱藏因極端內容造成的橫向溢出 */
 }
 
 .post-content h1,
@@ -5185,12 +5224,16 @@ header {
 }
 
 .post-content img {
+  /* 保留最後一層保護（若前面規則未生效仍有保障） */
   width: 100%;
   max-width: 720px;
   height: auto;
+  max-height: 80vh;
+  object-fit: contain;
   border-radius: var(--radius-md);
   margin: var(--spacing-lg) auto;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  display: block;
 }
 
 .post-content a {
