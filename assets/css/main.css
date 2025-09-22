@@ -1,4 +1,4 @@
-/* ====================================
+﻿/* ====================================
    🎨 YoFat's Blog - 簡潔主題
    黑紅色系 + 藍色輔色，保留原本排版
    ==================================== */
@@ -5185,10 +5185,11 @@ header {
 }
 
 .post-content img {
-  max-width: 100%;
+  width: 100%;
+  max-width: 720px;
   height: auto;
   border-radius: var(--radius-md);
-  margin: var(--spacing-lg) 0;
+  margin: var(--spacing-lg) auto;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
@@ -5381,3 +5382,5 @@ html:not(.light) .nav-btn:hover {
 .article-sidebar::-webkit-scrollbar-thumb:hover {
   background: var(--corrupt-blue);
 }
+
+
